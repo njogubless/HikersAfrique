@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823688142351:android:aae38983eb4e85c4e4cd7a",
+        "mobilesdk_app_id": "1:823688142351:android:caa22046b6e8cf7fe4cd7a",
         "android_client_info": {
-          "package_name": "com.hikersafrique.bless"
+          "package_name": "com.hikersafrique.bless.hikersafrique"
         }
       },
       "oauth_client": [
