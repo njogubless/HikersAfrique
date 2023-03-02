@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823688142351",
+    "project_id": "hikersafrique-b611d",
+    "storage_bucket": "hikersafrique-b611d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823688142351:android:aae38983eb4e85c4e4cd7a",
+        "android_client_info": {
+          "package_name": "com.hikersafrique.bless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823688142351-ntbd6fumhsaonmo5gihnj6668eq7b7od.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWwxQdBjH-fMhgMJgcf0bVaYsZxcguYrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823688142351-ntbd6fumhsaonmo5gihnj6668eq7b7od.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
