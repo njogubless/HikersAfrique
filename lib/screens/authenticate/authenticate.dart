@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/screens/authenticate/register.dart';
+import 'package:hikersafrique/screens/authenticate/sign_in.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({super.key});
@@ -8,10 +10,22 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+  // Handling the toggling of the Sign In and Register forms
+  bool showSignIn = true;
+  void toggleView() {
+    setState(() {
+      showSignIn = !showSignIn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('authenticate'),
-    );
+    if (showSignIn) {
+      // Passing the function down so that it can be accessed to toggle View
+      return SignIn(toggleView: toggleView);
+    } else {
+      // Passing the function down so that it can be accessed to toggle View
+      return RegisterClient(toggleView: toggleView);
+    }
   }
 }

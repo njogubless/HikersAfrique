@@ -1,8 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
-
+  const SignIn({
+    Key? key,
+    required this.toggleView,
+  }) : super(key: key);
+  final Function toggleView;
   @override
   State<SignIn> createState() => _SignInState();
 }
