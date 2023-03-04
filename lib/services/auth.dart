@@ -9,10 +9,10 @@ class AuthService {
   Client? _userFromFirebaseUser(User? user) {
     return user != null ? Client(uid: user.uid) : null;
   }
+
 // User stream to listen to auth changes
   Stream<Client?> get user {
-    return _auth.authStateChanges()
-        .map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
 //register with email & password

@@ -1,12 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hikersafrique/firebase_options.dart';
+import 'package:hikersafrique/models/userclient.dart';
+import 'package:hikersafrique/screens/home/wrapper.dart';
+import 'package:hikersafrique/services/auth.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hikersafrique/components/city_names.dart';
 import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
 
-void main() => runApp(const HikersAfriqueApp());
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const HikersAfriqueApp());
+}
 
 class HikersAfriqueApp extends StatefulWidget {
   const HikersAfriqueApp({super.key});
@@ -27,13 +37,20 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => CityNames(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'HikersAfrique App',
-        theme: ThemeData(
-          scaffoldBackgroundColor: kScaffoldBgColor,
+      child: StreamProvider<Client?>.value(
+        initialData: null,
+        value: AuthService().user,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'HikersAfrique App',
+          theme: ThemeData(
+            scaffoldBackgroundColor: kScaffoldBgColor,
+          ),
+          routes: {
+            '/': (context) => const Wrapper(),
+            '/welcome': (context) => const WelcomeScreen(),
+          },
         ),
-        home: const WelcomeScreen(),
       ),
     );
   }
