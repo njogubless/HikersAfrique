@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/home_screen.dart';
+import 'package:hikersafrique/screens/home/home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
