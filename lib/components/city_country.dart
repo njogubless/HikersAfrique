@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class CityCountry extends ChangeNotifier {
   final List _cityCountry = [
-    'Milan,Italy',
-    'Rome,Italy',
-    'Bologna,Italy',
+    'Nairobi,Kenya,',
+    'Mombasa,Kenya',
+    'Eldoret,Kenya',
     'Paris,France',
     'Madrid,Spain',
     'Cape Town,South Africa',

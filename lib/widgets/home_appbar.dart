@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/services/auth.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
   const CustomHomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -38,27 +40,31 @@ class CustomHomeAppBar extends StatelessWidget {
                 ),
                 // City Text
                 Text(
-                  'Milan,Italy',
+                  'Kenya,Eldoret',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
                 )
               ],
             ),
             // Search icon
-            InkWell(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 6.0,
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(15.0)),
-                child: const Icon(Icons.search, size: 28.0),
-              ),
+            DropdownButton<int>(
+              icon: const Icon(Icons.more_vert),
+              underline: const SizedBox.shrink(),
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontFamily: 'AvenirNext',
+                    ),
+                  ),
+                ),
+              ],
+              onChanged: (selection) {
+                _auth.signOut();
+              },
             ),
           ],
         ),
