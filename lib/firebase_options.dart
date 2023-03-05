@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '823688142351',
     projectId: 'hikersafrique-b611d',
     authDomain: 'hikersafrique-b611d.firebaseapp.com',
-    databaseURL: 'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'hikersafrique-b611d.appspot.com',
   );
 
@@ -58,7 +59,8 @@ class DefaultFirebaseOptions {
     appId: '1:823688142351:android:caa22046b6e8cf7fe4cd7a',
     messagingSenderId: '823688142351',
     projectId: 'hikersafrique-b611d',
-    databaseURL: 'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'hikersafrique-b611d.appspot.com',
   );
 
@@ -67,9 +69,11 @@ class DefaultFirebaseOptions {
     appId: '1:823688142351:ios:0e877b8d5bb26dd7e4cd7a',
     messagingSenderId: '823688142351',
     projectId: 'hikersafrique-b611d',
-    databaseURL: 'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'hikersafrique-b611d.appspot.com',
-    iosClientId: '823688142351-ct6pvjqd4ct8svcg68ug13f9571rk51g.apps.googleusercontent.com',
+    iosClientId:
+        '823688142351-ct6pvjqd4ct8svcg68ug13f9571rk51g.apps.googleusercontent.com',
     iosBundleId: 'com.hikersafrique.bless.hikersafrique',
   );
 
@@ -78,9 +82,11 @@ class DefaultFirebaseOptions {
     appId: '1:823688142351:ios:0e877b8d5bb26dd7e4cd7a',
     messagingSenderId: '823688142351',
     projectId: 'hikersafrique-b611d',
-    databaseURL: 'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://hikersafrique-b611d-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'hikersafrique-b611d.appspot.com',
-    iosClientId: '823688142351-ct6pvjqd4ct8svcg68ug13f9571rk51g.apps.googleusercontent.com',
+    iosClientId:
+        '823688142351-ct6pvjqd4ct8svcg68ug13f9571rk51g.apps.googleusercontent.com',
     iosBundleId: 'com.hikersafrique.bless.hikersafrique',
   );
 }

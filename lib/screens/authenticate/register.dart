@@ -44,34 +44,30 @@ class _RegisterClientState extends State<RegisterClient> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                        child: const Text('Do',
-                            style: TextStyle(
-                                fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      ),
-                      Container(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 70.0, 0.0, 0.0),
-                        child: const Text('Sign Up',
-                            style: TextStyle(
-                                fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      ),
-                      Container(
-                        padding:
-                            const EdgeInsets.fromLTRB(265.0, 70.0, 0.0, 0.0),
-                        child: const Text('.',
-                            style: TextStyle(
-                              fontSize: 80.0,
-                              fontWeight: FontWeight.bold,
-                              color: lightBlue,
-                            )),
-                      )
-                    ],
-                  ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                      child: const Text('Do',
+                          style: TextStyle(
+                              fontSize: 80.0, fontWeight: FontWeight.bold)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(16.0, 70.0, 0.0, 0.0),
+                      child: const Text('Sign Up',
+                          style: TextStyle(
+                              fontSize: 80.0, fontWeight: FontWeight.bold)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(265.0, 70.0, 0.0, 0.0),
+                      child: const Text('.',
+                          style: TextStyle(
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold,
+                            color: lightBlue,
+                          )),
+                    )
+                  ],
                 ),
                 Container(
                     padding: const EdgeInsets.only(

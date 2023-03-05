@@ -12,6 +12,7 @@ import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
