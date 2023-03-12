@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikersafrique/models/client.dart';
+import 'package:hikersafrique/models/event.dart';
 
 class Database {
   // Initialize Firestore
@@ -12,11 +13,13 @@ class Database {
   }
 
 // Retrieve available events
-  static Future<List<Map<String, dynamic>>> getAvailableEvents() async {
+  static Future<List<Event>> getAvailableEvents() async {
     final QuerySnapshot querySnapshot =
         await firestore.collection('events').get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
-    return docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    return docs
+        .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
 // Save a booked event for a user
