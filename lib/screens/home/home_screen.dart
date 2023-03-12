@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:hikersafrique/items/best_places.dart';
 import 'package:hikersafrique/items/favourites.dart';
@@ -131,80 +133,96 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              ListView.builder(
-                itemCount: 10,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PostScreen()));
-                          },
-                          child: Container(
-                            height: 200.0,
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(12.0),
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('images/city${index + 1}.jpg'),
-                                  fit: BoxFit.cover,
-                                  opacity: 0.9),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Consumer<CityNames>(
-                              builder: (context, value, child) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  value.cityNames[index],
-                                  style: const TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                const Icon(
-                                  Icons.more_vert,
-                                  size: 30.0,
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 20.0,
-                            ),
-                            Text(
-                              '4.5',
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
+              FutureBuilder<List<Event>>(
+                  future: Database.getAvailableEvents(),
+                  initialData: const [],
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, index) {
+                        return EventItem(
+                          event: snapshot.data![index],
+                        );
+                      },
+                    );
+                  }),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class EventItem extends StatelessWidget {
+  const EventItem({
+    super.key,
+    required this.event,
+  });
+
+  final Event event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const PostScreen()));
+            },
+            child: Container(
+              height: 200.0,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Image.network(
+                event.eventImageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Consumer<CityNames>(builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    event.eventName,
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.w500),
+                  ),
+                  const Icon(
+                    Icons.more_vert,
+                    size: 30.0,
+                  ),
+                ],
+              );
+            }),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Row(
+            children: const [
+              Icon(
+                Icons.star,
+                color: Colors.amber,
+                size: 20.0,
+              ),
+              Text(
+                '4.5',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
