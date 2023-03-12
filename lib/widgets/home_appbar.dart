@@ -6,7 +6,7 @@ class CustomHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
+    final AuthService auth = AuthService();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -63,7 +63,7 @@ class CustomHomeAppBar extends StatelessWidget {
                 ),
               ],
               onChanged: (selection) {
-                _auth.signOut();
+                auth.signOut();
               },
             ),
           ],
