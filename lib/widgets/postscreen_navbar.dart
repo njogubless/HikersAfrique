@@ -52,7 +52,7 @@ class PostScreenNavBar extends StatelessWidget {
                     ],
                   );
                 }),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 50.0),
                 Text(
                   'Location: ${event.eventLocation}\nDate: ${event.eventDate}\nTime: ${event.eventTime}\n\nCost: Ksh. ${event.eventCost}',
                   style: const TextStyle(
@@ -87,7 +87,7 @@ class PostScreenNavBar extends StatelessWidget {
                       //Book Now
                       ElevatedButton(
                         onPressed: () async {
-                          
+
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
