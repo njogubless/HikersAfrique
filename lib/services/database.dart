@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hikersafrique/models/client.dart';
 
 class Database {
   // Initialize Firestore
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Save registered client data
+  static Future<void> saveClientData(Client client) async {
+    final DocumentReference docRef = firestore.collection('clients').doc();
+    await docRef.set(client.toJson());
+  }
 
 // Retrieve available events
   static Future<List<Map<String, dynamic>>> getAvailableEvents() async {
