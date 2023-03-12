@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hikersafrique/firebase_options.dart';
-import 'package:hikersafrique/models/userclient.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:provider/provider.dart';

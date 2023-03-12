@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/models/userclient.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/authenticate/authenticate.dart';
 import 'package:hikersafrique/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
