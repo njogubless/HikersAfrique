@@ -23,11 +23,12 @@ class Database {
   }
 
 // Save a booked event for a user
-  static Future<void> saveBookedEvent(String userId, String eventId) async {
+  static Future<void> saveBookedEvent(
+      String userEmail, String eventName) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();
     await docRef.set({
-      'userID': userId,
-      'eventID': eventId,
+      'userEmail': userEmail,
+      'eventName': eventName,
       'bookingDate': DateTime.now().toIso8601String(),
     });
   }
@@ -44,22 +45,27 @@ class Database {
   }
 
 // Save a saved event for a user
-  static Future<void> saveSavedEvent(String userId, String eventId) async {
+  static Future<void> saveSavedEvent(String userEmail, String eventName) async {
     final DocumentReference docRef = firestore.collection('savedEvents').doc();
     await docRef.set({
-      'userID': userId,
-      'eventID': eventId,
+      'userEmail': userEmail,
+      'eventName': eventName,
     });
   }
 
 // Retrieve a user's saved events
-  static Future<List<Map<String, dynamic>>> getSavedEvents(
-      String userId) async {
+  static Future<List<Event>> getSavedEvents(String userEmail) async {
     final QuerySnapshot querySnapshot = await firestore
         .collection('savedEvents')
-        .where('userID', isEqualTo: userId)
+        .where('userEmail', isEqualTo: userEmail)
         .get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
-    return docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    List<String> saved = docs.map<String>((doc) {
+      final item = doc.data() as Map<String, dynamic>;
+      return item['eventName'];
+    }).toList();
+
+    final events = await getAvailableEvents();
+    return events.where((event) => saved.contains(event.eventName)).toList();
   }
 }
