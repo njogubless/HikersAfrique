@@ -74,17 +74,32 @@ class PostScreenNavBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(color: Colors.black26, blurRadius: 4.0)
-                            ]),
-                        child: const Icon(
-                          Icons.bookmark_outline,
-                          size: 25.0,
+                      InkWell(
+                        onTap: () async {
+                          Database.saveSavedEvent(
+                                  user!.clientEmail, event.eventName)
+                              .then((_) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              backgroundColor: Colors.greenAccent,
+                              content: Text(
+                                  'Event saved!\nIt will appear on your home page'),
+                            ));
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26, blurRadius: 4.0)
+                              ]),
+                          child: const Icon(
+                            Icons.bookmark_outline,
+                            size: 25.0,
+                          ),
                         ),
                       ),
                       //Book Now
@@ -95,7 +110,7 @@ class PostScreenNavBar extends StatelessWidget {
                               .then((_) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                                  backgroundColor: Colors.greenAccent,
+                              backgroundColor: Colors.greenAccent,
                               content: Text(
                                   'Event booked!\nWe will contact you for further instructions'),
                             ));
