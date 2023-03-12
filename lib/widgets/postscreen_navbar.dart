@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/event.dart';
 import 'package:provider/provider.dart';
 
 class PostScreenNavBar extends StatelessWidget {
-  const PostScreenNavBar({super.key});
+  const PostScreenNavBar({super.key, required this.event});
+
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +24,16 @@ class PostScreenNavBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Consumer(builder: (context, value, child) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Milan,Italy',
-                        style: TextStyle(
+                      Text(
+                        event.eventName,
+                        style: const TextStyle(
                             fontSize: 24.0, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 10.0),
@@ -49,67 +53,15 @@ class PostScreenNavBar extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 10.0),
-                const Text(
-                  'Milan, Italian Milano, city, capital of Milano province (provincia) and of the region (regione) of Lombardy (Lombardia), northern Italy. It is the leading financial centre and the most prosperous manufacturing and commercial city of Italy',
-                  style: TextStyle(
+                Text(
+                  'Location: ${event.eventLocation}\nDate: ${event.eventDate}\nTime: ${event.eventTime}\n\nCost: Ksh. ${event.eventCost}',
+                  style: const TextStyle(
                     fontSize: 18.0,
                   ),
                   textAlign: TextAlign.justify,
                 ),
                 const SizedBox(
                   height: 20.0,
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5.0),
-                      child: Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            'images/city3.jpg',
-                            fit: BoxFit.cover,
-                            height: 90.0,
-                            width: 120.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5.0),
-                      child: Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            'images/city2.jpg',
-                            fit: BoxFit.cover,
-                            height: 90.0,
-                            width: 120.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5.0),
-                      child: Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            'images/city4.jpg',
-                            fit: BoxFit.cover,
-                            height: 90.0,
-                            width: 100.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -133,15 +85,12 @@ class PostScreenNavBar extends StatelessWidget {
                         ),
                       ),
                       //Book Now
-                      Container(
-                        // margin: const EdgeInsets.only(bottom: 10.0),
-                        padding: const EdgeInsets.all(15.0),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.white, blurRadius: 4.0)
-                          ],
+                      ElevatedButton(
+                        onPressed: () async {
+                          
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
                         ),
                         child: const Text(
                           'Book Now',
