@@ -40,11 +40,11 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const PostScreen(),
-                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const PostScreen(),
+                              //     ));
                             },
                             child: Container(
                               height: 160.0,
@@ -172,8 +172,12 @@ class EventItem extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const PostScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PostScreen(
+                            event: event,
+                          )));
             },
             child: Container(
               height: 200.0,
