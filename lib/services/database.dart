@@ -49,36 +49,3 @@ Future<List<Map<String, dynamic>>> getSavedEvents(String userId) async {
   final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
   return docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
 }
-
-// Example usage
-void main() async {
-  // Retrieve available events
-  final List<Map<String, dynamic>> availableEvents = await getAvailableEvents();
-  print('Available events:');
-  availableEvents.forEach((event) {
-    print(
-        '- ${event['eventName']} (${event['eventDate']}, ${event['eventTime']})');
-  });
-
-  // Save a booked event for a user
-  await saveBookedEvent('userID_1', 'eventID_1');
-
-  // Retrieve a user's booked events
-  final List<Map<String, dynamic>> bookedEvents =
-      await getBookedEvents('userID_1');
-  print('Booked events:');
-  bookedEvents.forEach((event) {
-    print('- ${event['eventID']} (${event['bookingDate']})');
-  });
-
-  // Save a saved event for a user
-  await saveSavedEvent('userID_1', 'eventID_2');
-
-  // Retrieve a user's saved events
-  final List<Map<String, dynamic>> savedEvents =
-      await getSavedEvents('userID_1');
-  print('Saved events:');
-  savedEvents.forEach((event) {
-    print('- ${event['eventID']}');
-  });
-}
