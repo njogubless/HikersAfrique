@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/widgets/postscreen_appbar.dart';
 import 'package:hikersafrique/widgets/postscreen_navbar.dart';
 
 class PostScreen extends StatelessWidget {
-  const PostScreen({super.key});
+  const PostScreen({super.key, required this.event});
+
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                'images/milan2.jpg',
-              ),
-              fit: BoxFit.fill,
-              opacity: 0.8),
+    return Stack(
+      children: [
+        Image.network(
+          event.eventImageUrl,
+          fit: BoxFit.fitWidth,
         ),
-        child: const Scaffold(
+        Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: PreferredSize(
+          appBar: const PreferredSize(
             preferredSize: Size.fromHeight(90.0),
             child: PostScreenAppBar(),
           ),
-          bottomNavigationBar: PostScreenNavBar(),
-        ));
+          bottomNavigationBar: PostScreenNavBar(
+            event: event,
+          ),
+        )
+      ],
+    );
   }
 }
