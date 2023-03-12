@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 
 class PostScreenNavBar extends StatelessWidget {
@@ -9,6 +11,7 @@ class PostScreenNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Client?>(context);
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       padding: const EdgeInsets.only(top: 20.0, right: 20.0, left: 20.0),
@@ -87,7 +90,16 @@ class PostScreenNavBar extends StatelessWidget {
                       //Book Now
                       ElevatedButton(
                         onPressed: () async {
-
+                          Database.saveBookedEvent(
+                                  user!.clientEmail, event.eventName)
+                              .then((_) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                  backgroundColor: Colors.greenAccent,
+                              content: Text(
+                                  'Event booked!\nWe will contact you for further instructions'),
+                            ));
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
