@@ -13,9 +13,14 @@ import 'package:hikersafrique/widgets/home_appbar.dart';
 import 'package:hikersafrique/widgets/home_bottombar.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,81 +30,85 @@ class HomeScreen extends StatelessWidget {
       ),
       bottomNavigationBar: const CustomBottomNavBar(),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 200.0,
-                      child: FutureBuilder<List<Event>>(
-                          future: Database.getSavedEvents(
-                              Provider.of<AuthNotifier>(context)
-                                  .user!
-                                  .clientEmail),
-                          initialData: const [],
-                          builder: (context, snapshot) {
-                            return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemBuilder: (context, int index) {
-                                return SavedEvent(
-                                  event: snapshot.data![index],
-                                );
-                              },
-                            );
-                          }),
+        child: RefreshIndicator(
+          onRefresh: () => Future(() => setState(() {})),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 200.0,
+                        child: FutureBuilder<List<Event>>(
+                            future: Database.getSavedEvents(
+                                Provider.of<AuthNotifier>(context)
+                                    .user!
+                                    .clientEmail),
+                            initialData: const [],
+                            builder: (context, snapshot) {
+                              return ListView.builder(
+                                padding: const EdgeInsets.only(right: 20),
+                                itemCount: snapshot.data!.length,
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemBuilder: (context, int index) {
+                                  return SavedEvent(
+                                    event: snapshot.data![index],
+                                  );
+                                },
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                // Category of best places,most visited etc
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: const [
+                        // BestPlaces Container
+                        BestPlacesContainer(),
+                        // Most Visited Container
+                        MostVisitedContainer(),
+                        //Favourites Container
+                        FavouriteContainer(),
+                        // New Added Container
+                        NewAddedContainer(),
+                        // Hotels Container
+                        HotelsContainer(),
+                        // Restaurants Container
+                        RestaurantContainer(),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              // Category of best places,most visited etc
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: const [
-                      // BestPlaces Container
-                      BestPlacesContainer(),
-                      // Most Visited Container
-                      MostVisitedContainer(),
-                      //Favourites Container
-                      FavouriteContainer(),
-                      // New Added Container
-                      NewAddedContainer(),
-                      // Hotels Container
-                      HotelsContainer(),
-                      // Restaurants Container
-                      RestaurantContainer(),
-                    ],
-                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              FutureBuilder<List<Event>>(
-                  future: Database.getAvailableEvents(),
-                  initialData: const [],
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, index) {
-                        return EventItem(
-                          event: snapshot.data![index],
-                        );
-                      },
-                    );
-                  }),
-            ],
+                const SizedBox(
+                  height: 10.0,
+                ),
+                FutureBuilder<List<Event>>(
+                    future: Database.getAvailableEvents(),
+                    initialData: const [],
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, index) {
+                          return EventItem(
+                            event: snapshot.data![index],
+                          );
+                        },
+                      );
+                    }),
+              ],
+            ),
           ),
         ),
       ),
