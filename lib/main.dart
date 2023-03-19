@@ -5,9 +5,9 @@ import 'package:hikersafrique/firebase_options.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
 import 'package:hikersafrique/services/auth.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hikersafrique/components/city_names.dart';
 import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
 
@@ -37,10 +37,10 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CityNames(),
+      create: (context) => AuthNotifier(),
       child: StreamProvider<Client?>.value(
         initialData: null,
-        value: AuthService().user,
+        value: AuthService().auth,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'HikersAfrique App',
