@@ -11,9 +11,10 @@ class AuthService {
     return user != null
         ? Client(
             uid: user.uid,
-            clientName: user.displayName ?? 'User Name',
+            clientName: '',
             clientEmail: user.email!,
             verified: signUp ? false : true,
+            role: '',
           )
         : null;
   }
@@ -27,14 +28,21 @@ class AuthService {
 
 //register with email & password
   Future<Client?> registerWithEmailAndPassword(
-      String name, String email, String password) async {
+      String name, String email, String password, String role) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
       // Saved registered user data
-      Database.saveClientData(_userFromFirebaseUser(user, true)!);
-      return _userFromFirebaseUser(user, true);
+      final client = Client(
+        uid: user.uid,
+        clientName: name,
+        clientEmail: user.email!,
+        verified: false,
+        role: role,
+      );
+      Database.saveClientData(client);
+      return client;
     } catch (e) {
       return null;
     }
@@ -44,10 +52,8 @@ class AuthService {
   Future<Client?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User user = result.user!;
-      return _userFromFirebaseUser(user, false);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return await Database.getClientData(email);
     } catch (e) {
       return null;
     }

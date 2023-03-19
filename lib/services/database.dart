@@ -12,6 +12,19 @@ class Database {
     await docRef.set(client.toJson());
   }
 
+  // Save registered client data
+  static Future<Client> getClientData(String email) async {
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('clients')
+        .where('clientEmail', isEqualTo: email)
+        .get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs
+        .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
+        .toList()
+        .first;
+  }
+
 // Retrieve available events
   static Future<List<Event>> getAvailableEvents() async {
     final QuerySnapshot querySnapshot =
