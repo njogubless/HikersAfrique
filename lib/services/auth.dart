@@ -19,8 +19,8 @@ class AuthService {
         : null;
   }
 
-// User stream to listen to auth changes
-  Stream<Client?> get user {
+  // UserAuth stream to listen to auth changes
+  Stream<Client?> get auth {
     return _auth
         .authStateChanges()
         .map((user) => _userFromFirebaseUser(user, false));
