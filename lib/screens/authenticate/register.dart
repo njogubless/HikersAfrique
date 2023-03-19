@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hikersafrique/constant.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/services/auth.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:provider/provider.dart';
 
 class RegisterClient extends StatefulWidget {
   // Accepting the toggle view function
@@ -25,6 +30,7 @@ class _RegisterClientState extends State<RegisterClient> {
   String name = '';
   String email = '';
   String password = '';
+  bool isAdmin = false;
 
   // Upon an attempt to register
   String error = '';
@@ -134,6 +140,22 @@ class _RegisterClientState extends State<RegisterClient> {
                             },
                             obscureText: true,
                           ),
+                          const SizedBox(height: 20.0),
+                          CheckboxListTile(
+                            title: const Text(
+                              'I am an admin',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: darkGrey,
+                              ),
+                            ),
+                            value: isAdmin,
+                            onChanged: (val) {
+                              setState(() {
+                                isAdmin = val!;
+                              });
+                            },
+                          ),
                           const SizedBox(height: 45.0),
                           SizedBox(
                             height: 40.0,
@@ -145,9 +167,13 @@ class _RegisterClientState extends State<RegisterClient> {
                                   });
 
                                   // AuthService method to register user when validation is successful
-                                  dynamic result =
+                                  Client? result =
                                       await _auth.registerWithEmailAndPassword(
-                                          name, email, password);
+                                    name,
+                                    email,
+                                    password,
+                                    isAdmin ? 'admin' : 'client',
+                                  );
 
                                   if (result == null) {
                                     setState(() {
@@ -155,6 +181,9 @@ class _RegisterClientState extends State<RegisterClient> {
                                       error =
                                           'Credentials may have been used before. Try again';
                                     });
+                                  } else {
+                                    Provider.of<AuthNotifier>(context)
+                                        .setUser(result);
                                   }
 
                                   // Else, the Wrapper gets a new user and shows the Home Page
