@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:provider/provider.dart';
 import 'package:hikersafrique/items/best_places.dart';
 import 'package:hikersafrique/items/favourites.dart';
 import 'package:hikersafrique/items/hotels.dart';
@@ -11,7 +10,6 @@ import 'package:hikersafrique/items/restaurants.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
 import 'package:hikersafrique/widgets/home_bottombar.dart';
-import 'package:hikersafrique/components/city_names.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -76,23 +74,19 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   const Spacer(),
                                   // City Name
-                                  Consumer<CityNames>(
-                                    builder: (context, value, child) {
-                                      return Container(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20.0),
-                                          child: Text(
-                                            value.cityNames[index],
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 18.0),
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 20.0),
+                                      child: Text(
+                                        'Hike',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18.0),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
