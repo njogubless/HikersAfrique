@@ -1,9 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hikersafrique/constant.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/services/auth.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   // Accepting the toggle view function
@@ -129,7 +132,7 @@ class _SignInState extends State<SignIn> {
                                     loading = true;
                                   });
                                   // AuthService method to sign in user when validation is successful
-                                  dynamic result =
+                                  Client? result =
                                       await _auth.signInWithEmailAndPassword(
                                           email, password);
 
@@ -137,6 +140,9 @@ class _SignInState extends State<SignIn> {
                                     loading = false;
                                     setState(() => error =
                                         'Invalid login, please try again');
+                                  } else {
+                                    Provider.of<AuthNotifier>(context)
+                                        .setUser(result);
                                   }
 
                                   // Else, the Wrapper gets a new user and shows the Home Page
