@@ -180,35 +180,33 @@ class EventItem extends StatelessWidget {
                           )));
             },
             child: Container(
-              height: 200.0,
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.black26,
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: Image.network(
                 event.eventImageUrl,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Consumer<CityNames>(builder: (context, value, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    event.eventName,
-                    style: const TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w500),
-                  ),
-                  const Icon(
-                    Icons.more_vert,
-                    size: 30.0,
-                  ),
-                ],
-              );
-            }),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  event.eventName,
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.w500),
+                ),
+                const Icon(
+                  Icons.more_vert,
+                  size: 30.0,
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 5.0,
