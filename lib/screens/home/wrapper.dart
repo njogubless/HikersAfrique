@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/authenticate/authenticate.dart';
-import 'package:hikersafrique/screens/home/home_screen.dart';
+import 'package:hikersafrique/screens/home/client_admin_redirect.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
@@ -18,7 +20,12 @@ class Wrapper extends StatelessWidget {
     if (userAuth == null) {
       return const Authenticate();
     } else {
-      return const HomeScreen();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        Provider.of<AuthNotifier>(context, listen: false).setUser(
+          await Database.getClientData(userAuth.clientEmail),
+        );
+      });
+      return const ClientAdminRedirect();
     }
   }
 }
