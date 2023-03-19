@@ -141,7 +141,8 @@ class _SignInState extends State<SignIn> {
                                     setState(() => error =
                                         'Invalid login, please try again');
                                   } else {
-                                    Provider.of<AuthNotifier>(context)
+                                    Provider.of<AuthNotifier>(context,
+                                            listen: false)
                                         .setUser(result);
                                   }
 
