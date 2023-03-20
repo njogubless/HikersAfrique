@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/models/client.dart';
+import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,7 @@ class PostScreenNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Client?>(context);
+    final user = Provider.of<AuthNotifier>(context).user;
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       padding: const EdgeInsets.only(top: 20.0, right: 20.0, left: 20.0),
@@ -115,6 +116,13 @@ class PostScreenNavBar extends StatelessWidget {
                                   'Event booked!\nWe will contact you for further instructions'),
                             ));
                           });
+                          Misc.getReceipt(event, user).then((_) =>
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                backgroundColor: Colors.greenAccent,
+                                content: Text(
+                                    'Find your receipt in your Downloads!'),
+                              )));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
