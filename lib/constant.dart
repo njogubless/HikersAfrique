@@ -1,6 +1,13 @@
 // Colours
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hikersafrique/models/client.dart';
+import 'package:hikersafrique/models/event.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 const darkGrey = Color.fromARGB(255, 96, 99, 103);
 const lightGrey = Color.fromARGB(255, 205, 206, 210);
@@ -27,5 +34,38 @@ class Loading extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Misc {
+  static Future<void> getReceipt(Event event, Client client) async {
+    final pdf = pw.Document();
+
+    final eventImage = await networkImage(event.eventImageUrl);
+
+    final fontStyle = pw.TextStyle(
+        color: PdfColors.blueAccent,
+        fontSize: 30,
+        fontBold: pw.Font.timesBold());
+
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Image(eventImage),
+              pw.SizedBox(height: 50),
+              pw.Text("Name: ${client.clientName}", style: fontStyle),
+              pw.Text("Event: ${event.eventName}", style: fontStyle),
+              pw.Text("Amount paid: Ksh.${event.eventCost}", style: fontStyle),
+              pw.Text("Date: ${event.eventDate}", style: fontStyle),
+            ],
+          ); // Center
+        }));
+
+    final file = File(
+        "/storage/emulated/0/Download/${event.eventName.toLowerCase().replaceAll(' ', '_')}_receipt.pdf");
+    await file.writeAsBytes(await pdf.save());
   }
 }
