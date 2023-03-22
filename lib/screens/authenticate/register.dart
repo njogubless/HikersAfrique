@@ -13,7 +13,7 @@ enum Role {
   client,
   eventManager,
   financeManager,
-  guide,
+  admin,
 }
 
 class RegisterClient extends StatefulWidget {
@@ -164,8 +164,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                 child: Text('Finance manager'),
                               ),
                               DropdownMenuItem(
-                                value: Role.guide,
-                                child: Text('Guide'),
+                                value: Role.admin,
+                                child: Text('Admin'),
                               ),
                             ],
                             onChanged: (item) {
@@ -180,8 +180,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                   case Role.financeManager:
                                     role = 'financeManager';
                                     break;
-                                  case Role.guide:
-                                    role = 'guide';
+                                  case Role.admin:
+                                    role = 'admin';
                                     break;
                                 }
                               });
