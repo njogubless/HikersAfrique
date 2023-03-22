@@ -25,7 +25,7 @@ class Database {
         .first;
   }
 
-// Retrieve available events
+  // Retrieve available events
   static Future<List<Event>> getAvailableEvents() async {
     final QuerySnapshot querySnapshot =
         await firestore.collection('events').get();
@@ -35,7 +35,7 @@ class Database {
         .toList();
   }
 
-// Save a booked event for a user
+  // Save a booked event for a user
   static Future<void> saveBookedEvent(
       String userEmail, String eventName) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();
@@ -46,7 +46,7 @@ class Database {
     });
   }
 
-// Retrieve a user's booked events
+  // Retrieve a user's booked events
   static Future<List<Map<String, dynamic>>> getBookedEvents(
       String userId) async {
     final QuerySnapshot querySnapshot = await firestore
@@ -57,7 +57,7 @@ class Database {
     return docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
-// Save a saved event for a user
+  // Save a saved event for a user
   static Future<void> saveSavedEvent(String userEmail, String eventName) async {
     final DocumentReference docRef = firestore.collection('savedEvents').doc();
     await docRef.set({
@@ -66,7 +66,7 @@ class Database {
     });
   }
 
-// Retrieve a user's saved events
+  // Retrieve a user's saved events
   static Future<List<Event>> getSavedEvents(String userEmail) async {
     final QuerySnapshot querySnapshot = await firestore
         .collection('savedEvents')
@@ -86,5 +86,17 @@ class Database {
   static Future<void> createEvent(Event event) async {
     final DocumentReference docRef = firestore.collection('events').doc();
     await docRef.set(event.toJson());
+  }
+
+  // Edit event
+  static Future<void> editEvent(Event event, Event newEvent) async {
+    final doc = (await firestore
+            .collection('events')
+            .where('eventName', isEqualTo: event.eventName)
+            .where('eventImageUrl', isEqualTo: event.eventImageUrl)
+            .get())
+        .docs
+        .first;
+    await doc.reference.set(newEvent.toJson());
   }
 }
