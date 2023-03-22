@@ -81,4 +81,10 @@ class Database {
     final events = await getAvailableEvents();
     return events.where((event) => saved.contains(event.eventName)).toList();
   }
+
+  // Create event
+  static Future<void> createEvent(Event event) async {
+    final DocumentReference docRef = firestore.collection('events').doc();
+    await docRef.set(event.toJson());
+  }
 }
