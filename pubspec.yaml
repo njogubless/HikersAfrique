@@ -21,6 +21,7 @@ dependencies:
   firebase_core: ^2.7.0
   pdf: ^3.9.0
   printing: ^5.10.1
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
