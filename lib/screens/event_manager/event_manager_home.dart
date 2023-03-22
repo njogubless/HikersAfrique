@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/event_manager/add_event.dart';
+import 'package:hikersafrique/screens/event_manager/edit_event.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/screens/post_screen.dart';
 
 class EventManagerHome extends StatefulWidget {
   const EventManagerHome({super.key});
@@ -53,6 +53,7 @@ class _EventManagerHomeState extends State<EventManagerHome> {
                         itemBuilder: (BuildContext context, index) {
                           return EventItem(
                             event: snapshot.data![index],
+                            refresh: () => setState(() {}),
                           );
                         },
                       );
@@ -70,26 +71,28 @@ class EventItem extends StatelessWidget {
   const EventItem({
     super.key,
     required this.event,
+    required this.refresh,
   });
 
   final Event event;
+  final VoidCallback refresh;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PostScreen(
-                            event: event,
-                          )));
-            },
-            child: Container(
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditEvent(
+                      event: event,
+                    ))).then((_) => refresh);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.black26,
@@ -100,41 +103,41 @@ class EventItem extends StatelessWidget {
                 fit: BoxFit.fitWidth,
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  event.eventName,
-                  style: const TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.w500),
-                ),
-                const Icon(
-                  Icons.more_vert,
-                  size: 30.0,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 5.0,
-          ),
-          Row(
-            children: const [
-              Icon(
-                Icons.star,
-                color: Colors.amber,
-                size: 20.0,
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    event.eventName,
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.w500),
+                  ),
+                  const Icon(
+                    Icons.edit,
+                    size: 30.0,
+                  ),
+                ],
               ),
-              Text(
-                '4.5',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              )
-            ],
-          )
-        ],
+            ),
+            const SizedBox(
+              height: 5.0,
+            ),
+            Row(
+              children: const [
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                  size: 20.0,
+                ),
+                Text(
+                  '4.5',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
