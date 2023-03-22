@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:uuid/uuid.dart';
 
 class AddEvents extends StatefulWidget {
   const AddEvents({super.key});
@@ -77,7 +78,8 @@ class _AddEventsState extends State<AddEvents> {
                         decoration: const InputDecoration(
                             labelText: 'EVENT TIME',
                             labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.grey),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.blueAccent))),
@@ -88,7 +90,8 @@ class _AddEventsState extends State<AddEvents> {
                         decoration: const InputDecoration(
                             labelText: 'EVENT COST',
                             labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.grey),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.blueAccent))),
@@ -99,7 +102,8 @@ class _AddEventsState extends State<AddEvents> {
                         decoration: const InputDecoration(
                             labelText: 'EVENT LOCATION',
                             labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.grey),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.blueAccent))),
@@ -110,7 +114,8 @@ class _AddEventsState extends State<AddEvents> {
                         decoration: const InputDecoration(
                             labelText: 'EVENT IMAGE URL',
                             labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.grey),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.blueAccent))),
@@ -120,6 +125,7 @@ class _AddEventsState extends State<AddEvents> {
                         onTap: () async {
                           await Database.createEvent(
                             Event(
+                              eventID: const Uuid().v4(),
                               eventCost: int.parse(_eventCostController.text),
                               eventDate: _eventDateController.text,
                               eventImageUrl: _eventImageUrlController.text,
