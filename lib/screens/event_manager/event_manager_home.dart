@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/event_manager/add_event.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
-import 'package:hikersafrique/widgets/home_bottombar.dart';
 
 class EventManagerHome extends StatelessWidget {
   const EventManagerHome({super.key});
@@ -15,7 +15,16 @@ class EventManagerHome extends StatelessWidget {
         preferredSize: Size.fromHeight(90.0),
         child: CustomHomeAppBar(),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueGrey,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddEvents(),
+            )),
+        child: const Icon(Icons.add),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
