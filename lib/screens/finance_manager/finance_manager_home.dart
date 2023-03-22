@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/screens/post_screen.dart';
-import 'package:hikersafrique/widgets/home_appbar.dart';
-import 'package:hikersafrique/widgets/home_bottombar.dart';
 
 class FinanceManagerHome extends StatelessWidget {
   const FinanceManagerHome({super.key});
@@ -13,19 +11,30 @@ class FinanceManagerHome extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
-        child: CustomHomeAppBar(),
+        child: FinanceManagerAppBar(),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15),
           child: Column(
             children: [
               const SizedBox(
                 height: 20.0,
               ),
-              const SizedBox(
-                height: 10.0,
+              const TotalRevenueSection(),
+              const SizedBox(height: 20.0),
+              Row(
+                children: const [
+                  Text(
+                    'Revenue from events',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 20.0),
               FutureBuilder<List<Event>>(
                   future: Database.getAvailableEvents(),
                   initialData: const [],
@@ -59,65 +68,204 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PostScreen(
-                            event: event,
-                          )));
-            },
+    return FutureBuilder<int>(
+        future: Database.getNumberBooked(event.eventID),
+        initialData: 0,
+        builder: (context, snapshot) {
+          final numberBooked = snapshot.data!;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
             child: Container(
+              height: 130,
               width: double.infinity,
+              padding: const EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(12.0),
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Image.network(
-                event.eventImageUrl,
-                fit: BoxFit.fitWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            event.eventName,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            'Unit amount(Ksh): ${event.eventCost}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            'Clients booked: $numberBooked',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Ksh. ${event.eventCost * numberBooked}',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          );
+        });
+  }
+}
+
+class TotalRevenueSection extends StatelessWidget {
+  const TotalRevenueSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Container(
+        height: 130,
+        width: double.infinity,
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
               children: [
-                Text(
-                  event.eventName,
-                  style: const TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.w500),
-                ),
-                const Icon(
-                  Icons.more_vert,
-                  size: 30.0,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total Revenue',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                      ),
+                    ),
+                    FutureBuilder<int>(
+                        future: Database.getNumberOfEvents(),
+                        initialData: 0,
+                        builder: (context, snapshot) {
+                          final no = snapshot.data!;
+                          return Text(
+                            'No. of events: $no',
+                            style: const TextStyle(color: Colors.white),
+                          );
+                        }),
+                  ],
                 ),
               ],
             ),
-          ),
-          const SizedBox(
-            height: 5.0,
-          ),
-          Row(
-            children: const [
-              Icon(
-                Icons.star,
-                color: Colors.amber,
-                size: 20.0,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FutureBuilder<int>(
+                    future: Database.getTotalRevenue(),
+                    initialData: 0,
+                    builder: (context, snapshot) {
+                      final total = snapshot.data!;
+                      return Text(
+                        'Ksh. $total',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 20),
+                      );
+                    }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FinanceManagerAppBar extends StatelessWidget {
+  const FinanceManagerAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthService auth = AuthService();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Sort
+            InkWell(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: const Icon(Icons.sort_rounded, size: 28.0),
               ),
-              Text(
-                '4.5',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              )
-            ],
-          )
-        ],
+            ),
+            // Location and City
+            Row(
+              children: const [
+                // Location on icon
+                Icon(
+                  Icons.supervised_user_circle_rounded,
+                  color: Color(0xFFF65959),
+                ),
+                // City Text
+                Text(
+                  'Finance Manager',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            // Search icon
+            DropdownButton<int>(
+              icon: const Icon(Icons.more_vert),
+              underline: const SizedBox.shrink(),
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontFamily: 'AvenirNext',
+                    ),
+                  ),
+                ),
+              ],
+              onChanged: (selection) {
+                auth.signOut();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
