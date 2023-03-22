@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/admin/admin_home.dart';
+import 'package:hikersafrique/screens/event_manager/event_manager_home.dart';
+import 'package:hikersafrique/screens/finance_manager/finance_manager_home.dart';
 import 'package:hikersafrique/screens/home/home_screen.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,14 @@ class ClientAdminRedirect extends StatelessWidget {
       } else {
         if (user.role == 'client') {
           return const HomeScreen();
-        } else {
+        } else if (user.role == 'eventManager') {
+          return const EventManagerHome();
+        } else if (user.role == 'financeManager') {
+          return const FinanceManagerHome();
+        } else if (user.role == 'admin') {
           return const AdminHome();
+        } else {
+          return const HomeScreen();
         }
       }
     } catch (e) {
