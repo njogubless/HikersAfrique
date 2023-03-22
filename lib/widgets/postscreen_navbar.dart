@@ -78,7 +78,7 @@ class PostScreenNavBar extends StatelessWidget {
                       InkWell(
                         onTap: () async {
                           Database.saveSavedEvent(
-                                  user!.clientEmail, event.eventName)
+                                  user!.clientEmail, event.eventID)
                               .then((_) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
@@ -107,7 +107,7 @@ class PostScreenNavBar extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           Database.saveBookedEvent(
-                                  user!.clientEmail, event.eventName)
+                                  user!.clientEmail, event.eventID)
                               .then((_) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
