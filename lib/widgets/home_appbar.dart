@@ -40,7 +40,7 @@ class CustomHomeAppBar extends StatelessWidget {
                 ),
                 // City Text
                 Text(
-                  'Kenya,Eldoret',
+                  'Kenya, Eldoret',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
                 )
               ],
