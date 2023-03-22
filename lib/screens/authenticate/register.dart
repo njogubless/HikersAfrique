@@ -9,6 +9,13 @@ import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
+enum Role {
+  client,
+  eventManager,
+  financeManager,
+  guide,
+}
+
 class RegisterClient extends StatefulWidget {
   // Accepting the toggle view function
   final Function toggleView;
@@ -30,7 +37,7 @@ class _RegisterClientState extends State<RegisterClient> {
   String name = '';
   String email = '';
   String password = '';
-  bool isAdmin = false;
+  String role = 'client';
 
   // Upon an attempt to register
   String error = '';
@@ -141,18 +148,42 @@ class _RegisterClientState extends State<RegisterClient> {
                             obscureText: true,
                           ),
                           const SizedBox(height: 20.0),
-                          CheckboxListTile(
-                            title: const Text(
-                              'I am an admin',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: darkGrey,
+                          DropdownButtonFormField<Role>(
+                            hint: const Text('Select role'),
+                            items: const [
+                              DropdownMenuItem(
+                                value: Role.client,
+                                child: Text('Client'),
                               ),
-                            ),
-                            value: isAdmin,
-                            onChanged: (val) {
+                              DropdownMenuItem(
+                                value: Role.eventManager,
+                                child: Text('Event manager'),
+                              ),
+                              DropdownMenuItem(
+                                value: Role.financeManager,
+                                child: Text('Finance manager'),
+                              ),
+                              DropdownMenuItem(
+                                value: Role.guide,
+                                child: Text('Guide'),
+                              ),
+                            ],
+                            onChanged: (item) {
                               setState(() {
-                                isAdmin = val!;
+                                switch (item!) {
+                                  case Role.client:
+                                    role = 'client';
+                                    break;
+                                  case Role.eventManager:
+                                    role = 'eventManager';
+                                    break;
+                                  case Role.financeManager:
+                                    role = 'financeManager';
+                                    break;
+                                  case Role.guide:
+                                    role = 'guide';
+                                    break;
+                                }
                               });
                             },
                           ),
@@ -172,7 +203,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                     name,
                                     email,
                                     password,
-                                    isAdmin ? 'admin' : 'client',
+                                    role,
                                   );
 
                                   if (result == null) {
