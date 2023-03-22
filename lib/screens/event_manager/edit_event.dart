@@ -151,6 +151,7 @@ class _EditEventState extends State<EditEvent> {
                             await Database.editEvent(
                               widget.event,
                               Event(
+                                eventID: widget.event.eventID,
                                 eventCost: int.parse(_eventCostController.text),
                                 eventDate: _eventDateController.text,
                                 eventImageUrl: _eventImageUrlController.text,
