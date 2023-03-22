@@ -37,11 +37,11 @@ class Database {
 
   // Save a booked event for a user
   static Future<void> saveBookedEvent(
-      String userEmail, String eventName) async {
+      String userEmail, String eventID) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();
     await docRef.set({
       'userEmail': userEmail,
-      'eventName': eventName,
+      'eventID': eventID,
       'bookingDate': DateTime.now().toIso8601String(),
     });
   }
@@ -58,11 +58,11 @@ class Database {
   }
 
   // Save a saved event for a user
-  static Future<void> saveSavedEvent(String userEmail, String eventName) async {
+  static Future<void> saveSavedEvent(String userEmail, String eventID) async {
     final DocumentReference docRef = firestore.collection('savedEvents').doc();
     await docRef.set({
       'userEmail': userEmail,
-      'eventName': eventName,
+      'eventID': eventID,
     });
   }
 
@@ -75,11 +75,11 @@ class Database {
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     List<String> saved = docs.map<String>((doc) {
       final item = doc.data() as Map<String, dynamic>;
-      return item['eventName'];
+      return item['eventID'];
     }).toList();
 
     final events = await getAvailableEvents();
-    return events.where((event) => saved.contains(event.eventName)).toList();
+    return events.where((event) => saved.contains(event.eventID)).toList();
   }
 
   // Create event
@@ -92,11 +92,39 @@ class Database {
   static Future<void> editEvent(Event event, Event newEvent) async {
     final doc = (await firestore
             .collection('events')
-            .where('eventName', isEqualTo: event.eventName)
-            .where('eventImageUrl', isEqualTo: event.eventImageUrl)
+            .where('eventID', isEqualTo: event.eventID)
             .get())
         .docs
         .first;
     await doc.reference.set(newEvent.toJson());
+  }
+
+  static Future<int> getNumberBooked(String eventID) async {
+    final result = await firestore
+        .collection('bookings')
+        .where('eventID', isEqualTo: eventID)
+        .count()
+        .get();
+    return result.count;
+  }
+
+  static Future<int> getNumberOfEvents() async {
+    final result = await firestore.collection('events').count().get();
+    return result.count;
+  }
+
+  // Retrieve available events
+  static Future<int> getTotalRevenue() async {
+    int total = 0;
+    final QuerySnapshot querySnapshot =
+        await firestore.collection('events').get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    final events = docs
+        .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+    for (final event in events) {
+      total += event.eventCost * await getNumberBooked(event.eventID);
+    }
+    return total;
   }
 }
