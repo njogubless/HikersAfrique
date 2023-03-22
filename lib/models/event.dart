@@ -1,4 +1,5 @@
 class Event {
+  final String eventID;
   final String eventName;
   final String eventDate;
   final String eventTime;
@@ -6,6 +7,7 @@ class Event {
   final String eventLocation;
   final String eventImageUrl;
   const Event({
+    required this.eventID,
     required this.eventName,
     required this.eventDate,
     required this.eventTime,
@@ -16,6 +18,7 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> event) {
     return Event(
+      eventID: event['eventID'],
       eventName: event['eventName'],
       eventDate: event['eventDate'],
       eventTime: event['eventTime'],
@@ -27,6 +30,7 @@ class Event {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'eventID': eventID,
       'eventName': eventName,
       'eventDate': eventDate,
       'eventTime': eventTime,
