@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hikersafrique/firebase_options.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
@@ -27,13 +26,6 @@ class HikersAfriqueApp extends StatefulWidget {
 }
 
 class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
-  // Display config
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
