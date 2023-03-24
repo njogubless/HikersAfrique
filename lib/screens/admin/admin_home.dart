@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/admin/event_management.dart';
 import 'package:hikersafrique/screens/admin/finance_management.dart';
+import 'package:hikersafrique/screens/admin/user_management.dart';
 import 'package:hikersafrique/widgets/admin_bottombar.dart';
 
 class AdminHome extends StatelessWidget {
@@ -20,9 +21,14 @@ class AdminHome extends StatelessWidget {
       body: ValueListenableBuilder<int>(
           valueListenable: pageNotifier,
           builder: (context, page, _) {
-            return page == 0
-                ? const FinanceManagement()
-                : const EventManagement();
+            switch (page) {
+              case 0:
+                return const FinanceManagement();
+              case 1:
+                return const EventManagement();
+              default:
+                return const UserManagement();
+            }
           }),
     );
   }
