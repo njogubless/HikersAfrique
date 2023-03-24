@@ -2,7 +2,12 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class AdminBottomNavBar extends StatefulWidget {
-  const AdminBottomNavBar({super.key});
+  const AdminBottomNavBar({
+    super.key,
+    required this.pageNotifier,
+  });
+
+  final ValueNotifier<int> pageNotifier;
 
   @override
   State<AdminBottomNavBar> createState() => _AdminBottomNavBarState();
@@ -15,6 +20,7 @@ class _AdminBottomNavBarState extends State<AdminBottomNavBar> {
   void onTappedItem(int index) {
     setState(() {
       _selectedIndex = index;
+      widget.pageNotifier.value = _selectedIndex;
     });
   }
 
