@@ -3,13 +3,13 @@ class Client {
   final String clientName;
   final String clientEmail;
   final String role;
-  bool verified;
+  String status;
   Client({
     required this.uid,
     required this.clientName,
     required this.clientEmail,
     required this.role,
-    this.verified = false,
+    this.status = 'Pending',
   });
 
   factory Client.fromJson(Map<String, dynamic> client) {
@@ -17,7 +17,7 @@ class Client {
       uid: client['uid'],
       clientName: client['clientName'],
       clientEmail: client['clientEmail'],
-      verified: client['verified'],
+      status: client['status'],
       role: client['role'],
     );
   }
@@ -27,7 +27,7 @@ class Client {
       'uid': uid,
       'clientName': clientName,
       'clientEmail': clientEmail,
-      'verified': verified,
+      'status': status,
       'role': role,
     };
   }

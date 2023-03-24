@@ -14,7 +14,7 @@ class ClientAdminRedirect extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
     try {
-      if (!user!.verified) {
+      if (user!.status != 'Verified') {
         return PendingApprovalPage(user: user);
       } else {
         if (user.role == 'client') {

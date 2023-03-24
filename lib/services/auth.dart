@@ -13,7 +13,7 @@ class AuthService {
             uid: user.uid,
             clientName: '',
             clientEmail: user.email!,
-            verified: signUp ? false : true,
+            status: signUp ? 'Pending' : 'Verified',
             role: '',
           )
         : null;
@@ -38,7 +38,6 @@ class AuthService {
         uid: user.uid,
         clientName: name,
         clientEmail: user.email!,
-        verified: false,
         role: role,
       );
       Database.saveClientData(client);
