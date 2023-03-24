@@ -25,6 +25,35 @@ class Database {
         .first;
   }
 
+  // Retrieve pending clients
+  static Future<List<Client>> getClients() async {
+    final QuerySnapshot querySnapshot =
+        await firestore.collection('clients').get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs
+        .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+  }
+
+  // Retrieve pending clients
+  static Future<void> verifyser(Client client) async {
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('clients')
+        .where('clientEmail', isEqualTo: client.clientEmail)
+        .get();
+    await querySnapshot.docs.first.reference.update({'status': 'Verified'});
+  }
+
+  // Retrieve pending clients
+  static Future<void> revokeUser(Client client) async {
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('clients')
+        .where('status', isEqualTo: 'Verified')
+        .where('clientEmail', isEqualTo: client.clientEmail)
+        .get();
+    await querySnapshot.docs.first.reference.update({'status': 'Rejected'});
+  }
+
   // Retrieve available events
   static Future<List<Event>> getAvailableEvents() async {
     final QuerySnapshot querySnapshot =
@@ -36,8 +65,7 @@ class Database {
   }
 
   // Save a booked event for a user
-  static Future<void> saveBookedEvent(
-      String userEmail, String eventID) async {
+  static Future<void> saveBookedEvent(String userEmail, String eventID) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();
     await docRef.set({
       'userEmail': userEmail,
