@@ -35,7 +35,7 @@ class Database {
         .toList();
   }
 
-  // Retrieve pending clients
+  // Verify clients
   static Future<void> verifyser(Client client) async {
     final QuerySnapshot querySnapshot = await firestore
         .collection('clients')
