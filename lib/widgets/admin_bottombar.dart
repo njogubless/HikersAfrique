@@ -45,6 +45,11 @@ class _AdminBottomNavBarState extends State<AdminBottomNavBar> {
           size: 30.0,
           color: Colors.blue,
         ),
+        Icon(
+          Icons.supervised_user_circle_outlined,
+          size: 30.0,
+          color: Colors.brown,
+        ),
       ],
     );
   }
