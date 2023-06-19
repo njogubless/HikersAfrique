@@ -123,8 +123,8 @@ class EventItem extends StatelessWidget {
             const SizedBox(
               height: 5.0,
             ),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -173,8 +173,8 @@ class EventManagerAppBar extends StatelessWidget {
               ),
             ),
             // Location and City
-            Row(
-              children: const [
+            const Row(
+              children: [
                 // Location on icon
                 Icon(
                   Icons.supervised_user_circle_rounded,

@@ -41,8 +41,8 @@ class PostScreenNavBar extends StatelessWidget {
                             fontSize: 24.0, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 10.0),
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Icon(
                             Icons.star,
                             color: Colors.amber,

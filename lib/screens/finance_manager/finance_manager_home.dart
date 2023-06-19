@@ -23,8 +23,8 @@ class FinanceManagerHome extends StatelessWidget {
               ),
               const TotalRevenueSection(),
               const SizedBox(height: 20.0),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Text(
                     'Revenue from events',
                     style: TextStyle(
@@ -229,8 +229,8 @@ class FinanceManagerAppBar extends StatelessWidget {
               ),
             ),
             // Location and City
-            Row(
-              children: const [
+            const Row(
+              children: [
                 // Location on icon
                 Icon(
                   Icons.supervised_user_circle_rounded,

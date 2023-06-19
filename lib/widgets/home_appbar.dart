@@ -31,8 +31,8 @@ class CustomHomeAppBar extends StatelessWidget {
               ),
             ),
             // Location and City
-            Row(
-              children: const [
+            const Row(
+              children: [
                 // Location on icon
                 Icon(
                   Icons.location_on,

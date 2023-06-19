@@ -67,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20.0,
                 ),
                 // Category of best places,most visited etc
-                SingleChildScrollView(
+                const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Row(
-                      children: const [
+                      children: [
                         // BestPlaces Container
                         BestPlacesContainer(),
                         // Most Visited Container
@@ -249,8 +249,8 @@ class EventItem extends StatelessWidget {
           const SizedBox(
             height: 5.0,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(
                 Icons.star,
                 color: Colors.amber,
