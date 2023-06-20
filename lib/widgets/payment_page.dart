@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:hikersafrique/widgets/ticket_page.dart';
 import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -55,6 +56,13 @@ class _PaymentPageState extends State<PaymentPage> {
                     content: Text(
                         'Event booked!\nWe will contact you for further instructions'),
                   ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TicketPage(
+                          event: widget.event,
+                        ),
+                      ));
                 });
               },
               title: _paying ? 'Purchasing ticket...' : 'Pay & Book ticket now',
