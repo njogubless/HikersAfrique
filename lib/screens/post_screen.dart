@@ -10,23 +10,26 @@ class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.network(
-          event.eventImageUrl,
-          fit: BoxFit.fitWidth,
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(90.0),
-            child: PostScreenAppBar(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: PostScreenAppBar(),
+      ),
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Center(
+            child: Image.network(
+              event.eventImageUrl,
+              fit: BoxFit.fitWidth,
+            ),
           ),
-          bottomNavigationBar: PostScreenNavBar(
-            event: event,
-          ),
-        )
-      ],
+        ],
+      ),
+      bottomNavigationBar: PostScreenNavBar(
+        event: event,
+      ),
     );
   }
 }
