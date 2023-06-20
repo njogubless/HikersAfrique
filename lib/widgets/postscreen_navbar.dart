@@ -113,14 +113,6 @@ class PostScreenNavBar extends StatelessWidget {
                                   event: event,
                                 ),
                               ));
-
-                          // Misc.getReceipt(event, user).then((_) =>
-                          //     ScaffoldMessenger.of(context)
-                          //         .showSnackBar(const SnackBar(
-                          //       backgroundColor: Colors.greenAccent,
-                          //       content: Text(
-                          //           'Find your receipt in your Downloads!'),
-                          //     )));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
