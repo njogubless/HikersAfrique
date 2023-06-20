@@ -14,7 +14,7 @@ class TicketPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
