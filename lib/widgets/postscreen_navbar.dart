@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:hikersafrique/widgets/payment_page.dart';
 import 'package:provider/provider.dart';
 
 class PostScreenNavBar extends StatelessWidget {
@@ -106,23 +106,21 @@ class PostScreenNavBar extends StatelessWidget {
                       //Book Now
                       ElevatedButton(
                         onPressed: () async {
-                          Database.saveBookedEvent(
-                                  user!.clientEmail, event.eventID)
-                              .then((_) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              backgroundColor: Colors.greenAccent,
-                              content: Text(
-                                  'Event booked!\nWe will contact you for further instructions'),
-                            ));
-                          });
-                          Misc.getReceipt(event, user).then((_) =>
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                backgroundColor: Colors.greenAccent,
-                                content: Text(
-                                    'Find your receipt in your Downloads!'),
-                              )));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaymentPage(
+                                  event: event,
+                                ),
+                              ));
+
+                          // Misc.getReceipt(event, user).then((_) =>
+                          //     ScaffoldMessenger.of(context)
+                          //         .showSnackBar(const SnackBar(
+                          //       backgroundColor: Colors.greenAccent,
+                          //       content: Text(
+                          //           'Find your receipt in your Downloads!'),
+                          //     )));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
