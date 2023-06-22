@@ -3,18 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/home/homepages/events_page.dart';
 import 'package:hikersafrique/screens/home/homepages/favorites.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/items/best_places.dart';
-import 'package:hikersafrique/items/favourites.dart';
-import 'package:hikersafrique/items/hotels.dart';
-import 'package:hikersafrique/items/most_visited.dart';
-import 'package:hikersafrique/items/new_added.dart';
-import 'package:hikersafrique/items/restaurants.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
-import 'package:hikersafrique/widgets/home_bottombar.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
