@@ -4,7 +4,9 @@ import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/home/homepages/events_page.dart';
 import 'package:hikersafrique/screens/home/homepages/favorites.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-    int _selectedIndex = 0;
+  int _selectedIndex = 0;
 
   // Selected item function
   void onTappedItem(int index) {
@@ -24,41 +26,95 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List pages = [
-    EventsPage(),
-    Favorites(),
+    const EventsPage(),
+    const Favorites(),
   ];
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: CustomHomeAppBar(),
       ),
       drawer: Drawer(
-        
+        child: SafeArea(
+          child: Column(
+            children: [
+              Image.asset(
+                'images/milan.jpg',
+                fit: BoxFit.fitWidth,
+                height: 150,
+                width: double.infinity,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientName,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  user.clientEmail,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  user.role,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                  title: const Text(
+                    "Contact us",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {}),
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.grey,
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
-      color: Colors.white,
-      animationCurve: Curves.bounceOut,
-      animationDuration: const Duration(milliseconds: 700),
-      buttonBackgroundColor: Colors.white,
-      backgroundColor: Colors.transparent,
-      onTap: (i)=> onTappedItem(i),
-      index: _selectedIndex,
-      items: const [
-        Icon(
-          Icons.person_outlined,
-          size: 30.0,
-        ),
-        Icon(
-          Icons.favorite_outline,
-          size: 30.0,
-        ),
-
-      ],
-    ),
-      body: pages[ _selectedIndex],
-
+        color: Colors.white,
+        animationCurve: Curves.bounceOut,
+        animationDuration: const Duration(milliseconds: 700),
+        buttonBackgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        onTap: (i) => onTappedItem(i),
+        index: _selectedIndex,
+        items: const [
+          Icon(
+            Icons.home,
+            size: 30.0,
+          ),
+          Icon(
+            Icons.bookmark,
+            size: 30.0,
+          ),
+        ],
+      ),
+      body: pages[_selectedIndex],
     );
   }
 }

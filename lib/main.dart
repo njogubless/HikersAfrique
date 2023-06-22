@@ -38,6 +38,7 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
           title: 'HikersAfrique App',
           theme: ThemeData(
             scaffoldBackgroundColor: kScaffoldBgColor,
+            fontFamily: 'Cera-Pro'
           ),
           routes: {
             '/': (context) => const Wrapper(),
