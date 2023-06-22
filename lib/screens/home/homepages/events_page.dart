@@ -2,14 +2,12 @@ import "package:flutter/material.dart";
 import "package:hikersafrique/items/favourites.dart";
 import "package:hikersafrique/screens/home/home_screen.dart";
 import "package:hikersafrique/services/database.dart";
-import "package:provider/provider.dart";
 import "../../../items/best_places.dart";
 import "../../../items/hotels.dart";
 import "../../../items/most_visited.dart";
 import "../../../items/new_added.dart";
 import "../../../items/restaurants.dart";
 import "../../../models/event.dart";
-import "../../../services/auth_notifier.dart";
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
