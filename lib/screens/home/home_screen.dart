@@ -7,6 +7,7 @@ import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +18,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+
+  Future LaunchUrl(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      print(error);
+    }
+  }
 
   // Selected item function
   void onTappedItem(int index) {
@@ -79,8 +88,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
+                    LaunchUrl("https://www.hikersafrique.com/");
                     // ignore: unused_local_variable
-                    }),
+                  }),
+              ListTile(
+                  title: const Text(
+                    "Feedback",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    // ignore: unused_local_variable
+                  }),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
