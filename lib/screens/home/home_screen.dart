@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/home/homepages/events_page.dart';
 import 'package:hikersafrique/screens/home/homepages/favorites.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
@@ -99,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FeedbackDialog()));
                     // ignore: unused_local_variable
                   }),
               Container(
