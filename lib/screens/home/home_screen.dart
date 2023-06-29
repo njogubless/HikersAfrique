@@ -78,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  onTap: () {}),
+                  onTap: () {
+                    // ignore: unused_local_variable
+                    }),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
