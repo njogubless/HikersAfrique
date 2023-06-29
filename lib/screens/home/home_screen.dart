@@ -20,10 +20,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  Future LaunchUrl(String link) async {
+  Future launchlink(String link) async {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
     } catch (error) {
+      // ignore: avoid_print
       print(error);
     }
   }
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
-                    LaunchUrl("https://www.hikersafrique.com/");
+                    launchlink("https://www.hikersafrique.com/");
                     // ignore: unused_local_variable
                   }),
               ListTile(
