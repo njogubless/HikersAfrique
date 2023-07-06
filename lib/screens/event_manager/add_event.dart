@@ -150,7 +150,7 @@ class _AddEventsState extends State<AddEvents> {
                           height: 40,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.blue,
+                            color: Colors.black,
                             elevation: 7.0,
                             child: const Center(
                               child: Text(
