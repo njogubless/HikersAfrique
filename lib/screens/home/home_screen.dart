@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 title: Text(
                   user.clientName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 title: Text(
                   user.clientEmail,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 title: Text(
                   user.role,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FeedbackDialog()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const FeedbackDialog()));
                     // ignore: unused_local_variable
                   }),
               Container(
