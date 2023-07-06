@@ -101,8 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const FeedbackDialog()));
-                    // ignore: unused_local_variable
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FeedbackDialog()));
                   }),
               Container(
                 height: 100,
