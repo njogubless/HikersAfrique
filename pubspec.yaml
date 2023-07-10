@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <3.3.0'
+  sdk: '>=3.0.5 <3.3.0'
 
 dependencies:
   flutter:
@@ -26,6 +26,10 @@ dependencies:
   file_picker: ^5.3.2
   firebase_storage: ^11.2.4
   pay: ^1.1.1
+  mpesa_flutter_plugin: ^1.6.1
+  dependencies:
+  logger: ^1.1.0
+
 
 dev_dependencies:
   flutter_test:
