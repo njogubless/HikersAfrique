@@ -4,6 +4,7 @@ import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/widgets/ticket_page.dart';
 import 'package:provider/provider.dart';
+import 'package:hikersafrique/components/lipaNaMpesa.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key, required this.event});
@@ -16,6 +17,7 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   bool _paying = false;
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
@@ -39,34 +41,38 @@ class _PaymentPageState extends State<PaymentPage> {
               fit: BoxFit.fitWidth,
             ),
             const SizedBox(height: 50),
-            SecondaryButton(
-              isPrimary: true,
-              onPressed: () {
-                setState(() {
-                  _paying = true;
-                });
-                Database.saveBookedEvent(
-                        user!.clientEmail, widget.event.eventID)
-                    .then((_) {
-                  setState(() {
-                    _paying = false;
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    backgroundColor: Colors.greenAccent,
-                    content: Text(
-                        'Event booked!\nWe will contact you for further instructions'),
-                  ));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TicketPage(
-                          event: widget.event,
-                        ),
-                      ));
-                });
-              },
-              title: _paying ? 'Purchasing ticket...' : 'Pay & Book ticket now',
-            ),
+           ElevatedButton(
+                  onPressed: () {
+                    LipaNaMpesa();
+                  },
+                  child: const Text("Purchase Ticket")),
+            // SecondaryButton(
+            //   isPrimary: true,
+            //   onPressed: () {
+            //     LipaNaMpesa();
+            //     // Database.saveBookedEvent(
+            //     //         user!.clientEmail, widget.event.eventID)
+            //     //     .then((_) {
+            //     //   setState(() {
+            //     //     _paying = false;
+            //     //   });
+            //     //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            //     //     backgroundColor: Colors.greenAccent,
+            //     //     content: Text(
+            //     //         'Event booked!\nWe will contact you for further instructions'),
+            //     //   ));
+            //     //   // Navigator.push(
+            //     //   //     context,
+            //     //   //     MaterialPageRoute(
+            //     //   //       builder: (context) => TicketPage(
+            //     //   //         event: widget.event,
+            //     //   //       ),
+            //     //   //     ));
+            //     // });
+            //   },
+            //   title: 'Pay & Book ticket now'
+            //   // _paying ? 'Purchasing ticket...' : 'Pay & Book ticket now',
+            // ),
             const SizedBox(height: 20),
             SecondaryButton(
               title: 'Cancel',
