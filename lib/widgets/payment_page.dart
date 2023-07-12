@@ -6,6 +6,7 @@ import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/widgets/ticket_page.dart';
 import 'package:provider/provider.dart';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
+import 'package:hikersafrique/components/lipaNaMpesa.dart';
 
 class PaymentPage extends StatefulWidget {const PaymentPage({Key? key, required this.event, {Key? key} }) : super(key: key);
 
@@ -58,6 +59,39 @@ class _PaymentPageState extends State<PaymentPage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+=======
+           ElevatedButton(
+                  onPressed: () {
+                    LipaNaMpesa();
+                  },
+                  child: const Text("Purchase Ticket")),
+            // SecondaryButton(
+            //   isPrimary: true,
+            //   onPressed: () {
+            //     LipaNaMpesa();
+            //     // Database.saveBookedEvent(
+            //     //         user!.clientEmail, widget.event.eventID)
+            //     //     .then((_) {
+            //     //   setState(() {
+            //     //     _paying = false;
+            //     //   });
+            //     //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            //     //     backgroundColor: Colors.greenAccent,
+            //     //     content: Text(
+            //     //         'Event booked!\nWe will contact you for further instructions'),
+            //     //   ));
+            //     //   // Navigator.push(
+            //     //   //     context,
+            //     //   //     MaterialPageRoute(
+            //     //   //       builder: (context) => TicketPage(
+            //     //   //         event: widget.event,
+            //     //   //       ),
+            //     //   //     ));
+            //     // });
+            //   },
+            //   title: 'Pay & Book ticket now'
+            //   // _paying ? 'Purchasing ticket...' : 'Pay & Book ticket now',
+            // ),
             const SizedBox(height: 20),
             SecondaryButton(
               title: 'Cancel',
