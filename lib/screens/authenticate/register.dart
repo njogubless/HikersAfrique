@@ -213,7 +213,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                           'Credentials may have been used before. Try again';
                                     });
                                   } else {
-                                    Provider.of<AuthNotifier>(context)
+                                    Provider.of<AuthNotifier>(context,
+                                            listen: false)
                                         .setUser(result);
                                   }
 

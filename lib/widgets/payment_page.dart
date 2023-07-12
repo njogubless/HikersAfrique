@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/components/lipanampesa.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/widgets/ticket_page.dart';
 import 'package:provider/provider.dart';
+import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 import 'package:hikersafrique/components/lipaNaMpesa.dart';
 
-class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key, required this.event});
+class PaymentPage extends StatefulWidget {const PaymentPage({Key? key, required this.event, {Key? key} }) : super(key: key);
 
   final Event event;
 
@@ -41,6 +42,24 @@ class _PaymentPageState extends State<PaymentPage> {
               fit: BoxFit.fitWidth,
             ),
             const SizedBox(height: 50),
+            RaisedButton(
+              color: Color(0xFF481E4D),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              onPressed: () {
+                LipanaMpesa LipanaMpesa({
+  required String consumerKey,
+  required String consumerSecret,
+  Key? key,
+});
+              },
+              child: Text(
+                "Lipa na Mpesa",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+=======
            ElevatedButton(
                   onPressed: () {
                     LipaNaMpesa();
@@ -89,11 +108,11 @@ class _PaymentPageState extends State<PaymentPage> {
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
+    Key? key,
     required this.title,
     this.isPrimary = false,
     this.onPressed,
-    super.key,
-  });
+  }) : super(key: key);
 
   final VoidCallback? onPressed;
   final String title;

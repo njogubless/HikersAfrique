@@ -38,11 +38,50 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
           title: 'HikersAfrique App',
           theme: ThemeData(
             scaffoldBackgroundColor: kScaffoldBgColor,
+            fontFamily: 'Cera-Pro'
           ),
           routes: {
             '/': (context) => const Wrapper(),
             '/welcome': (context) => const WelcomeScreen(),
           },
+        ),
+      ),
+    );
+  }
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: const Color(0xFF481E4D),
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Mpesa Payment Demo'),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF481E4D),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            onPressed: () {},
+            child: const Text(
+              'Lipa na Mpesa',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
       ),
     );

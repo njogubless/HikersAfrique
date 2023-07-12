@@ -1,17 +1,14 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/items/best_places.dart';
-import 'package:hikersafrique/items/favourites.dart';
-import 'package:hikersafrique/items/hotels.dart';
-import 'package:hikersafrique/items/most_visited.dart';
-import 'package:hikersafrique/items/new_added.dart';
-import 'package:hikersafrique/items/restaurants.dart';
+import 'package:hikersafrique/screens/home/homepages/events_page.dart';
+import 'package:hikersafrique/screens/home/homepages/favorites.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
-import 'package:hikersafrique/widgets/home_bottombar.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,97 +18,131 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  Future launchlink(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      // ignore: avoid_print
+      print(error);
+    }
+  }
+
+  // Selected item function
+  void onTappedItem(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  List pages = [
+    const EventsPage(),
+    const Favorites(),
+  ];
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: CustomHomeAppBar(),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => Future(() => setState(() {})),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 200.0,
-                        child: FutureBuilder<List<Event>>(
-                            future: Database.getSavedEvents(
-                                Provider.of<AuthNotifier>(context)
-                                    .user!
-                                    .clientEmail),
-                            initialData: const [],
-                            builder: (context, snapshot) {
-                              return ListView.builder(
-                                padding: const EdgeInsets.only(right: 20),
-                                itemCount: snapshot.data!.length,
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemBuilder: (context, int index) {
-                                  return SavedEvent(
-                                    event: snapshot.data![index],
-                                  );
-                                },
-                              );
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                // Category of best places,most visited etc
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        // BestPlaces Container
-                        BestPlacesContainer(),
-                        // Most Visited Container
-                        MostVisitedContainer(),
-                        //Favourites Container
-                        FavouriteContainer(),
-                        // New Added Container
-                        NewAddedContainer(),
-                        // Hotels Container
-                        HotelsContainer(),
-                        // Restaurants Container
-                        RestaurantContainer(),
-                      ],
-                    ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Image.asset(
+                'images/milan.jpg',
+                fit: BoxFit.fitWidth,
+                height: 150,
+                width: double.infinity,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientName,
+                  style: const TextStyle(
+                    fontSize: 20,
                   ),
                 ),
-                const SizedBox(
-                  height: 10.0,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientEmail,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
-                FutureBuilder<List<Event>>(
-                    future: Database.getAvailableEvents(),
-                    initialData: const [],
-                    builder: (context, snapshot) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, index) {
-                          return EventItem(
-                            event: snapshot.data![index],
-                          );
-                        },
-                      );
-                    }),
-              ],
-            ),
+              ),
+              ListTile(
+                title: Text(
+                  user.role,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                  title: const Text(
+                    "Contact us",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    launchlink("https://www.hikersafrique.com/");
+                    // ignore: unused_local_variable
+                  }),
+              ListTile(
+                  title: const Text(
+                    "Feedback",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FeedbackDialog()));
+                  }),
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.grey,
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Colors.white,
+        animationCurve: Curves.bounceOut,
+        animationDuration: const Duration(milliseconds: 700),
+        buttonBackgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        onTap: (i) => onTappedItem(i),
+        index: _selectedIndex,
+        items: const [
+          Icon(
+            Icons.home,
+            size: 30.0,
+          ),
+          Icon(
+            Icons.bookmark,
+            size: 30.0,
+          ),
+        ],
+      ),
+      body: pages[_selectedIndex],
     );
   }
 }

@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <3.3.0'
+  sdk: '>=3.0.5 <3.3.0'
 
 dependencies:
   flutter:
@@ -22,8 +22,14 @@ dependencies:
   pdf: ^3.9.0
   printing: ^5.10.4
   uuid: ^3.0.7
+  url_launcher: ^6.1.11
+  file_picker: ^5.3.2
+  firebase_storage: ^11.2.4
+  pay: ^1.1.1
+  mpesa_flutter_plugin: ^1.6.1
+  dependencies:
+  logger: ^1.1.0
   mpesa_flutter_plugin: ^1.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,4 +40,9 @@ flutter:
   assets:
     - images/
 
- 
+  fonts:
+    - family: Cera-Pro
+      fonts:
+        - asset: fonts/Cera-Pro-Bold.otf
+        - asset: fonts/Cera-Pro-Medium.otf
+
