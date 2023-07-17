@@ -59,7 +59,6 @@ class _PaymentPageState extends State<PaymentPage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-=======
            ElevatedButton(
                   onPressed: () {
                     LipaNaMpesa();

@@ -25,14 +25,9 @@ dependencies:
   url_launcher: ^6.1.11
   file_picker: ^5.3.2
   firebase_storage: ^11.2.4
-  pay: ^1.1.1
+  #pay: ^1.1.1
   mpesa_flutter_plugin: ^1.6.1
-  dependencies:
   logger: ^1.1.0
-  mpesa_flutter_plugin: ^1.0.0
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_lints: ^2.0.0
 
 flutter:

@@ -22,8 +22,8 @@ class LipaNaMpesa {
                   host: "mpesa-requestbin.herokuapp.com",
                   path: "/1hhy6391"),
 //This url has been generated from http://mpesa-requestbin.herokuapp.com/?ref=hackernoon.com for test purposes
-              accountReference: "Maureen Josephine Clothline",
-              phoneNumber: "Place your phonenumber here eg..25472.........9",
+              accountReference: " Hikers Afrique",
+              phoneNumber: "0746179799",
               baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
               transactionDesc: "purchase",
               passKey:
