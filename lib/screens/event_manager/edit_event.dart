@@ -39,6 +39,27 @@ class _EditEventState extends State<EditEvent> {
       ..text = widget.event.eventImageUrl;
     super.initState();
   }
+//creating a deleting event button
+  Future<void> deleteEvent() async {
+    setState(() {
+      _loading = true;
+    });
+
+    // Call your delete event method from the database service
+    await Database.deleteEvent(widget.event);
+
+    setState(() {
+      _loading = false;
+    });
+
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Event deleted!'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

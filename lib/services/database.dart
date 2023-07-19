@@ -1,4 +1,8 @@
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 
@@ -111,7 +115,7 @@ class Database {
   }
 
   // Create event
-  static Future<void> createEvent(Event event) async {
+  static Future<void> createEvent(Event event, {required File imageFile, required BuildContext context}) async {
     final DocumentReference docRef = firestore.collection('events').doc();
     await docRef.set(event.toJson());
   }
@@ -140,6 +144,42 @@ class Database {
     final result = await firestore.collection('events').count().get();
     return result.count;
   }
+
+  //deleting an event 
+   static Future<void> deleteEvent(Event event) async {
+    try {
+      // Assuming you have a reference to your database collection
+      // and the events are stored under an 'events' collection
+      final eventRef = firestore.collection('events').doc(event.eventID);
+
+      // Delete the document
+      await eventRef.delete();
+
+      // Delete the event's corresponding bookings
+      final bookingQuerySnapshot = await firestore
+          .collection('bookings')
+          .where('eventID', isEqualTo: event.eventID)
+          .get();
+      final bookingDocs = bookingQuerySnapshot.docs;
+      for (final doc in bookingDocs) {
+        await doc.reference.delete();
+      }
+
+      // Delete the event from savedEvents
+      final savedQuerySnapshot = await firestore
+          .collection('savedEvents')
+          .where('eventID', isEqualTo: event.eventID)
+          .get();
+      final savedDocs = savedQuerySnapshot.docs;
+      for (final doc in savedDocs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      // Handle any errors that occur during the deletion process
+      print('Error deleting event: $e');
+    }
+  }
+
 
   // Retrieve available events
   static Future<int> getTotalRevenue() async {

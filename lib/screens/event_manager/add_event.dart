@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import 'lib/screens/event_manager/upload_widget.dart';
-
 
 class AddEvents extends StatefulWidget {
   const AddEvents({Key? key}) : super(key: key);
@@ -20,6 +21,23 @@ class _AddEventsState extends State<AddEvents> {
   final _eventCostController = TextEditingController();
   final _eventLocationController = TextEditingController();
   final _eventImageUrlController = TextEditingController();
+
+  File? imageFile;
+  String? pickedImageFileName;
+
+  void pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedImage != null) {
+      setState(() {
+        imageFile = File(pickedImage.path);
+        pickedImageFileName = pickedImage.name;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,42 +140,48 @@ class _AddEventsState extends State<AddEvents> {
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
-                        ),
+                       ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.blueAccent),
                         ),
                       ),
                     ),
-                    MyImageUploadWidget(
-                      onImageSelected: createEventWithImage,
+                    Column(
+                      children: [
+                        const SizedBox(height: 45.0),
+                        InkWell(
+                          onTap: () => pickImage(),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.image),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(pickedImageFileName ?? 'No image selected'),
+                        ElevatedButton(
+                          onPressed: () => pickImage(),
+                          child: const Text('Upload Image'),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 45.0),
                     InkWell(
                       onTap: () async {
-                        await MyImageUploadWidget().uploadEvent(context);
-                        await Database.createEvent(
-                          Event(
-                            eventID: const Uuid().v4(),
-                            eventCost: int.parse(_eventCostController.text),
-                            eventDate: _eventDateController.text,
-                            eventImageUrl: _eventImageUrlController.text,
-                            eventLocation: _eventLocationController.text,
-                            eventName: _eventNameController.text,
-                            eventTime: _eventTimeController.text,
-                          ),
-                        );
-                        _eventNameController.clear();
-                        _eventDateController.clear();
-                        _eventTimeController.clear();
-                        _eventCostController.clear();
-                        _eventLocationController.clear();
-                        _eventImageUrlController.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Event created!'),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
+                        if (imageFile != null) {
+                          createEventWithImage(imageFile!);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please pick an image'),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
                       },
                       child: SizedBox(
                         height: 40,
@@ -190,11 +214,12 @@ class _AddEventsState extends State<AddEvents> {
   }
 
   void createEventWithImage(File imageFile) async {
+    final scaff = ScaffoldMessenger.of(context);
     final event = Event(
       eventID: const Uuid().v4(),
       eventCost: int.parse(_eventCostController.text),
       eventDate: _eventDateController.text,
-      eventImageUrl: _eventImageUrlController.text,
+     eventImageUrl: _eventImageUrlController.text,
       eventLocation: _eventLocationController.text,
       eventName: _eventNameController.text,
       eventTime: _eventTimeController.text,
@@ -211,8 +236,8 @@ class _AddEventsState extends State<AddEvents> {
     _eventTimeController.clear();
     _eventCostController.clear();
     _eventLocationController.clear();
-    _eventImageUrlController.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
+    //_eventImageUrlController.clear();
+    scaff.showSnackBar(
       const SnackBar(
         content: Text('Event created!'),
         behavior: SnackBarBehavior.floating,

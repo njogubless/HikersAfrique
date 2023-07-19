@@ -51,6 +51,8 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -71,7 +73,7 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: const Color(0xFF481E4D),
+              backgroundColor: const Color(0xFF481E4D),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
