@@ -51,12 +51,12 @@ class _LipanaMpesaState extends State<LipanaMpesa> {
         businessShortCode: "174379",
         transactionType: TransactionType.CustomerPayBillOnline,
         amount: 1.0,
-        partyA: "Place your phone number here e.g., 25472.........9",
+        partyA: "0746179799",
         partyB: "174379",
         callBackURL:
             Uri.parse("https://mpesa-requestbin.herokuapp.com/1hhy6391"),
-        accountReference: "Maureen Josephine Clothline",
-        phoneNumber: "Place your phone number here e.g., 25472.........9",
+        accountReference: "Hikers Afrique",
+        phoneNumber: "0746179799",
         baseUri: Uri.parse("https://sandbox.safaricom.co.ke"),
         transactionDesc: "purchase",
         passKey:
