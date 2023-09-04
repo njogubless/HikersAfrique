@@ -27,7 +27,7 @@ class LipaNaMpesa {
               baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
               transactionDesc: "purchase",
               passKey:
-                  "Get Your Pass Key from Test Credentials its random eg..'c893059b1788uihh'...");
+                  "A1d5SfyYCLMFnRvULne7ii5DeqGuYKQ8NnBty7TKkUlEGSgdx6u96lxX3ujo/+lzG6pD2ShvISQe578pZ4hTH68KAUabfngZUituRzKEqh1JP3J4d/mX1Zl+D08Fd/GArwzpHSrRW30LxTXvfrQ+H56gm5mcyv1aBhWBggh8P6YTDbrlfg58L9ht0+c8+7mFRubNQWVWRKhMW5HijMI69G+dX2QJeLNJk8KEyZAuvJFUtuebsMtsvO1Xdf9347PzDQCxR/ry70S5M8LeVx6XaPvtl+4waI69f8EwWD90s3zd7GxyBBbG4LE5IhuRpC7MsTUIMymrZBaga/4pMu7gDA==");
 //This passkey has been generated from Test Credentials from Safaricom Portal
 
       return transactionInitialisation;
