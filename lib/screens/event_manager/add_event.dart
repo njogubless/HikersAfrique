@@ -25,16 +25,16 @@ class _AddEventsState extends State<AddEvents> {
   File? imageFile;
   String? pickedImageFileName;
 
-  void pickImage() async {
+   Future pickImage() async {
     final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(
+    final image = await picker.pickImage(
       source: ImageSource.gallery,
     );
 
-    if (pickedImage != null) {
+    if (image != null) {
       setState(() {
-        imageFile = File(pickedImage.path);
-        pickedImageFileName = pickedImage.name;
+        imageFile = File(image.path);
+        pickedImageFileName = image.name;
       });
     }
   }
@@ -165,7 +165,7 @@ class _AddEventsState extends State<AddEvents> {
                         Text(pickedImageFileName ?? 'No image selected'),
                         ElevatedButton(
                           onPressed: () => pickImage(),
-                          child: const Text('Upload Image'),
+                          child: const Text('Upload image'),
                         ),
                       ],
                     ),

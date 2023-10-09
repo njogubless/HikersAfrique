@@ -39,14 +39,47 @@ class _EditEventState extends State<EditEvent> {
       ..text = widget.event.eventImageUrl;
     super.initState();
   }
+
 //creating a deleting event button
   Future<void> deleteEvent() async {
     setState(() {
       _loading = true;
     });
 
-    // Call your delete event method from the database service
-    await Database.deleteEvent(widget.event);
+    //show a confirmation dialog to confirm deletion
+    bool deleteConfirmed = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Delete'),
+            content: Text('Are you syre you want to delete this event?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              TextButton(
+                child: Text('Delete'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              )
+            ],
+          );
+        });
+    if (deleteConfirmed) {
+      //call my delete event method from the database service
+      await Database.deleteEvent(widget.event);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Event Deleted!'),
+        behavior: SnackBarBehavior.floating,
+      ));
+
+      Navigator.of(context).pop(); //Close the edit screen after the deletion
+    }
 
     setState(() {
       _loading = false;
