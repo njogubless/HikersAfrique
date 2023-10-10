@@ -19,15 +19,17 @@ class ClientAdminRedirect extends StatelessWidget {
       } else {
         if (user.role == 'client') {
           return const HomeScreen();
-        } else if (user.role == 'eventManager') {
-          return const EventManagerHome();
-        } else if (user.role == 'financeManager') {
-          return const FinanceManagerHome();
-        } else if (user.role == 'admin') {
-          return const AdminHome();
-        } else {
-          return const HomeScreen();
         }
+        if (user.role == 'eventManager') {
+          return const EventManagerHome();
+        }
+        if (user.role == 'financeManager') {
+          return const FinanceManagerHome();
+        }
+        if (user.role == 'admin') {
+          return const AdminHome();
+        }
+        return const HomeScreen();
       }
     } catch (e) {
       return const Scaffold(
