@@ -153,20 +153,31 @@ class _AddEventsState extends State<AddEvents> {
                               const SizedBox(height: 45.0),
                               InkWell(
                                 onTap: isLoading ? null : () => pickImage(),
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Icon(Icons.image),
-                                ),
+                                child: _imageFile == null
+                                    ? Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Icon(Icons.image),
+                                      )
+                                    : Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Image.file(_imageFile!),
+                                      ),
                               ),
                               const SizedBox(height: 10),
                               Text(_pickedImageFileName ?? 'No image selected'),
                               ElevatedButton(
-                                onPressed: () => pickImage(),
+                                onPressed: isLoading ? null : () => pickImage(),
                                 child: const Text('Upload image'),
                               ),
                             ],
@@ -224,7 +235,10 @@ class _AddEventsState extends State<AddEvents> {
     );
   }
 
-  void _createEventWithImage(File imageFile, BuildContext context) async {
+  void _createEventWithImage(
+    File imageFile,
+    BuildContext context,
+  ) async {
     final scaff = ScaffoldMessenger.of(context);
     final event = Event(
       eventID: const Uuid().v4(),
