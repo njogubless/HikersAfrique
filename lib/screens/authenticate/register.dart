@@ -67,7 +67,7 @@ class _RegisterClientState extends State<RegisterClient> {
                               fontSize: 80.0, fontWeight: FontWeight.bold)),
                     ),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(265.0, 70.0, 0.0, 0.0),
+                      padding: const EdgeInsets.fromLTRB(310.0, 70.0, 0.0, 0.0),
                       child: const Text('.',
                           style: TextStyle(
                             fontSize: 80.0,

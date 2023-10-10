@@ -66,7 +66,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     Container(
                       padding:
-                          const EdgeInsets.fromLTRB(177.0, 110.0, 0.0, 0.0),
+                          const EdgeInsets.fromLTRB(200.0, 110.0, 0.0, 0.0),
                       child: const Text('.',
                           style: TextStyle(
                             fontSize: 80.0,
