@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
@@ -114,8 +112,9 @@ class Database {
   }
 
   // Create event
-  static Future<void> createEvent(Event event,
-      {required File imageFile, required BuildContext context}) async {
+  static Future<void> createEvent(
+    Event event,
+  ) async {
     final DocumentReference docRef = firestore.collection('events').doc();
     await docRef.set(event.toJson());
   }
