@@ -4,8 +4,10 @@ import 'dart:async';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
 class LipaNaMpesa {
-  var consumerKey = MpesaFlutterPlugin.setConsumerKey("gNoAXe4uCzYG2Rg0iwS80LxfkOXVdLkA");
-  var consumerSecret = MpesaFlutterPlugin.setConsumerSecret("zDZBHDyuNYE51dHM ");
+  var consumerKey =
+      MpesaFlutterPlugin.setConsumerKey("gNoAXe4uCzYG2Rg0iwS80LxfkOXVdLkA");
+  var consumerSecret =
+      MpesaFlutterPlugin.setConsumerSecret("zDZBHDyuNYE51dHM ");
 
 //create the lipaNaMpesa method here.Please note, the method can have any name, I chose lipaNaMpesa
   Future<void> lipaNaMpesa() async {

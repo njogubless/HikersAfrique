@@ -51,17 +51,17 @@ class _EditEventState extends State<EditEvent> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirm Delete'),
-            content: Text('Are you syre you want to delete this event?'),
+            title: const Text('Confirm Delete'),
+            content: const Text('Are you syre you want to delete this event?'),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               TextButton(
-                child: Text('Delete'),
+                child: const Text('Delete'),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },

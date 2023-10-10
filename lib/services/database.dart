@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -115,7 +114,8 @@ class Database {
   }
 
   // Create event
-  static Future<void> createEvent(Event event, {required File imageFile, required BuildContext context}) async {
+  static Future<void> createEvent(Event event,
+      {required File imageFile, required BuildContext context}) async {
     final DocumentReference docRef = firestore.collection('events').doc();
     await docRef.set(event.toJson());
   }
@@ -145,8 +145,8 @@ class Database {
     return result.count;
   }
 
-  //deleting an event 
-   static Future<void> deleteEvent(Event event) async {
+  //deleting an event
+  static Future<void> deleteEvent(Event event) async {
     try {
       // Assuming you have a reference to your database collection
       // and the events are stored under an 'events' collection
@@ -176,10 +176,9 @@ class Database {
       }
     } catch (e) {
       // Handle any errors that occur during the deletion process
-      print('Error deleting event: $e');
+      debugPrint('Error deleting event: $e');
     }
   }
-
 
   // Retrieve available events
   static Future<int> getTotalRevenue() async {

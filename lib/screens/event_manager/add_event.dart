@@ -25,7 +25,7 @@ class _AddEventsState extends State<AddEvents> {
   File? imageFile;
   String? pickedImageFileName;
 
-   Future pickImage() async {
+  Future pickImage() async {
     final picker = ImagePicker();
     final image = await picker.pickImage(
       source: ImageSource.gallery,
@@ -140,7 +140,7 @@ class _AddEventsState extends State<AddEvents> {
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
-                       ),
+                        ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.blueAccent),
                         ),
@@ -219,7 +219,7 @@ class _AddEventsState extends State<AddEvents> {
       eventID: const Uuid().v4(),
       eventCost: int.parse(_eventCostController.text),
       eventDate: _eventDateController.text,
-     eventImageUrl: _eventImageUrlController.text,
+      eventImageUrl: _eventImageUrlController.text,
       eventLocation: _eventLocationController.text,
       eventName: _eventNameController.text,
       eventTime: _eventTimeController.text,

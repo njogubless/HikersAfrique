@@ -37,9 +37,8 @@ class _HikersAfriqueAppState extends State<HikersAfriqueApp> {
           debugShowCheckedModeBanner: false,
           title: 'HikersAfrique App',
           theme: ThemeData(
-            scaffoldBackgroundColor: kScaffoldBgColor,
-            fontFamily: 'Cera-Pro'
-          ),
+              scaffoldBackgroundColor: kScaffoldBgColor,
+              fontFamily: 'Cera-Pro'),
           routes: {
             '/': (context) => const Wrapper(),
             '/welcome': (context) => const WelcomeScreen(),

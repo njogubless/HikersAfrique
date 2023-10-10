@@ -6,7 +6,6 @@ import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:hikersafrique/components/lipa_na_mpesa.dart';
 
-
 class PaymentPage extends StatefulWidget {
   final Event event;
 
