@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:hikersafrique/services/storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,7 +21,6 @@ class _AddEventsState extends State<AddEvents> {
   final _eventTimeController = TextEditingController();
   final _eventCostController = TextEditingController();
   final _eventLocationController = TextEditingController();
-  final _eventImageUrlController = TextEditingController();
 
   File? imageFile;
   String? pickedImageFileName;
@@ -133,19 +133,6 @@ class _AddEventsState extends State<AddEvents> {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: _eventImageUrlController,
-                      decoration: const InputDecoration(
-                        labelText: 'EVENT IMAGE URL',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
-                      ),
-                    ),
                     Column(
                       children: [
                         const SizedBox(height: 45.0),
@@ -173,7 +160,7 @@ class _AddEventsState extends State<AddEvents> {
                     InkWell(
                       onTap: () async {
                         if (imageFile != null) {
-                          createEventWithImage(imageFile!);
+                          _createEventWithImage(imageFile!);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -213,23 +200,19 @@ class _AddEventsState extends State<AddEvents> {
     );
   }
 
-  void createEventWithImage(File imageFile) async {
+  void _createEventWithImage(File imageFile) async {
     final scaff = ScaffoldMessenger.of(context);
     final event = Event(
       eventID: const Uuid().v4(),
       eventCost: int.parse(_eventCostController.text),
       eventDate: _eventDateController.text,
-      eventImageUrl: _eventImageUrlController.text,
+      eventImageUrl: await Storage.uploadFile(imageFile),
       eventLocation: _eventLocationController.text,
       eventName: _eventNameController.text,
       eventTime: _eventTimeController.text,
     );
 
-    await Database.createEvent(
-      event,
-      imageFile: imageFile,
-      context: context,
-    );
+    await Database.createEvent(event);
 
     _eventNameController.clear();
     _eventDateController.clear();
