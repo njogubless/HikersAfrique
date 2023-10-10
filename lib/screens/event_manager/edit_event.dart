@@ -41,7 +41,7 @@ class _EditEventState extends State<EditEvent> {
   }
 
 //creating a deleting event button
-  Future<void> deleteEvent() async {
+  Future<void> _deleteEvent() async {
     setState(() {
       _loading = true;
     });
@@ -61,7 +61,10 @@ class _EditEventState extends State<EditEvent> {
                 },
               ),
               TextButton(
-                child: const Text('Delete'),
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
@@ -78,20 +81,8 @@ class _EditEventState extends State<EditEvent> {
         behavior: SnackBarBehavior.floating,
       ));
 
-      Navigator.of(context).pop(); //Close the edit screen after the deletion
+      Navigator.of(context).pop();
     }
-
-    setState(() {
-      _loading = false;
-    });
-
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Event deleted!'),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override
@@ -246,6 +237,30 @@ class _EditEventState extends State<EditEvent> {
                             ),
                           ),
                         ),
+                      const SizedBox(height: 20.0),
+                      InkWell(
+                        onTap: () async {
+                          await _deleteEvent();
+                        },
+                        child: SizedBox(
+                          height: 40,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.red,
+                            elevation: 7.0,
+                            child: const Center(
+                              child: Text(
+                                'DELETE EVENT',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 20.0),
                     ],
                   ),

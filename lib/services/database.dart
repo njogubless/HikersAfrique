@@ -149,7 +149,16 @@ class Database {
     try {
       // Assuming you have a reference to your database collection
       // and the events are stored under an 'events' collection
-      final eventRef = firestore.collection('events').doc(event.eventID);
+      final eventRef = (await firestore
+              .collection('events')
+              .where(
+                'eventID',
+                isEqualTo: event.eventID,
+              )
+              .get())
+          .docs
+          .first
+          .reference;
 
       // Delete the document
       await eventRef.delete();
