@@ -1,73 +1,137 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
-import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
+import 'package:flutterwave/flutterwave.dart';
 
 class LipaNaMpesa extends StatefulWidget {
-  const LipaNaMpesa(
-      {required this.consumerKey, required this.consumerSecret, Key? key})
-      : super(key: key);
-
-  final String consumerKey;
-  final String consumerSecret;
+  const LipaNaMpesa({Key? key}) : super(key: key);
 
   @override
-  _LipaNaMpesaState createState() => _LipaNaMpesaState();
+  State<LipaNaMpesa> createState() => _LipaNaMpesaState();
 }
 
 class _LipaNaMpesaState extends State<LipaNaMpesa> {
-  @override
-  void initState() {
-    super.initState();
-    MpesaFlutterPlugin.setConsumerKey(widget.consumerKey);
-    MpesaFlutterPlugin.setConsumerSecret(widget.consumerSecret);
-  }
+  final String currency = FlutterwaveCurrency.KES;
+  final formKey = GlobalKey<FormState>();
+  TextEditingController? fullname;
+  TextEditingController phone = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController amount = TextEditingController();
 
-  Future<void> _lipaNaMpesa() async {
+  void _makeFlutterwavePayment(BuildContext context, String fullname,
+      String phone, String email, String amount) async {
     try {
-      final transactionInitialization =
-          await MpesaFlutterPlugin.initializeMpesaSTKPush(
-        businessShortCode: "174379",
-        transactionType: TransactionType.CustomerPayBillOnline,
-        amount: 1.0,
-        partyA: "254792964487",
-        partyB: "174379",
-        callBackURL: Uri(
-            scheme: "https",
-            host: "mpesa-requestbin.herokuapp.com",
-            path: "/1hhy6391"),
-        accountReference: " Hikers Afrique",
-        phoneNumber: "0746179799",
-        baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
-        transactionDesc: "purchase",
-        passKey:
-            "A1d5SfyYCLMFnRvULne7ii5DeqGuYKQ8NnBty7TKkUlEGSgdx6u96lxX3ujo/+lzG6pD2ShvISQe578pZ4hTH68KAUabfngZUituRzKEqh1JP3J4d/mX1Zl+D08Fd/GArwzpHSrRW30LxTXvfrQ+H56gm5mcyv1aBhWBggh8P6YTDbrlfg58L9ht0+c8+7mFRubNQWVWRKhMW5HijMI69G+dX2QJeLNJk8KEyZAuvJFUtuebsMtsvO1Xdf9347PzDQCxR/ry70S5M8LeVx6XaPvtl+4waI69f8EwWD90s3zd7GxyBBbG4LE5IhuRpC7MsTUIMymrZBaga/4pMu7gDA==",
-      );
-
-      if (transactionInitialization != null) {
-        print('Mpesa transaction initialized successfully!');
+      Flutterwave flutterwave = Flutterwave.forUIPayment(
+          //the first 10 fields below are required/mandatory
+          context: this.context,
+          fullName: fullname,
+          phoneNumber: phone,
+          email: email,
+          amount: amount,
+          //Use your Public and Encription Keys from your Flutterwave account on the dashboard
+          encryptionKey: "FLWSECK_TEST4134cbfbcc25",
+          publicKey: "FLWPUBK_TEST-d6191ca2de5a84b203f5d28659079b61-X",
+          currency: currency,
+          txRef: DateTime.now().toIso8601String(),
+          //Setting DebugMode below to true since will be using test mode.
+          //You can set it to false when using production environment.
+          isDebugMode: true,
+          //configure the the type of payments that your business will accept
+          acceptCardPayment: false,
+          acceptUSSDPayment: false,
+          acceptAccountPayment: false,
+          acceptFrancophoneMobileMoney: false,
+          acceptGhanaPayment: false,
+          acceptMpesaPayment: true,
+          acceptRwandaMoneyPayment: false,
+          acceptUgandaPayment: false,
+          acceptZambiaPayment: false);
+      final response = await flutterwave.initializeForUiPayments();
+      // ignore: unnecessary_null_comparison
+      if (response == null) {
+        print("Transaction Failed");
       } else {
-        print('Mpesa transaction initialization failed.');
+        if (response.status == "Transaction successful") {
+          print(response.data);
+          print(response.message);
+        } else {
+          print(response.message);
+        }
       }
-    } catch (e) {
-      print("CAUGHT EXCEPTION: $e");
-      rethrow;
+    } catch (error) {
+      print(error);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _lipaNaMpesa(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return const Text('Mpesa transaction initialized successfully!');
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter + Flutterwave'),
+        centerTitle: true,
+      ),
+      body: 
+      Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.all(10.0)),
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: TextFormField(
+                  controller: fullname,
+                  decoration: const InputDecoration(labelText: "Full Name"),
+                  validator: (value) =>
+                      value!.isNotEmpty ? null : "Please fill in Your Name",
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: TextFormField(
+                  controller: phone,
+                  decoration: const InputDecoration(labelText: "Phone Number"),
+                  validator: (value) => value!.isNotEmpty
+                      ? null
+                      : "Please fill in Your Phone number",
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: TextFormField(
+                  controller: email,
+                  decoration: const InputDecoration(labelText: "Email"),
+                  validator: (value) =>
+                      value!.isNotEmpty ? null : "Please fill in Your Email",
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: TextFormField(
+                  controller: amount,
+                  decoration: const InputDecoration(labelText: "Amount"),
+                  validator: (value) => value!.isNotEmpty
+                      ? null
+                      : "Please fill in the Amount you are Paying",
+                ),
+              ),
+              ElevatedButton(
+                child: const Text('Pay with Flutterwave'),
+                onPressed: () {
+                  final name = fullname.toString();
+                  final userPhone = phone.toString();
+                  final userEmail = email.toString();
+                  final amountPaid = amount.toString();
+
+                  if (formKey.currentState!.validate()) {
+                    _makeFlutterwavePayment(
+                        context, name, userPhone, userEmail, amountPaid);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

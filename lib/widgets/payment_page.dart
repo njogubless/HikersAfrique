@@ -1,10 +1,10 @@
 // ignore_for_file: non_constant_identifier_names, unused_field, unused_local_variable, equal_elements_in_set
 
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/components/lipanampesa.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:hikersafrique/components/lipa_na_mpesa.dart';
 
 class PaymentPage extends StatefulWidget {
   final Event event;
@@ -49,7 +49,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ),
               onPressed: () {
-                LipaNaMpesa();
+                const LipaNaMpesa();
               },
               child: const Text(
                 "Lipa na Mpesa",
@@ -58,7 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  LipaNaMpesa();
+                  const LipaNaMpesa();
                 },
                 child: const Text("Purchase Ticket")),
             // SecondaryButton(

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/components/lipanampesa.dart';
 import 'package:hikersafrique/firebase_options.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
@@ -77,7 +78,9 @@ class _MyAppState extends State<MyApp> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              const LipaNaMpesa();
+            },
             child: const Text(
               'Lipa na Mpesa',
               style: TextStyle(color: Colors.white),

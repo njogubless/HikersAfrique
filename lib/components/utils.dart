@@ -1,6 +1,6 @@
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
 final consumerKey = MpesaFlutterPlugin.setConsumerKey(
-    "Your Consumer Key from the safarocom portal, its random eg.'8joAntLHTIT28Pup....' ");
+    "gNoAXe4uCzYG2Rg0iwS80LxfkOXVdLkA");
 final consumersecret = MpesaFlutterPlugin.setConsumerSecret(
-    "Your Consumer Secret from the safarocom portal, its random eg. 'kjiUWoPT4...' ");
+    "zDZBHDyuNYE51dHM");

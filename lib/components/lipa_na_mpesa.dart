@@ -1,5 +1,5 @@
 // ignore_for_file: avoid_print
-
+/*
 import 'dart:async';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
@@ -40,3 +40,4 @@ class LipaNaMpesa {
     }
   }
 }
+*/
