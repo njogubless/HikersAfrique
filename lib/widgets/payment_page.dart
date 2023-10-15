@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_field, unused_local_variable, equal_elements_in_set
+// ignore_for_file: unused_local_variable, prefer_final_fields, unused_field, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/components/lipanampesa.dart';
@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 class PaymentPage extends StatefulWidget {
   final Event event;
 
-  const PaymentPage({super.key, required this.event});
+  const PaymentPage({Key? key, required this.event}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final bool _paying = false;
+  bool _paying = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,14 @@ class _PaymentPageState extends State<PaymentPage> {
             const SizedBox(height: 50),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF481E4D),
+                primary: const Color(0xFF481E4D),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
               onPressed: () {
-                const LipaNaMpesa();
+                // Handle the payment logic here
+                // Example: LipaNaMpesa().makePayment();
               },
               child: const Text(
                 "Lipa na Mpesa",
@@ -57,37 +58,12 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  const LipaNaMpesa();
-                },
-                child: const Text("Purchase Ticket")),
-            // SecondaryButton(
-            //   isPrimary: true,
-            //   onPressed: () {
-            //     LipaNaMpesa();
-            //     // Database.saveBookedEvent(
-            //     //         user!.clientEmail, widget.event.eventID)
-            //     //     .then((_) {
-            //     //   setState(() {
-            //     //     _paying = false;
-            //     //   });
-            //     //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            //     //     backgroundColor: Colors.greenAccent,
-            //     //     content: Text(
-            //     //         'Event booked!\nWe will contact you for further instructions'),
-            //     //   ));
-            //     //   // Navigator.push(
-            //     //   //     context,
-            //     //   //     MaterialPageRoute(
-            //     //   //       builder: (context) => TicketPage(
-            //     //   //         event: widget.event,
-            //     //   //       ),
-            //     //   //     ));
-            //     // });
-            //   },
-            //   title: 'Pay & Book ticket now'
-            //   // _paying ? 'Purchasing ticket...' : 'Pay & Book ticket now',
-            // ),
+              onPressed: () {
+                // Handle the ticket purchase logic here
+                // Example: LipaNaMpesa().purchaseTicket();
+              },
+              child: const Text("Purchase Ticket"),
+            ),
             const SizedBox(height: 20),
             SecondaryButton(
               title: 'Cancel',
