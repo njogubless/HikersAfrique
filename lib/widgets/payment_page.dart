@@ -1,7 +1,7 @@
 // ignore_for_file: unused_local_variable, prefer_final_fields, unused_field, unused_import
 
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/components/lipanampesa.dart';
+import 'package:hikersafrique/components/bankPayments.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -16,16 +16,11 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-    late LipaNaMpesa _lipaNaMpesa;
 
     @override
   void initState() {
     super.initState();
     // ignore: prefer_const_constructors
-    _lipaNaMpesa = LipaNaMpesa(
-      consumerKey: 'bQXCwTspKlnSoAxkQ9SyQIcGj6lO8XIW',
-      consumerSecret: 'KY0Uc9BHVInAAeAA',
-    );
   }
 
   @override
@@ -51,29 +46,11 @@ class _PaymentPageState extends State<PaymentPage> {
               fit: BoxFit.fitWidth,
             ),
             const SizedBox(height: 50),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF481E4D),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              onPressed: () {
-                // Handle the payment logic here
-                // Example: LipaNaMpesa().makePayment();
-                _lipaNaMpesa.lipaNaMpesa().then((result) {
-          // Handle the result if needed
-        });
-              },
-              child: const Text(
-                "Lipa na Mpesa",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ElevatedButton(
+         ElevatedButton(
               onPressed: () {
                 // Handle the ticket purchase logic here
-                LipaNaMpesa;
+                Navigator.push( context,
+                  MaterialPageRoute(builder: (context) => const CheckOutPage()),);
               },
               child: const Text("Purchase Ticket"),
             ),

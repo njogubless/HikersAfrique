@@ -23,13 +23,14 @@ dependencies:
   printing: ^5.10.4
   uuid: ^3.0.7
   url_launcher: ^6.1.11
+  flutter_dotenv: ^5.0.2
+  flutterwave_standard: 1.0.2
   file_picker: ^5.3.2
   firebase_storage: ^11.2.8
-  mpesa_flutter_plugin: ^1.6.1
+  fluttertoast: ^8.2.2
   logger: ^1.1.0
   flutter_lints: ^2.0.0
   image_picker: ^1.0.1
-  flutterwave: ^1.0.3
 
 flutter:
   uses-material-design: true
@@ -41,4 +42,5 @@ flutter:
       fonts:
         - asset: fonts/Cera-Pro-Bold.otf
         - asset: fonts/Cera-Pro-Medium.otf
-
+assets:
+  - .env
