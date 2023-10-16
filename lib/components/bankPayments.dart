@@ -122,11 +122,11 @@ class _CheckOutPageState extends State<CheckOutPage> {
       onTap: () {
         _makePayment();
       },
-      child: const Card(
+      child:  Card(
         margin: EdgeInsets.symmetric(horizontal: 10),
         color: Colors.orangeAccent,
         elevation: 15,
-        child: SizedBox(
+        child: Container(
           height: 100,
           child: Padding(
             padding: EdgeInsets.all(32.0),
