@@ -35,12 +35,11 @@ dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - images/
+    - assets/images/
+    - assets/.env
 
   fonts:
     - family: Cera-Pro
       fonts:
         - asset: fonts/Cera-Pro-Bold.otf
         - asset: fonts/Cera-Pro-Medium.otf
-assets:
-  - .env
