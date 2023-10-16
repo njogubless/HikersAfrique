@@ -12,7 +12,7 @@ class CheckOutPage extends StatefulWidget {
 
 class _CheckOutPageState extends State<CheckOutPage> {
   void _loadDotEnv() async {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: "assets/.env");
   }
 
   @override
