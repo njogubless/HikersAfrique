@@ -16,7 +16,17 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  bool _paying = false;
+    late LipaNaMpesa _lipaNaMpesa;
+
+    @override
+  void initState() {
+    super.initState();
+    // ignore: prefer_const_constructors
+    _lipaNaMpesa = LipaNaMpesa(
+      consumerKey: 'bQXCwTspKlnSoAxkQ9SyQIcGj6lO8XIW',
+      consumerSecret: 'KY0Uc9BHVInAAeAA',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +61,9 @@ class _PaymentPageState extends State<PaymentPage> {
               onPressed: () {
                 // Handle the payment logic here
                 // Example: LipaNaMpesa().makePayment();
+                _lipaNaMpesa.lipaNaMpesa().then((result) {
+          // Handle the result if needed
+        });
               },
               child: const Text(
                 "Lipa na Mpesa",
@@ -60,7 +73,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ElevatedButton(
               onPressed: () {
                 // Handle the ticket purchase logic here
-                // Example: LipaNaMpesa().purchaseTicket();
+                LipaNaMpesa;
               },
               child: const Text("Purchase Ticket"),
             ),

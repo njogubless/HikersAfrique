@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print
-/*
+
 import 'dart:async';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
 class LipaNaMpesa {
   var consumerKey =
-      MpesaFlutterPlugin.setConsumerKey("gNoAXe4uCzYG2Rg0iwS80LxfkOXVdLkA");
+      MpesaFlutterPlugin.setConsumerKey("bQXCwTspKlnSoAxkQ9SyQIcGj6lO8XIW");
   var consumerSecret =
-      MpesaFlutterPlugin.setConsumerSecret("zDZBHDyuNYE51dHM ");
+      MpesaFlutterPlugin.setConsumerSecret("KY0Uc9BHVInAAeAA");
 
 //create the lipaNaMpesa method here.Please note, the method can have any name, I chose lipaNaMpesa
   Future<void> lipaNaMpesa() async {
@@ -40,4 +40,3 @@ class LipaNaMpesa {
     }
   }
 }
-*/
