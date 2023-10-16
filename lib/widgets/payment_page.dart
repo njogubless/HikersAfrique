@@ -43,7 +43,7 @@ class _PaymentPageState extends State<PaymentPage> {
             const SizedBox(height: 50),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF481E4D),
+                backgroundColor: const Color(0xFF481E4D),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

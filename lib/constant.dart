@@ -38,7 +38,7 @@ class Loading extends StatelessWidget {
 }
 
 class Misc {
-  static Future<void> getReceipt(Event event, Client client) async {
+  static Future<void> getReceipt(Event event, Client client, BuildContext context ) async {
     final pdf = pw.Document();
 
     final eventImage = await networkImage(event.eventImageUrl);
@@ -64,8 +64,18 @@ class Misc {
           ); // Center
         }));
 
+    // Generate a unique identifier for the receipt, e.g., timestamp
+    final uniqueIdentifier = DateTime.now().millisecondsSinceEpoch;
+
     final file = File(
-        "/storage/emulated/0/Download/${event.eventName.toLowerCase().replaceAll(' ', '_')}_receipt.pdf");
+        "/storage/emulated/0/Download/${event.eventName.toLowerCase().replaceAll(' ', '_')}_receipt_$uniqueIdentifier.pdf");
     await file.writeAsBytes(await pdf.save());
+
+    // Optionally, you can also display a message indicating that the receipt was saved
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.greenAccent,
+      content: Text('Receipt downloaded successfully!'),
+    ));
   }
 }
