@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             onPressed: () {
-              const LipaNaMpesa();
+              const LipaNaMpesa(consumerKey: 'bQXCwTspKlnSoAxkQ9SyQIcGj6lO8XIW', consumerSecret: 'KY0Uc9BHVInAAeAA', );
             },
             child: const Text(
               'Lipa na Mpesa',

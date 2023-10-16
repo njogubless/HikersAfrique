@@ -52,7 +52,7 @@ class TicketPage extends StatelessWidget {
               isPrimary: true,
               title: 'Download ticket',
               onPressed: () {
-                Misc.getReceipt(event, user!).then((_) =>
+                Misc.getReceipt(event, user!, context).then((_) =>
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.greenAccent,
                       content: Text('Find your receipt in your Downloads!'),
