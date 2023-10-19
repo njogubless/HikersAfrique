@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/widgets/payment_page.dart';
+import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
 import 'package:provider/provider.dart';
 
 class PostScreenNavBar extends StatelessWidget {

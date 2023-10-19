@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
 
-import 'components/bankPayments.dart';
+import 'screens/finance transactions/bankPayments.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

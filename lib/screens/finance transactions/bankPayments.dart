@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

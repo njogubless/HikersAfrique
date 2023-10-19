@@ -1,7 +1,7 @@
 // ignore_for_file: unused_local_variable, prefer_final_fields, unused_field, unused_import
 
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/components/bankPayments.dart';
+import 'package:hikersafrique/screens/finance%20transactions/bankPayments.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
