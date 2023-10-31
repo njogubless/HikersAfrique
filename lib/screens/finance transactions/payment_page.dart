@@ -1,8 +1,8 @@
-// ignore_for_file: unused_local_variable, prefer_final_fields, unused_field, unused_import
+// ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/finance%20transactions/bankPayments.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance%20transactions/Lipa_Na_Mpesa.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -16,16 +16,12 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-
-    @override
-  void initState() {
-    super.initState();
-    // ignore: prefer_const_constructors
-  }
+  final TextEditingController _ticketCountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -40,17 +36,45 @@ class _PaymentPageState extends State<PaymentPage> {
                 fontSize: 25,
               ),
             ),
-            const SizedBox(height: 50),
-            Image.network(
-              widget.event.eventImageUrl,
-              fit: BoxFit.fitWidth,
+            const SizedBox(height: 20),
+            Image.network(widget.event.eventImageUrl, fit: BoxFit.fitWidth),
+            const Text(
+              'Enter the number of tickets you want:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ),
-            const SizedBox(height: 50),
-         ElevatedButton(
+            const SizedBox(height: 10),
+            TextField(
+              controller: _ticketCountController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Number of Tickets',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
               onPressed: () {
-                // Handle the ticket purchase logic here
-                Navigator.push( context,
-                  MaterialPageRoute(builder: (context) => const CheckOutPage()),);
+                // double ticketCount =
+                //     double.tryParse(_ticketCountController.text) ?? 0;
+                // double eventCostPerTicket = (widget.event.ticketPrice)
+                //     .toDouble(); // Replace this with the actual property for ticket cost
+
+                // double totalAmount = (ticketCount) * (eventCostPerTicket);
+                print('totalAmount');
+
+                BuildContext currentContext = context;
+                LipaNaMpesa().lipaNaMpesa(100.0).then((_) {
+                  ScaffoldMessenger.of(currentContext).showSnackBar(
+                    const SnackBar(content: Text('Payment Successful!')),
+                  );
+                }).catchError((error) {
+                  ScaffoldMessenger.of(currentContext).showSnackBar(
+                    SnackBar(content: Text('Payment Failed: $error')),
+                  );
+                });
               },
               child: const Text("Purchase Ticket"),
             ),

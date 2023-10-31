@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/event.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
-import 'package:provider/provider.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 
 class TicketPage extends StatelessWidget {
   const TicketPage({super.key, required this.event});

@@ -28,6 +28,8 @@ class Event {
     );
   }
 
+  int get ticketPrice => ticketPrice;
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'eventID': eventID,
