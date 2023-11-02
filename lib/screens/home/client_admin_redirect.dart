@@ -4,6 +4,7 @@ import 'package:hikersafrique/screens/admin/admin_home.dart';
 import 'package:hikersafrique/screens/event_manager/event_manager_home.dart';
 import 'package:hikersafrique/screens/finance_manager/finance_manager_home.dart';
 import 'package:hikersafrique/screens/home/home_screen.dart';
+import 'package:hikersafrique/screens/partners/partners_page.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,9 @@ class ClientAdminRedirect extends StatelessWidget {
         }
         if (user.role == 'financeManager') {
           return const FinanceManagerHome();
+        }
+          if (user.role == 'Partners') {
+          return PartnersPage();
         }
         if (user.role == 'admin') {
           return const AdminHome();

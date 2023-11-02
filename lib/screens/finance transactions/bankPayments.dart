@@ -17,7 +17,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
-  TextEditingController _ticketController = TextEditingController();
+  final TextEditingController _ticketController = TextEditingController();
   int _numberOfTickets = 0;
 
 // define the ticket price here

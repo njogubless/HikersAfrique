@@ -60,7 +60,9 @@ class PartnerEventItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PartnerConfirmationPage(event: event)),
+          MaterialPageRoute(
+            builder: (context) => PartnerConfirmationPage(
+              event: event)),
         );
       },
     );

@@ -3,6 +3,7 @@ import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
 
 class PartnersPage extends StatelessWidget {
+  @override
   final Key? key;
   const PartnersPage({this.key});
 
