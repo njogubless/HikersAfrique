@@ -179,7 +179,7 @@ class _EditEventState extends State<EditEvent> {
                       TextFormField(
                         controller: _eventDetailsController,
                         decoration: const InputDecoration(
-                            labelText: 'EVENT LOCATION',
+                            labelText: 'EVENT DETAILS',
                             labelStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey),

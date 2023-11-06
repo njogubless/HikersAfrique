@@ -137,6 +137,22 @@ class _AddEventsState extends State<AddEvents> {
                           const SizedBox(height: 20.0),
                           TextFormField(
                             readOnly: isLoading,
+                            controller: _eventDetailsController,
+                            decoration: const InputDecoration(
+                              labelText: 'EVENT DETAILS',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          TextFormField(
+                            readOnly: isLoading,
                             controller: _eventLocationController,
                             decoration: const InputDecoration(
                               labelText: 'EVENT LOCATION',
