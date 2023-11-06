@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Image.asset(
-                'images/logo.svg',
+                'images/download.jpeg',
                 fit: BoxFit.fitWidth,
                 height: 150,
                 width: double.infinity,

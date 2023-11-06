@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, unused_local_variable
+// ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
@@ -18,19 +18,20 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _ticketCountController = TextEditingController();
+  final TextEditingController _CostController = TextEditingController();
   @override
   void initState() {
     super.initState();
     MpesaFlutterPlugin.setConsumerKey('gvgIlzbPLCURrX7JnBdEL1QxGl7G367T');
     MpesaFlutterPlugin.setConsumerSecret('GJlA9WKlCosHAx5q');
   }
-  Future<void> lipaNaMpesa() async {
+  Future<void> lipaNaMpesa(double amt) async {
     try {
       final transactionInitialization =
       await MpesaFlutterPlugin.initializeMpesaSTKPush(
         businessShortCode: "174379",
         transactionType: TransactionType.CustomerPayBillOnline,
-        amount: 10.0,
+        amount: amt,
         partyA: "254746179799",
         partyB: "174379",
         callBackURL: Uri(
@@ -57,6 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
 
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -73,43 +75,50 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             const SizedBox(height: 20),
             Image.network(widget.event.eventImageUrl, fit: BoxFit.fitWidth),
-          SingleChildScrollView(
-  child: Column(
-    children: [
-      const Text(
-        'Enter the number of tickets you want:',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-        ),
-      ),
-      const SizedBox(height: 10),
-      TextField(
-        controller: _ticketCountController,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-          labelText: 'Number of Tickets',
-          border: OutlineInputBorder(),
-        ),
-      ),
-      // Other widgets can be added here
-    ],
-  ),
-),
-            const SizedBox(height: 30),
+            const Text(
+              'Enter the number of tickets you want:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _ticketCountController,
+              keyboardType: TextInputType.number,
+              onChanged: (value){
+                double ticketCount =
+                    double.tryParse(value) ?? 0;
+                double eventCostPerTicket = (widget.event.eventCost)
+                    .toDouble(); // Replace this with the actual property for ticket cost
+                double totalAmount = (ticketCount) * (eventCostPerTicket);
+                setState(() {
+                  _CostController.text="Total Cost: Ksh. $totalAmount";
+                });
+
+              },
+              decoration: const InputDecoration(
+                labelText: 'Number of Tickets',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
+           TextField(
+             controller: _CostController,
+             readOnly: true,
+             style: const TextStyle(color: Colors.teal),
+           ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // lipaNaMpesa();
-                // double ticketCount =
-                //     double.tryParse(_ticketCountController.text) ?? 0;
-                // double eventCostPerTicket = (widget.event.ticketPrice)
-                //     .toDouble(); // Replace this with the actual property for ticket cost
-
-                // double totalAmount = (ticketCount) * (eventCostPerTicket);
-                // print('totalAmount');
+                double ticketCount =
+                    double.tryParse(_ticketCountController.text) ?? 0;
+                double eventCostPerTicket = (widget.event.eventCost)
+                    .toDouble(); // Replace this with the actual property for ticket cost
+                 double totalAmount = (ticketCount) * (eventCostPerTicket);
 
                 BuildContext currentContext = context;
-                lipaNaMpesa().then((_) {
+                lipaNaMpesa(totalAmount).then((_) {
                   ScaffoldMessenger.of(currentContext).showSnackBar(
                     const SnackBar(content: Text('Payment Successful!')),
                   );
