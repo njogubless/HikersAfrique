@@ -23,6 +23,7 @@ class _AddEventsState extends State<AddEvents> {
   final _eventTimeController = TextEditingController();
   final _eventCostController = TextEditingController();
   final _eventLocationController = TextEditingController();
+  final _eventDetailsController = TextEditingController();
 
   final _loadingNotifier = ValueNotifier<bool>(false);
 
@@ -250,6 +251,7 @@ class _AddEventsState extends State<AddEvents> {
       eventLocation: _eventLocationController.text,
       eventName: _eventNameController.text,
       eventTime: _eventTimeController.text,
+      eventDetails: _eventDetailsController.text,
     );
 
     await Database.createEvent(event);

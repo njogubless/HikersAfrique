@@ -22,6 +22,7 @@ class _EditEventState extends State<EditEvent> {
   late TextEditingController _eventCostController;
   late TextEditingController _eventLocationController;
   late TextEditingController _eventImageUrlController;
+  late TextEditingController _eventDetailsController;
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _EditEventState extends State<EditEvent> {
       ..text = widget.event.eventLocation;
     _eventImageUrlController = TextEditingController()
       ..text = widget.event.eventImageUrl;
+    _eventDetailsController = TextEditingController()
+      ..text = widget.event.eventDetails;
     super.initState();
   }
 
@@ -174,6 +177,18 @@ class _EditEventState extends State<EditEvent> {
                       ),
                       const SizedBox(height: 20.0),
                       TextFormField(
+                        controller: _eventDetailsController,
+                        decoration: const InputDecoration(
+                            labelText: 'EVENT LOCATION',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent))),
+                      ),
+                      const SizedBox(height: 20.0),
+                      TextFormField(
                         controller: _eventImageUrlController,
                         decoration: const InputDecoration(
                             labelText: 'EVENT IMAGE URL',
@@ -203,6 +218,7 @@ class _EditEventState extends State<EditEvent> {
                                 eventLocation: _eventLocationController.text,
                                 eventName: _eventNameController.text,
                                 eventTime: _eventTimeController.text,
+                                eventDetails: _eventDetailsController.text,
                               ),
                             );
                             _eventNameController.clear();
@@ -211,6 +227,7 @@ class _EditEventState extends State<EditEvent> {
                             _eventCostController.clear();
                             _eventLocationController.clear();
                             _eventImageUrlController.clear();
+                            _eventDetailsController.clear();
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(

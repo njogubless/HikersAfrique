@@ -1,3 +1,5 @@
+// ignore_for_file: recursive_getters
+
 class Event {
   final String eventID;
   final String eventName;
@@ -6,6 +8,7 @@ class Event {
   final int eventCost;
   final String eventLocation;
   final String eventImageUrl;
+  final String eventDetails;
   const Event({
     required this.eventID,
     required this.eventName,
@@ -14,6 +17,7 @@ class Event {
     required this.eventCost,
     required this.eventLocation,
     required this.eventImageUrl,
+    required this.eventDetails,
   });
 
   factory Event.fromJson(Map<String, dynamic> event) {
@@ -25,6 +29,7 @@ class Event {
       eventCost: event['eventCost'],
       eventLocation: event['eventLocation'],
       eventImageUrl: event['eventImageUrl'],
+      eventDetails: event['eventDetails'] ??"",
     );
   }
 
@@ -39,6 +44,7 @@ class Event {
       'eventCost': eventCost,
       'eventLocation': eventLocation,
       'eventImageUrl': eventImageUrl,
+      'eventDetails' : eventDetails,
     };
   }
 }
