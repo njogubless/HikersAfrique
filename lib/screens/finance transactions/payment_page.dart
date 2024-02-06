@@ -1,10 +1,6 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
-import 'package:hikersafrique/screens/finance%20transactions/Lipa_Na_Mpesa.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -17,48 +13,15 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final TextEditingController _ticketCountController = TextEditingController();
-  final TextEditingController _CostController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    MpesaFlutterPlugin.setConsumerKey('gvgIlzbPLCURrX7JnBdEL1QxGl7G367T');
-    MpesaFlutterPlugin.setConsumerSecret('GJlA9WKlCosHAx5q');
+    // ignore: prefer_const_constructors
   }
-  Future<void> lipaNaMpesa(double amt) async {
-    try {
-      final transactionInitialization =
-      await MpesaFlutterPlugin.initializeMpesaSTKPush(
-        businessShortCode: "174379",
-        transactionType: TransactionType.CustomerPayBillOnline,
-        amount: amt,
-        partyA: "254746179799",
-        partyB: "174379",
-        callBackURL: Uri(
-            scheme: "https",
-            host: "lms.smm.co.ke",
-            path: "/api"),
-        accountReference: " Hikers Afrique",
-        phoneNumber: "254746179799",
-        baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
-        transactionDesc: "purchase",
-        passKey:"bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919");
 
-      if (transactionInitialization != null) {
-        print('Mpesa transaction initialized successfully!');
-      } else {
-        print('Mpesa transaction initialization failed.');
-      }
-    } catch (e) {
-      print("CAUGHT EXCEPTION: $e");
-      rethrow;
-    }
-  }
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -73,60 +36,15 @@ class _PaymentPageState extends State<PaymentPage> {
                 fontSize: 25,
               ),
             ),
-            const SizedBox(height: 20),
-            Image.network(widget.event.eventImageUrl, fit: BoxFit.fitWidth),
-            const Text(
-              'Enter the number of tickets you want:',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
+            const SizedBox(height: 50),
+            Image.network(
+              widget.event.eventImageUrl,
+              fit: BoxFit.fitWidth,
             ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _ticketCountController,
-              keyboardType: TextInputType.number,
-              onChanged: (value){
-                double ticketCount =
-                    double.tryParse(value) ?? 0;
-                double eventCostPerTicket = (widget.event.eventCost)
-                    .toDouble(); // Replace this with the actual property for ticket cost
-                double totalAmount = (ticketCount) * (eventCostPerTicket);
-                setState(() {
-                  _CostController.text="Total Cost: Ksh. $totalAmount";
-                });
-
-              },
-              decoration: const InputDecoration(
-                labelText: 'Number of Tickets',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-           TextField(
-             controller: _CostController,
-             readOnly: true,
-             style: const TextStyle(color: Colors.teal),
-           ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                double ticketCount =
-                    double.tryParse(_ticketCountController.text) ?? 0;
-                double eventCostPerTicket = (widget.event.eventCost)
-                    .toDouble(); // Replace this with the actual property for ticket cost
-                 double totalAmount = (ticketCount) * (eventCostPerTicket);
-
-                BuildContext currentContext = context;
-                lipaNaMpesa(totalAmount).then((_) {
-                  ScaffoldMessenger.of(currentContext).showSnackBar(
-                    const SnackBar(content: Text('Payment Successful!')),
-                  );
-                }).catchError((error) {
-                  ScaffoldMessenger.of(currentContext).showSnackBar(
-                    SnackBar(content: Text('Payment Failed: $error')),
-                  );
-                });
+                // Handle the ticket purchase logic here
               },
               child: const Text("Purchase Ticket"),
             ),
@@ -180,5 +98,4 @@ class SecondaryButton extends StatelessWidget {
       ),
     );
   }
-
 }

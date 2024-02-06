@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/firebase_options.dart';
 import 'package:hikersafrique/models/client.dart';
+import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
@@ -10,7 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
 
-import 'screens/finance transactions/bankPayments.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +71,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Mpesa Payment Demo'),
+          title: const Text('lipa'),
           centerTitle: true,
         ),
         body: Center(
@@ -80,12 +83,10 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             onPressed: () {
-              Navigator.push( context,
-                MaterialPageRoute(builder: (context) => const CheckOutPage()),);
-
+              
             },
             child: const Text(
-              'Lipa na Mpesa',
+              ' payment',
               style: TextStyle(color: Colors.white),
             ),
           ),
