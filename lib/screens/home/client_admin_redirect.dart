@@ -15,22 +15,23 @@ class ClientAdminRedirect extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
     try {
-      if (user!.status != 'Verified') {
+      String status = user?.status ?? '';
+      if (status != 'Verified') {
         return PendingApprovalPage(user: user);
       } else {
-        if (user.role == 'client') {
+        if (user?.role == 'client') {
           return const HomeScreen();
         }
-        if (user.role == 'eventManager') {
+        if (user?.role == 'eventManager') {
           return const EventManagerHome();
         }
-        if (user.role == 'financeManager') {
+        if (user?.role == 'financeManager') {
           return const FinanceManagerHome();
         }
-          if (user.role == 'Partners') {
+        if (user?.role == 'Partners') {
           return PartnersPage();
         }
-        if (user.role == 'admin') {
+        if (user?.role == 'admin') {
           return const AdminHome();
         }
         return const HomeScreen();
@@ -44,7 +45,7 @@ class ClientAdminRedirect extends StatelessWidget {
 }
 
 class PendingApprovalPage extends StatelessWidget {
-  const PendingApprovalPage({
+  PendingApprovalPage({
     super.key,
     required this.user,
   });
@@ -71,7 +72,7 @@ class PendingApprovalPage extends StatelessWidget {
                 height: 50,
               ),
               Text(
-                'Hey, ${user!.clientName}',
+                'Hey, ${user?.clientName}',
                 style: const TextStyle(
                   fontSize: 20,
                 ),

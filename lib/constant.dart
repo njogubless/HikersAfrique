@@ -10,8 +10,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 const darkGrey = Color.fromARGB(255, 96, 99, 103);
-const lightGrey = Color.fromARGB(255, 205, 206, 210);
-const lightBlue = Color.fromARGB(255, 84, 176, 243);
+const lightGrey = Color.fromARGB(255, 169, 170, 175);
+const lightBlue = Color.fromARGB(255, 35, 156, 243);
 const white = Color.fromARGB(255, 255, 255, 255);
 const darkPurp = Color.fromARGB(255, 60, 7, 93);
 const textColor = Color(0xFF535353);
@@ -60,7 +60,7 @@ class Misc {
               pw.Text("Event: ${event.eventName}", style: fontStyle),
               pw.Text("Amount paid: Ksh.${event.eventCost}", style: fontStyle),
               pw.Text("Date: ${event.eventDate}", style: fontStyle),
-            ],
+              pw.Text("Time:${event.eventTime}",style: fontStyle),           ],
           ); // Center
         }));
 

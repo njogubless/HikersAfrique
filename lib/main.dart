@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/firebase_options.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/event_manager/event_manager_home.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
 import 'package:hikersafrique/screens/home/wrapper.dart';
 import 'package:hikersafrique/services/auth.dart';
@@ -13,7 +14,6 @@ import 'package:provider/provider.dart';
 
 import 'package:hikersafrique/constants/constants.dart';
 import 'package:hikersafrique/screens/welcome_screen.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             onPressed: () {
-              
+              // Navigator.push(context,
+              // MaterialPageRoute(builder: (context) => PaymentPage(event:event ),));
             },
             child: const Text(
               ' payment',

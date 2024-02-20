@@ -1,15 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
-// ignore: unused_import
-import 'package:hikersafrique/services/auth_notifier.dart';
 
 class PaymentConfirmationPage extends StatelessWidget {
   final Event event;
-  final User user;
+  final double totalAmount;
+  final int ticketCount;
+
   const PaymentConfirmationPage({
     Key? key,
-    required this.event, required this.user,
+    required this.event,
+    required this.totalAmount,
+    required this.ticketCount,
   }) : super(key: key);
 
   @override
@@ -23,12 +24,9 @@ class PaymentConfirmationPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-                'Number of Events Paid: 1'), // You can replace '1' with the actual count
-            const Text(
-                'Amount Paid: \$XXX'), // Replace '\$XXX' with the actual amount
-            const Text(
-                'Mpesa Code: ABC123'), // Replace 'ABC123' with the actual Mpesa code
+            Text('Number of Tickets Paid: $ticketCount'),
+            Text('Amount Paid: Ksh. $totalAmount'),
+            // You may want to add more details such as payment method here
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

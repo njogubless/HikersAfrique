@@ -134,7 +134,7 @@ class _SignInState extends State<SignIn> {
                                   // AuthService method to sign in user when validation is successful
                                   Client? result =
                                       await _auth.signInWithEmailAndPassword(
-                                          email, password);
+                                          email, password,);
 
                                   if (result == null) {
                                     loading = false;

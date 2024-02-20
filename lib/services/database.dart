@@ -2,10 +2,50 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 
 class Database {
   // Initialize Firestore
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Fetch payments from Firestore
+  static Future<List<Payment>> getPayments() async {
+    try {
+      QuerySnapshot querySnapshot = await firestore.collection('payments').get();
+
+      List<Payment> payments = [];
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        String clientName = doc['clientName'];
+        double amountPaid = doc['amountPaid'];
+        String email = doc['email'];
+        String event = doc['event'];
+        String mpesaCode = doc['mpesaCode'];
+
+        Payment payment = Payment(
+          clientName: clientName,
+          amountPaid: amountPaid,
+          email: email,
+          event: event,
+          mpesaCode: mpesaCode,
+        );
+
+        payments.add(payment);
+      }
+
+      return payments;
+    } catch (e) {
+      print('Error fetching payments: $e');
+      return [];
+    }
+  }
+
+  // Generate code associated with clients paying for events
+  static String generatePaymentCode(String clientName, String event, double amountPaid) {
+    // Generate a code based on client name, event, and amount paid (you can use any logic here)
+    String code = '${clientName.substring(0, 3)}-${event.substring(0, 3)}-${amountPaid.toInt()}';
+    return code;
+  }
 
   // Save registered client data
   static Future<void> saveClientData(Client client) async {
@@ -202,4 +242,7 @@ class Database {
     }
     return total;
   }
+
+  
+  
 }

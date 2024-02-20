@@ -1,42 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/finance_manager/payment_details.dart';
-import 'package:hikersafrique/services/auth.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
+import 'package:hikersafrique/services/database.dart';
 
 class FinanceManagerHome extends StatelessWidget {
   const FinanceManagerHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthNotifier>(context).user!;
-    return Scaffold(
-      appBar: const PreferredSize(
+    return const Scaffold(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: FinanceManagerAppBar(),
       ),
-      drawer: Drawer(
-        child: SafeArea(
-            child: Column(
-          children: [
-            Image.asset(
-              'Image/download.jpeg',
-              fit: BoxFit.fitWidth,
-              height: 150,
-              width: double.infinity,
-            ),
-            ListTile(
-              title: Text(
-                user.clientName,
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-            )
-          ],
-        )),
-      ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 15, right: 15),
           child: Column(
@@ -53,11 +29,8 @@ class FinanceManagerHome extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: PaymentDetailsTable(),
-              ),
+              SizedBox(height: 20.0),
+              PaymentDetailsTable(), // New widget for payment details table
             ],
           ),
         ),
@@ -71,7 +44,6 @@ class FinanceManagerAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService auth = AuthService();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -124,12 +96,65 @@ class FinanceManagerAppBar extends StatelessWidget {
                 ),
               ],
               onChanged: (selection) {
-                auth.signOut();
+                // Handle dropdown item selection
               },
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class PaymentDetailsTable extends StatelessWidget {
+  const PaymentDetailsTable({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Payment>>(
+      future: Database.getPayments(), // Assume this method retrieves payment details
+      initialData: const [],
+      builder: (context, snapshot) {
+        final List<Payment> payments = snapshot.data!;
+        return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text('Client Name')),
+              DataColumn(label: Text('Amount Paid')),
+              DataColumn(label: Text('Email')),
+              DataColumn(label: Text('Event')),
+              DataColumn(label: Text('M-Pesa Code')),
+              DataColumn(label: Text('Action')),
+            ],
+            rows: payments.map((payment) {
+              return DataRow(cells: [
+                DataCell(Text(payment.clientName)),
+                DataCell(Text(payment.amountPaid.toString())),
+                DataCell(Text(payment.email)),
+                DataCell(Text(payment.event)),
+                DataCell(Text(payment.mpesaCode)), // Assuming you have mpesa code in payment model
+                DataCell(Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: () {
+                        // Code to approve payment
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        // Code to reject payment
+                      },
+                    ),
+                  ],
+                )),
+              ]);
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 }
