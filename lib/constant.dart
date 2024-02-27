@@ -38,7 +38,7 @@ class Loading extends StatelessWidget {
 }
 
 class Misc {
-  static Future<void> getReceipt(Event event, Client client, BuildContext context ) async {
+  static Future<void> getReceipt(Event event, Client client, BuildContext context) async {
     final pdf = pw.Document();
 
     final eventImage = await networkImage(event.eventImageUrl);
@@ -59,6 +59,7 @@ class Misc {
               pw.Text("Name: ${client.clientName}", style: fontStyle),
               pw.Text("Event: ${event.eventName}", style: fontStyle),
               pw.Text("Amount paid: Ksh.${event.eventCost}", style: fontStyle),
+              //pw.Text("Total Amount Paid: Ksh.$totalAmount",style:fontStyle),
               pw.Text("Date: ${event.eventDate}", style: fontStyle),
               pw.Text("Time:${event.eventTime}",style: fontStyle),           ],
           ); // Center

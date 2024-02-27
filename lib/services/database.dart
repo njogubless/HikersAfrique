@@ -35,6 +35,7 @@ class Database {
 
       return payments;
     } catch (e) {
+      // ignore: avoid_print
       print('Error fetching payments: $e');
       return [];
     }

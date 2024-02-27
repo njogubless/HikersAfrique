@@ -20,7 +20,7 @@ class FinanceManagerHome extends StatelessWidget {
             child: Column(
           children: [
             Image.asset(
-              'Image/download.jpeg',
+              'Image/wheat.jpg',
               fit: BoxFit.fitWidth,
               height: 150,
               width: double.infinity,
@@ -32,6 +32,7 @@ class FinanceManagerHome extends StatelessWidget {
                   fontSize: 30,
                 ),
               ),
+              onTap: null,
             )
           ],
         )),

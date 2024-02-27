@@ -45,7 +45,7 @@ class ClientAdminRedirect extends StatelessWidget {
 }
 
 class PendingApprovalPage extends StatelessWidget {
-  PendingApprovalPage({
+  const PendingApprovalPage({
     super.key,
     required this.user,
   });
