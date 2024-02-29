@@ -7,30 +7,30 @@ class FinanceManagerHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return  Scaffold(
+      appBar:const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: FinanceManagerAppBar(),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 15, right: 15),
+          padding:const EdgeInsets.only(left: 15, right: 15),
           child: Column(
             children: [
-              SizedBox(height: 20.0),
-              Row(
-                children: [
-                  Text(
-                    'Payments from Clients',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
+              const SizedBox(height: 20.0),
+              InkWell(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                  MaterialPageRoute(builder: (context) => const PaymentDetailsScreen()));
+                },
+                child:const Card(
+                  elevation: 4,
+                  margin: EdgeInsets.all(8),
+                  child: Padding(
+                    padding:EdgeInsets.all(16)),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20.0),
-              PaymentDetailsTable(), // New widget for payment details table
+              )
             ],
           ),
         ),
@@ -106,13 +106,14 @@ class FinanceManagerAppBar extends StatelessWidget {
   }
 }
 
-class PaymentDetailsTable extends StatelessWidget {
-  const PaymentDetailsTable({Key? key}) : super(key: key);
+class PaymentDetailsScreen extends StatelessWidget {
+  const PaymentDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
-      future: Database.getPayments(), // Assume this method retrieves payment details
+      future: Database
+          .getPayments(), // Assume this method retrieves payment details
       initialData: const [],
       builder: (context, snapshot) {
         final List<Payment> payments = snapshot.data!;
@@ -133,7 +134,8 @@ class PaymentDetailsTable extends StatelessWidget {
                 DataCell(Text(payment.amountPaid.toString())),
                 DataCell(Text(payment.email)),
                 DataCell(Text(payment.event)),
-                DataCell(Text(payment.mpesaCode)), // Assuming you have mpesa code in payment model
+                DataCell(Text(payment
+                    .mpesaCode)), // Assuming you have mpesa code in payment model
                 DataCell(Row(
                   children: [
                     IconButton(

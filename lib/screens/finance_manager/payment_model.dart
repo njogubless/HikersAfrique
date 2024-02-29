@@ -11,5 +11,6 @@ class Payment {
     required this.email,
     required this.event,
     required this.mpesaCode,
+    required int totalCost,
   });
 }

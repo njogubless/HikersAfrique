@@ -3,13 +3,13 @@ import 'package:hikersafrique/models/event.dart';
 
 class PaymentConfirmationPage extends StatelessWidget {
   final Event event;
-  final double totalAmount;
+  final double totalCost;
   final int ticketCount;
 
   const PaymentConfirmationPage({
     Key? key,
     required this.event,
-    required this.totalAmount,
+    required this.totalCost,
     required this.ticketCount,
   }) : super(key: key);
 
@@ -25,7 +25,7 @@ class PaymentConfirmationPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Number of Tickets Paid: $ticketCount'),
-            Text('Amount Paid: Ksh. $totalAmount'),
+            Text('Amount Paid: Ksh. $totalCost'),
             // You may want to add more details such as payment method here
             const SizedBox(height: 20),
             ElevatedButton(

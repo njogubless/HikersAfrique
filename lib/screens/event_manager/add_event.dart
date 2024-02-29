@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_field
 
 import 'dart:io';
 
@@ -24,6 +24,8 @@ class _AddEventsState extends State<AddEvents> {
   final _eventCostController = TextEditingController();
   final _eventLocationController = TextEditingController();
   final _eventDetailsController = TextEditingController();
+  final _eventPackageController = TextEditingController();
+  //final __eventImageUrlController = TextEditingController();
 
   final _loadingNotifier = ValueNotifier<bool>(false);
 
@@ -153,6 +155,22 @@ class _AddEventsState extends State<AddEvents> {
                           const SizedBox(height: 20.0),
                           TextFormField(
                             readOnly: isLoading,
+                            controller: _eventPackageController,
+                            decoration: const InputDecoration(
+                              labelText: 'EVENT PACKAGE',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          TextFormField(
+                            readOnly: isLoading,
                             controller: _eventLocationController,
                             decoration: const InputDecoration(
                               labelText: 'EVENT LOCATION',
@@ -262,12 +280,15 @@ class _AddEventsState extends State<AddEvents> {
     final event = Event(
       eventID: const Uuid().v4(),
       eventCost: int.parse(_eventCostController.text),
+      totalCost: int.parse(_eventCostController.text),
       eventDate: _eventDateController.text,
       eventImageUrl: await Storage.uploadFile(imageFile),
       eventLocation: _eventLocationController.text,
       eventName: _eventNameController.text,
       eventTime: _eventTimeController.text,
       eventDetails: _eventDetailsController.text,
+      eventPackage: _eventPackageController.text,
+      //eventImageUrl:__eventImageUrlController.text,
     );
 
     await Database.createEvent(event);
@@ -278,6 +299,7 @@ class _AddEventsState extends State<AddEvents> {
     _eventCostController.clear();
     _eventLocationController.clear();
     //_eventImageUrlController.clear();
+    _eventPackageController.clear();
     scaff.showSnackBar(
       const SnackBar(
         content: Text('Event created!'),

@@ -23,6 +23,7 @@ class _EditEventState extends State<EditEvent> {
   late TextEditingController _eventLocationController;
   late TextEditingController _eventImageUrlController;
   late TextEditingController _eventDetailsController;
+  late TextEditingController _eventPackageController;
 
   @override
   void initState() {
@@ -40,6 +41,8 @@ class _EditEventState extends State<EditEvent> {
       ..text = widget.event.eventImageUrl;
     _eventDetailsController = TextEditingController()
       ..text = widget.event.eventDetails;
+    _eventPackageController = TextEditingController()
+      ..text = widget.event.eventPackage;
     super.initState();
   }
 
@@ -55,7 +58,7 @@ class _EditEventState extends State<EditEvent> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Confirm Delete'),
-            content: const Text('Are you syre you want to delete this event?'),
+            content: const Text('Are you sure you want to delete this event?'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Cancel'),
@@ -189,6 +192,18 @@ class _EditEventState extends State<EditEvent> {
                       ),
                       const SizedBox(height: 20.0),
                       TextFormField(
+                        controller: _eventPackageController,
+                        decoration: const InputDecoration(
+                            labelText: 'EVENT PACKAGE',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent))),
+                      ),
+                      const SizedBox(height: 20.0),
+                      TextFormField(
                         controller: _eventImageUrlController,
                         decoration: const InputDecoration(
                             labelText: 'EVENT IMAGE URL',
@@ -213,12 +228,14 @@ class _EditEventState extends State<EditEvent> {
                               Event(
                                 eventID: widget.event.eventID,
                                 eventCost: int.parse(_eventCostController.text),
+                                totalCost: int.parse(_eventCostController.text),
                                 eventDate: _eventDateController.text,
                                 eventImageUrl: _eventImageUrlController.text,
                                 eventLocation: _eventLocationController.text,
                                 eventName: _eventNameController.text,
                                 eventTime: _eventTimeController.text,
                                 eventDetails: _eventDetailsController.text,
+                                eventPackage: _eventPackageController.text,
                               ),
                             );
                             _eventNameController.clear();
@@ -228,6 +245,7 @@ class _EditEventState extends State<EditEvent> {
                             _eventLocationController.clear();
                             _eventImageUrlController.clear();
                             _eventDetailsController.clear();
+                            _eventPackageController.clear();
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(

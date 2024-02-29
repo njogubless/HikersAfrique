@@ -18,6 +18,7 @@ class Database {
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         String clientName = doc['clientName'];
         double amountPaid = doc['amountPaid'];
+        int totalCost = doc['totalCost'];
         String email = doc['email'];
         String event = doc['event'];
         String mpesaCode = doc['mpesaCode'];
@@ -28,6 +29,7 @@ class Database {
           email: email,
           event: event,
           mpesaCode: mpesaCode,
+          totalCost: totalCost,
         );
 
         payments.add(payment);

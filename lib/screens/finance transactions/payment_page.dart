@@ -108,16 +108,16 @@ class _PaymentPageState extends State<PaymentPage> {
   void _updateTotalCost() {
     double ticketCount = double.tryParse(_ticketCountController.text) ?? 0;
     double eventCostPerTicket = widget.event.eventCost.toDouble();
-    double totalAmount = ticketCount * eventCostPerTicket;
+    double totalCost = ticketCount * eventCostPerTicket;
     setState(() {
-      _costController.text = "Total Cost: Ksh. $totalAmount";
+      _costController.text = "Total Cost: Ksh. $totalCost";
     });
   }
 
   void _handlePurchase() {
     double ticketCount = double.tryParse(_ticketCountController.text) ?? 0;
     double eventCostPerTicket = widget.event.eventCost.toDouble();
-    double totalAmount = ticketCount * eventCostPerTicket;
+    double totalCost = ticketCount * eventCostPerTicket;
 
     // Get the M-Pesa code from the text field
     String mpesaCode = _mpesaCodeController.text;

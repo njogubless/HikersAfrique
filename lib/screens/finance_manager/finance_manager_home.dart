@@ -57,7 +57,7 @@ class FinanceManagerHome extends StatelessWidget {
               SizedBox(height: 10.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: PaymentDetailsTable(),
+                child: PaymentDetailsScreen(),
               ),
             ],
           ),
