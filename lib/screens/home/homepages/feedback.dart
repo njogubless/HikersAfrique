@@ -102,6 +102,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                             await collection.doc().set({
                               'timestamp': FieldValue.serverTimestamp(),
                               'feedback': _controller.text,
+                              'clientName': _controller.text,
                             });
 
                             message = 'Feedback sent successfully';
