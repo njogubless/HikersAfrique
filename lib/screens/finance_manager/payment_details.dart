@@ -123,7 +123,7 @@ class PaymentDetailsScreen extends StatelessWidget {
             columns: const [
               DataColumn(label: Text('Client Name')),
               DataColumn(label: Text('Amount Paid')),
-              DataColumn(label: Text('Email')),
+              //DataColumn(label: Text('Email')),
               DataColumn(label: Text('Event')),
               DataColumn(label: Text('M-Pesa Code')),
               DataColumn(label: Text('Action')),

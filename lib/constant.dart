@@ -58,7 +58,7 @@ class Misc {
               pw.SizedBox(height: 50),
               pw.Text("Name: ${client.clientName}", style: fontStyle),
               pw.Text("Event: ${event.eventName}", style: fontStyle),
-              pw.Text("Amount paid: Ksh.${event.eventCost}", style: fontStyle),
+              pw.Text("Amount paid: Ksh.${event.totalCost}", style: fontStyle),
               //pw.Text("Total Amount Paid: Ksh.$totalAmount",style:fontStyle),
               pw.Text("Date: ${event.eventDate}", style: fontStyle),
               pw.Text("Time:${event.eventTime}",style: fontStyle),           ],

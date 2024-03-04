@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/admin/event_management.dart';
 import 'package:hikersafrique/screens/admin/finance_management.dart';
 import 'package:hikersafrique/screens/admin/partners.dart';
+//import 'package:hikersafrique/screens/partners/partners_page.dart';
 import 'package:hikersafrique/screens/admin/user_management.dart';
 import 'package:hikersafrique/widgets/admin_bottombar.dart';
 
