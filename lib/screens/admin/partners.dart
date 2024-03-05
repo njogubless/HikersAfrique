@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PartnersPage extends StatelessWidget {
-const PartnersPage({super.key});
+  const PartnersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,7 @@ const PartnersPage({super.key});
         title: const Text('Partners'),
       ),
       body: FutureBuilder<List<Event>>(
-        future: Database
-            .getAvailableEvents(), // Assuming you have a function to fetch all events from the database
+        future: Database.getAvailableEvents(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -23,7 +23,6 @@ const PartnersPage({super.key});
             return const Center(child: Text('No events available.'));
           } else {
             List<Event> events = snapshot.data!;
-
             return ListView.builder(
               itemCount: events.length,
               itemBuilder: (BuildContext context, int index) {
@@ -50,9 +49,6 @@ class PartnerEventItem extends StatelessWidget {
       subtitle: Text(
           'Date: ${event.eventDate.toString()}'), // You can display event details here
       onTap: () {
-        // Implement the logic for partner selection here
-        // You can show a dialog or navigate to a new page to allow partners to confirm their partnership
-        // For example, you can use Navigator.push to navigate to a confirmation page
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -63,29 +59,103 @@ class PartnerEventItem extends StatelessWidget {
   }
 }
 
-class PartnerConfirmationPage extends StatelessWidget {
+class PartnerConfirmationPage extends StatefulWidget {
   final Event event;
 
   const PartnerConfirmationPage({Key? key, required this.event})
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
+  _PartnerConfirmationPageState createState() =>
+      _PartnerConfirmationPageState();
+}
+
+class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
+  String _selectedPartnerType = 'Sponsor'; // Default partner type
+  final TextEditingController _partnerNameController = TextEditingController();
+
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+
+  @override
+  void dispose() {
+    _partnerNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Implement the UI for partner confirmation page
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirm Partnership'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Event: ${event.eventName}',
-              style: const TextStyle(fontSize: 20),
-            ),
-            // Add more UI elements for partner confirmation, e.g., checkboxes, buttons, etc.
-          ],
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Event: ${widget.event.eventName}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Select Partner Type:',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              DropdownButton<String>(
+                value: _selectedPartnerType,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedPartnerType = newValue!;
+                  });
+                },
+                items: <String>['Sponsor', 'Event Company', 'Hotel']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _partnerNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Partner Name',
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  // Implement logic to save partner type and name to database
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('partnerships')
+                        .add({
+                      'eventId': widget.event.eventID,
+                      'partnerName': _partnerNameController.text,
+                      'partnerType': _selectedPartnerType,
+                      'timestamp': FieldValue.serverTimestamp(),
+                    });
+                  _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+                        content: Text('Partnership confirmed successfully'),
+                      ));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error confirming partnership: $e'),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Confirm Partnership'),
+              ),
+            ],
+          ),
         ),
       ),
     );
