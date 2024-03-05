@@ -9,7 +9,7 @@ import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
-enum Role { client, eventManager, financeManager, admin, partners }
+enum Role { client, eventManager, financeManager, admin, partners, logistics }
 
 class RegisterClient extends StatefulWidget {
   // Accepting the toggle view function
@@ -165,7 +165,11 @@ class _RegisterClientState extends State<RegisterClient> {
                               DropdownMenuItem(
                                 value: Role.partners,
                                 child: Text('Partners'),
-                              )
+                              ),
+                              DropdownMenuItem(
+                                value: Role.logistics,
+                                child: Text('Logistics'),
+                              ),
                             ],
                             onChanged: (item) {
                               setState(() {
@@ -184,6 +188,9 @@ class _RegisterClientState extends State<RegisterClient> {
                                     break;
                                   case Role.partners:
                                     role = 'partners';
+                                    break;
+                                  case Role.logistics:
+                                    role = 'logistics';
                                     break;
                                 }
                               });
