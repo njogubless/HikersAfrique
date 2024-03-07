@@ -30,13 +30,13 @@ class ClientAdminRedirect extends StatelessWidget {
         if (user?.role == 'financeManager') {
           return const FinanceManagerHome();
         }
-        if (user?.role == 'Partners') {
+        if (user?.role == 'partners') {
           return const PartnersPage();
         }
         if (user?.role == 'admin') {
           return const AdminHome();
         }
-        if (user?.role =='Logistics'){
+        if (user?.role =='logistics'){
           return const LogisticsPage();
         }
         return const HomeScreen();

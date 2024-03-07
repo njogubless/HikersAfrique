@@ -113,7 +113,7 @@ class PaymentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
       future: Database
-          .getPayments(), // Assume this method retrieves payment details
+          .getrecordPayments(), // Assume this method retrieves payment details
       initialData: const [],
       builder: (context, snapshot) {
         final List<Payment> payments = snapshot.data!;

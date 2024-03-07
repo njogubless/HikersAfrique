@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
+import 'package:hikersafrique/services/auth.dart';
 
 class Event {
   final String name;
@@ -34,37 +33,36 @@ class LogisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Logistics Page'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AllocationPage(),
-                    ),
-                  );
-                },
-                child: const Card(
-                  margin: EdgeInsets.all(16),
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      'Logistics',
-                      style: TextStyle(fontSize: 20),
-                    ),
+    return Scaffold(
+      appBar:const PreferredSize(
+        preferredSize: Size.fromHeight(90.0),
+        child: LogisticsPageAppBar(),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AllocationPage(),
+                  ),
+                );
+              },
+              child: const Card(
+                margin: EdgeInsets.all(16),
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'Logistics',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -75,21 +73,16 @@ class AllocationPage extends StatefulWidget {
   const AllocationPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AllocationPageState createState() => _AllocationPageState();
+  AllocationPageState createState() => AllocationPageState();
 }
 
-class _AllocationPageState extends State<AllocationPage> {
+class AllocationPageState extends State<AllocationPage> {
   List<Event> events = [];
-  List<Driver> drivers = [];
-  List<Guide> guides = [];
 
   @override
   void initState() {
     super.initState();
     fetchEventData();
-    fetchDriverData();
-    fetchGuideData();
   }
 
   void fetchEventData() async {
@@ -102,14 +95,6 @@ class _AllocationPageState extends State<AllocationPage> {
               ))
           .toList();
     });
-  }
-
-  void fetchDriverData() async {
-    // Add logic to fetch drivers from Firestore
-  }
-
-  void fetchGuideData() async {
-    // Add logic to fetch guides from Firestore
   }
 
   @override
@@ -127,7 +112,6 @@ class _AllocationPageState extends State<AllocationPage> {
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
-            // Call function to get available events and display them
             FutureBuilder<List<Event>>(
               future: getAvailableEvents(),
               builder: (context, snapshot) {
@@ -143,41 +127,6 @@ class _AllocationPageState extends State<AllocationPage> {
                       final event = snapshot.data![index];
                       return ListTile(
                         title: Text(event.name),
-                        onTap: (){
-                          // Handle event selection
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Allocate Driver and Guide'),
-                                content: const Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Select Driver:'),
-                                    // Add dropdown to select driver
-                                    Text('Select Guide:'),
-                                    // Add dropdown to select guide
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      // Handle allocation logic
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Allocate'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
                       );
                     },
                   );
@@ -190,10 +139,82 @@ class _AllocationPageState extends State<AllocationPage> {
     );
   }
 
-  // Function to get available events
   Future<List<Event>> getAvailableEvents() async {
     // Simulating fetching events from a database or API
     await Future.delayed(const Duration(seconds: 2)); // Simulate delay
     return events;
   }
 }
+
+class LogisticsPageAppBar extends StatelessWidget {
+  const LogisticsPageAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthService auth = AuthService();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Sort
+            InkWell(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: const Icon(Icons.sort_rounded, size: 28.0),
+              ),
+            ),
+            // Location and City
+            const Row(
+              children: [
+                // Location on icon
+                Icon(
+                  Icons.supervised_user_circle_rounded,
+                  color: Color(0xFFF65959),
+                ),
+                // City Text
+                Text(
+                  'Logistics Page',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            // Logout button
+            DropdownButton<int>(
+              icon: const Icon(Icons.more_vert),
+              underline: const SizedBox.shrink(),
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontFamily: 'AvenirNext',
+                    ),
+                  ),
+                ),
+              ],
+              onChanged: (selection) {
+                auth.signOut();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

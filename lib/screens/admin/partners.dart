@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,9 +10,10 @@ class PartnersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Partners'),
-      ),
+      appBar:const PreferredSize(
+        preferredSize:Size.fromHeight(90.0),
+        child: PartnersPageAppBar(),
+      ), 
       body: FutureBuilder<List<Event>>(
         future: Database.getAvailableEvents(),
         builder: (context, snapshot) {
@@ -44,16 +46,45 @@ class PartnerEventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(event.eventName),
-      subtitle: Text(
-          'Date: ${event.eventDate.toString()}'), // You can display event details here
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Image.network(
+                event.eventImageUrl,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    event.eventName,
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.w500),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PartnerConfirmationPage(event: event)),
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => PartnerConfirmationPage(
+                      event: event,
+                    )));
       },
     );
   }
@@ -75,8 +106,8 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
   String _selectedPartnerType = 'Sponsor'; // Default partner type
   final TextEditingController _partnerNameController = TextEditingController();
 
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
-
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   void dispose() {
@@ -141,9 +172,9 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                       'partnerType': _selectedPartnerType,
                       'timestamp': FieldValue.serverTimestamp(),
                     });
-                  _scaffoldKey.currentState?.showSnackBar(const SnackBar(
-                        content: Text('Partnership confirmed successfully'),
-                      ));
+                    _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+                      content: Text('Partnership confirmed successfully'),
+                    ));
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -156,6 +187,78 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class PartnersPageAppBar extends StatelessWidget {
+  const PartnersPageAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthService auth = AuthService();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Sort
+            InkWell(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: const Icon(Icons.sort_rounded, size: 28.0),
+              ),
+            ),
+            // Location and City
+            const Row(
+              children: [
+                // Location on icon
+                Icon(
+                  Icons.supervised_user_circle_rounded,
+                  color: Color(0xFFF65959),
+                ),
+                // City Text
+                Text(
+                  'Partners Page',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            // Search icon
+            DropdownButton<int>(
+              icon: const Icon(Icons.more_vert),
+              underline: const SizedBox.shrink(),
+              items: const [
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontFamily: 'AvenirNext',
+                    ),
+                  ),
+                ),
+              ],
+              onChanged: (selection) {
+                auth.signOut();
+              },
+            ),
+          ],
         ),
       ),
     );

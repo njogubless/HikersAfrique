@@ -9,7 +9,7 @@ class Database {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Fetch payments from Firestore
-  static Future<List<Payment>> getPayments() async {
+  static Future<List<Payment>> getrecordPayments() async {
     try {
       QuerySnapshot querySnapshot = await firestore.collection('payments').get();
 
@@ -18,7 +18,7 @@ class Database {
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         String clientName = doc['clientName'];
         double amountPaid = doc['amountPaid'];
-        int totalCost = doc['totalCost'];
+        double totalCost = doc['totalCost'];
         String email = doc['email'];
         String event = doc['event'];
         String mpesaCode = doc['mpesaCode'];
@@ -42,6 +42,31 @@ class Database {
       return [];
     }
   }
+
+
+static Future<void> recordPayments(List<Payment> payments) async {
+  try {
+    final CollectionReference paymentCollection = FirebaseFirestore.instance.collection('payments');
+
+    // Loop through the payments and set each one to Firestore
+    for (var payment in payments) {
+      final DocumentReference docRef = paymentCollection.doc(); // Get a new document reference
+      await docRef.set({
+        'clientName': payment.clientName,
+        'amountPaid': payment.amountPaid,
+        'totalCost': payment.totalCost,
+        'email': payment.email,
+        'event': payment.event,
+        'mpesaCode': payment.mpesaCode,
+      });
+    }
+    print('Payments added successfully to Firestore');
+  } catch (e) {
+    print('Error adding payments to Firestore: $e');
+  }
+}
+
+
 
   // Generate code associated with clients paying for events
   static String generatePaymentCode(String clientName, String event, double amountPaid) {
