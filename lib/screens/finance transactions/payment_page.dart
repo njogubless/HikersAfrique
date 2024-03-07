@@ -1,11 +1,40 @@
 // ignore_for_file: unused_import, unused_local_variable
 
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_confirmation_page.dart';
 import 'package:hikersafrique/screens/finance%20transactions/ticket_page.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import FirebaseFirestore
+
+// Define the Payment class here...
+
+// Define the recordPayments function outside of the _PaymentPageState class
+Future<void> recordPayments(List<Payment> payments) async {
+  try {
+    final CollectionReference paymentCollection = FirebaseFirestore.instance.collection('payments');
+
+    // Loop through the payments and set each one to Firestore
+    for (var payment in payments) {
+      final DocumentReference docRef = paymentCollection.doc(); // Get a new document reference
+      await docRef.set({
+        'clientName': payment.clientName,
+        'amountPaid': payment.amountPaid,
+        'totalCost': payment.totalCost,
+        'email': payment.email,
+        'event': payment.event,
+        'mpesaCode': payment.mpesaCode,
+      });
+    }
+    print('Payments added successfully to Firestore');
+  } catch (e) {
+    print('Error adding payments to Firestore: $e');
+    throw e; // Rethrow the error for the caller to handle
+  }
+}
 
 class PaymentPage extends StatefulWidget {
   final Event event;
@@ -20,6 +49,10 @@ class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _ticketCountController = TextEditingController();
   final TextEditingController _costController = TextEditingController();
   final TextEditingController _mpesaCodeController = TextEditingController();
+  final TextEditingController clientNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController eventController = TextEditingController();
+  final TextEditingController amountPaidController = TextEditingController();
 
   @override
   void dispose() {
@@ -121,16 +154,30 @@ class _PaymentPageState extends State<PaymentPage> {
 
     // Get the M-Pesa code from the text field
     String mpesaCode = _mpesaCodeController.text;
+    String clientName = clientNameController.text;
+    String email = emailController.text;
+    String event = eventController.text;
+    double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
 
     // Perform payment logic here...
-
-    // Assuming payment is successful
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TicketPage(event: widget.event),
-      ),
+    Payment payment = Payment(
+      clientName: clientName,
+      amountPaid: amountPaid,
+      email: email,
+      event: event,
+      mpesaCode: mpesaCode,
+      totalCost: totalCost,
     );
+    // Assuming payment is successful
+    recordPayments([payment]).then((_) {
+      // Payment recorded successfully, navigate to ticket page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TicketPage(event: widget.event),
+        ),
+      );
+    });
   }
 }
 

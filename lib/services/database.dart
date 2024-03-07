@@ -66,15 +66,6 @@ static Future<void> recordPayments(List<Payment> payments) async {
   }
 }
 
-
-
-  // Generate code associated with clients paying for events
-  static String generatePaymentCode(String clientName, String event, double amountPaid) {
-    // Generate a code based on client name, event, and amount paid (you can use any logic here)
-    String code = '${clientName.substring(0, 3)}-${event.substring(0, 3)}-${amountPaid.toInt()}';
-    return code;
-  }
-
   // Save registered client data
   static Future<void> saveClientData(Client client) async {
     final DocumentReference docRef = firestore.collection('clients').doc();
