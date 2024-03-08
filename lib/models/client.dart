@@ -22,6 +22,7 @@ class Client {
     );
   }
 
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'uid': uid,

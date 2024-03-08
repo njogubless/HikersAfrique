@@ -273,10 +273,11 @@ class _AddEventsState extends State<AddEvents> {
   }
 
   void _createEventWithImage(
-    File imageFile,
-    BuildContext context,
-  ) async {
-    final scaff = ScaffoldMessenger.of(context);
+  File imageFile,
+  BuildContext context,
+) async {
+  final scaff = ScaffoldMessenger.of(context);
+  try {
     final event = Event(
       eventID: const Uuid().v4(),
       eventCost: int.parse(_eventCostController.text),
@@ -288,7 +289,6 @@ class _AddEventsState extends State<AddEvents> {
       eventTime: _eventTimeController.text,
       eventDetails: _eventDetailsController.text,
       eventPackage: _eventPackageController.text,
-      //eventImageUrl:__eventImageUrlController.text,
     );
 
     await Database.createEvent(event);
@@ -298,7 +298,6 @@ class _AddEventsState extends State<AddEvents> {
     _eventTimeController.clear();
     _eventCostController.clear();
     _eventLocationController.clear();
-    //_eventImageUrlController.clear();
     _eventPackageController.clear();
     scaff.showSnackBar(
       const SnackBar(
@@ -310,5 +309,17 @@ class _AddEventsState extends State<AddEvents> {
     if (mounted) {
       Navigator.pop(context);
     }
+  } catch (e) {
+    // Print the error for debugging purposes
+    print('Error creating event: $e');
+    // Show an error message to the user
+    scaff.showSnackBar(
+      const SnackBar(
+        content: Text('Failed to create event. Please try again.'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
+}
+
 }

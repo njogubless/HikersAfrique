@@ -131,11 +131,10 @@ class PaymentDetailsScreen extends StatelessWidget {
             rows: payments.map((payment) {
               return DataRow(cells: [
                 DataCell(Text(payment.clientName)),
-                DataCell(Text(payment.amountPaid.toString())),
-                DataCell(Text(payment.email)),
+                DataCell(Text(payment.totalCost.toString())),
+                //DataCell(Text(payment.email)),
                 DataCell(Text(payment.event)),
-                DataCell(Text(payment
-                    .mpesaCode)), // Assuming you have mpesa code in payment model
+                DataCell(Text(payment.mpesaCode)), // Assuming you have mpesa code in payment model
                 DataCell(Row(
                   children: [
                     IconButton(

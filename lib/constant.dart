@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -38,7 +39,7 @@ class Loading extends StatelessWidget {
 }
 
 class Misc {
-  static Future<void> getReceipt(Event event, Client client, BuildContext context) async {
+  static Future<void> getReceipt(Event event, Payment payment,Client client, BuildContext context) async {
     final pdf = pw.Document();
 
     final eventImage = await networkImage(event.eventImageUrl);
@@ -47,6 +48,13 @@ class Misc {
         color: PdfColors.blueAccent,
         fontSize: 30,
         fontBold: pw.Font.timesBold());
+
+         // Initialize payment object with the provided totalCost
+    //Payment payment = Payment(totalCost: totalCost);
+
+    // Debug print payment.totalCost
+    //print('Payment total cost: ${event.totalCost}');
+        
 
     pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -58,8 +66,8 @@ class Misc {
               pw.SizedBox(height: 50),
               pw.Text("Name: ${client.clientName}", style: fontStyle),
               pw.Text("Event: ${event.eventName}", style: fontStyle),
-              pw.Text("Amount paid: Ksh.${event.totalCost}", style: fontStyle),
-              //pw.Text("Total Amount Paid: Ksh.$totalAmount",style:fontStyle),
+              pw.Text("Amount paid: Ksh.${payment.totalCost}", style: fontStyle),
+              pw.Text("Total Amount Paid: Ksh.$event totalAmount",style:fontStyle),
               pw.Text("Date: ${event.eventDate}", style: fontStyle),
               pw.Text("Time:${event.eventTime}",style: fontStyle),           ],
           ); // Center

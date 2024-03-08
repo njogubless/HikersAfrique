@@ -15,11 +15,13 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Import FirebaseFiresto
 // Define the recordPayments function outside of the _PaymentPageState class
 Future<void> recordPayments(List<Payment> payments) async {
   try {
-    final CollectionReference paymentCollection = FirebaseFirestore.instance.collection('payments');
+    final CollectionReference paymentCollection =
+        FirebaseFirestore.instance.collection('payments');
 
     // Loop through the payments and set each one to Firestore
     for (var payment in payments) {
-      final DocumentReference docRef = paymentCollection.doc(); // Get a new document reference
+      final DocumentReference docRef =
+          paymentCollection.doc(); // Get a new document reference
       await docRef.set({
         'clientName': payment.clientName,
         'amountPaid': payment.amountPaid,
@@ -38,8 +40,9 @@ Future<void> recordPayments(List<Payment> payments) async {
 
 class PaymentPage extends StatefulWidget {
   final Event event;
+  final Payment payment;
 
-  const PaymentPage({Key? key, required this.event}) : super(key: key);
+  const PaymentPage({Key? key, required this.event, required this.payment}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -49,8 +52,8 @@ class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _ticketCountController = TextEditingController();
   final TextEditingController _costController = TextEditingController();
   final TextEditingController _mpesaCodeController = TextEditingController();
-  final TextEditingController clientNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController _clientNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController amountPaidController = TextEditingController();
 
@@ -151,12 +154,12 @@ class _PaymentPageState extends State<PaymentPage> {
     double ticketCount = double.tryParse(_ticketCountController.text) ?? 0;
     double eventCostPerTicket = widget.event.eventCost.toDouble();
     double totalCost = ticketCount * eventCostPerTicket;
-
-    // Get the M-Pesa code from the text field
     String mpesaCode = _mpesaCodeController.text;
-    String clientName = clientNameController.text;
-    String email = emailController.text;
-    String event = eventController.text;
+
+    String clientName = _clientNameController.text;
+    String email = _emailController.text;
+
+    String event = widget.event.eventName;
     double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
 
     // Perform payment logic here...
@@ -174,7 +177,7 @@ class _PaymentPageState extends State<PaymentPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => TicketPage(event: widget.event),
+          builder: (context) => TicketPage(event: widget.event, payment: payment,),
         ),
       );
     });
