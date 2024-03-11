@@ -1,11 +1,9 @@
 class Client {
-  final String uid;
   final String clientName;
   final String clientEmail;
   final String role;
   String status;
   Client({
-    required this.uid,
     required this.clientName,
     required this.clientEmail,
     required this.role,
@@ -14,7 +12,6 @@ class Client {
 
   factory Client.fromJson(Map<String, dynamic> client) {
     return Client(
-      uid: client['uid'],
       clientName: client['clientName'],
       clientEmail: client['clientEmail'],
       status: client['status'],
@@ -25,7 +22,6 @@ class Client {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'uid': uid,
       'clientName': clientName,
       'clientEmail': clientEmail,
       'status': status,

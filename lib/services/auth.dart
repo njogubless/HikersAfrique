@@ -10,7 +10,6 @@ class AuthService {
   Client? _userFromFirebaseUser(User? user, bool signUp) {
     return user != null
         ? Client(
-            uid: user.uid,
             clientName: '',
             clientEmail: user.email!,
             status: signUp ? 'Pending' : 'Verified',
@@ -35,7 +34,6 @@ class AuthService {
       User user = result.user!;
       // Saved registered user data
       final client = Client(
-        uid: user.uid,
         clientName: name,
         clientEmail: user.email!,
         role: role,
