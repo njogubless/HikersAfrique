@@ -67,7 +67,7 @@ class Misc {
               pw.Text("Name: ${client.clientName}", style: fontStyle),
               pw.Text("Event: ${event.eventName}", style: fontStyle),
               pw.Text("Amount paid: Ksh.${payment.totalCost}", style: fontStyle),
-              pw.Text("Total Amount Paid: Ksh.$event totalAmount",style:fontStyle),
+              //pw.Text("Total Amount Paid: Ksh.${event totalAmount}",style:fontStyle),
               pw.Text("Date: ${event.eventDate}", style: fontStyle),
               pw.Text("Time:${event.eventTime}",style: fontStyle),           ],
           ); // Center

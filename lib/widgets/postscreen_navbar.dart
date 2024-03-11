@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/models/event.dart' ;
+import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
 import 'package:provider/provider.dart';
+
+import '../screens/finance_manager/payment_model.dart';
 
 class PostScreenNavBar extends StatelessWidget {
   const PostScreenNavBar({super.key, required this.event});
@@ -106,11 +108,26 @@ class PostScreenNavBar extends StatelessWidget {
                       //Book Now
                       ElevatedButton(
                         onPressed: () async {
+                          double amountPaid = 0.0;
+                          String clientName = "";
+                          String email = "";
+                          String mpesacode = "";
+
+                          Payment payment = Payment(
+
+                          clientName :clientName,
+                          amountPaid : amountPaid,
+                          email : email,
+                          event : event.eventName,
+                          mpesaCode : mpesacode,
+                          totalCost :0.0,
+                          );
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentPage(
                                   event: event,
+                                  payment: payment,
                                 ),
                               ));
                         },

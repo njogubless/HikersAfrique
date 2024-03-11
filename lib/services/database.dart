@@ -11,14 +11,15 @@ class Database {
   // Fetch payments from Firestore
   static Future<List<Payment>> getrecordPayments() async {
     try {
-      QuerySnapshot querySnapshot = await firestore.collection('payments').get();
+      QuerySnapshot querySnapshot =
+          await firestore.collection('payments').get();
 
       List<Payment> payments = [];
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         String clientName = doc['clientName'];
-        double amountPaid = doc['amountPaid'];
-        double totalCost = doc['totalCost'];
+        double amountPaid = doc['amountPaid'].toDouble();
+        double totalCost = doc['totalCost'].toDouble();
         String email = doc['email'];
         String event = doc['event'];
         String mpesaCode = doc['mpesaCode'];
@@ -43,28 +44,29 @@ class Database {
     }
   }
 
+  static Future<void> recordPayments(List<Payment> payments) async {
+    try {
+      final CollectionReference paymentCollection =
+          FirebaseFirestore.instance.collection('payments');
 
-static Future<void> recordPayments(List<Payment> payments) async {
-  try {
-    final CollectionReference paymentCollection = FirebaseFirestore.instance.collection('payments');
-
-    // Loop through the payments and set each one to Firestore
-    for (var payment in payments) {
-      final DocumentReference docRef = paymentCollection.doc(); // Get a new document reference
-      await docRef.set({
-        'clientName': payment.clientName,
-        'amountPaid': payment.amountPaid,
-        'totalCost': payment.totalCost,
-        'email': payment.email,
-        'event': payment.event,
-        'mpesaCode': payment.mpesaCode,
-      });
+      // Loop through the payments and set each one to Firestore
+      for (var payment in payments) {
+        final DocumentReference docRef =
+            paymentCollection.doc(); // Get a new document reference
+        await docRef.set({
+          'clientName': payment.clientName,
+          'amountPaid': payment.amountPaid,
+          'totalCost': payment.totalCost,
+          'email': payment.email,
+          'event': payment.event,
+          'mpesaCode': payment.mpesaCode,
+        });
+      }
+      print('Payments added successfully to Firestore');
+    } catch (e) {
+      print('Error adding payments to Firestore: $e');
     }
-    print('Payments added successfully to Firestore');
-  } catch (e) {
-    print('Error adding payments to Firestore: $e');
   }
-}
 
   // Save registered client data
   static Future<void> saveClientData(Client client) async {
@@ -261,7 +263,4 @@ static Future<void> recordPayments(List<Payment> payments) async {
     }
     return total;
   }
-
-  
-  
 }

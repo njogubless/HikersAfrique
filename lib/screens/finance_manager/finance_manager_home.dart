@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_details.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 
 class FinanceManagerHome extends StatelessWidget {
@@ -11,56 +13,191 @@ class FinanceManagerHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(90.0),
+      appBar:const PreferredSize(
+        preferredSize:Size.fromHeight(90.0),
         child: FinanceManagerAppBar(),
       ),
       drawer: Drawer(
         child: SafeArea(
-            child: Column(
-          children: [
-            Image.asset(
-              'Image/wheat.jpg',
-              fit: BoxFit.fitWidth,
-              height: 150,
-              width: double.infinity,
-            ),
-            ListTile(
-              title: Text(
-                user.clientName,
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              onTap: null,
-            )
-          ],
-        )),
-      ),
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(left: 15, right: 15),
           child: Column(
             children: [
-              SizedBox(height: 20.0),
-              Row(
-                children: [
-                  Text(
-                    'Payments from Clients',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
+              Image.asset(
+                'Image/wheat.jpg',
+                fit: BoxFit.fitWidth,
+                height: 150,
+                width: double.infinity,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientName,
+                  style: const TextStyle(
+                    fontSize: 30,
                   ),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: PaymentDetailsScreen(),
-              ),
+                ),
+                onTap: null,
+              )
             ],
           ),
+        ),
+      ),
+      body:const Padding(
+        padding: EdgeInsets.only(left: 15, right: 15, top: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children:[
+                Text(
+                  'Payments from Clients',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+            Expanded(
+              child: PaymentDetailsScreen(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PaymentDetailsScreen extends StatefulWidget {
+  const PaymentDetailsScreen({Key? key}) : super(key: key);
+
+  @override
+  _PaymentDetailsScreenState createState() => _PaymentDetailsScreenState();
+}
+
+class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
+  late List<Payment> _pendingPayments;
+  late List<Payment> _approvedPayments;
+  late List<Payment> _rejectedPayments;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendingPayments = [];
+    _approvedPayments = [];
+    _rejectedPayments = [];
+    _loadPayments();
+  }
+
+  Future<void> _loadPayments() async {
+    try {
+      List<Payment> payments = await Database.getrecordPayments();
+      setState(() {
+        _pendingPayments = payments;
+      });
+    } catch (e) {
+      print('Error fetching payments: $e');
+    }
+  }
+
+  void _approvePayment(Payment payment) {
+    setState(() {
+      _pendingPayments.remove(payment);
+      _approvedPayments.add(payment);
+    });
+  }
+
+  void _rejectPayment(Payment payment) {
+    setState(() {
+      _pendingPayments.remove(payment);
+      _rejectedPayments.add(payment);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Payment Details',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildPaymentCard(
+            title: 'Approved Payments',
+            payments: _approvedPayments,
+            isEmpty: _approvedPayments.isEmpty,
+          ),
+          const SizedBox(height: 20),
+          _buildPaymentCard(
+            title: 'Pending Payments',
+            payments: _pendingPayments,
+            isEmpty: _pendingPayments.isEmpty,
+            actionButtonLabel: 'Approve',
+            onActionButtonPressed: _approvePayment,
+          ),
+          const SizedBox(height: 20),
+          _buildPaymentCard(
+            title: 'Rejected Payments',
+            payments: _rejectedPayments,
+            isEmpty: _rejectedPayments.isEmpty,
+            actionButtonLabel: 'Reject',
+            onActionButtonPressed: _rejectPayment,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentCard({
+    required String title,
+    required List<Payment> payments,
+    required bool isEmpty,
+    String actionButtonLabel = '',
+    void Function(Payment)? onActionButtonPressed,
+  }) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            if (isEmpty)
+              const Text(
+                'No payments available.',
+                textAlign: TextAlign.justify,
+              )
+            else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: payments.map((payment) {
+                  return ListTile(
+                    title: Text(payment.clientName),
+                    subtitle: Text('Amount: ${payment.totalCost}'),
+                    trailing: actionButtonLabel.isNotEmpty
+                        ? ElevatedButton(
+                            onPressed: () {
+                              onActionButtonPressed?.call(payment);
+                            },
+                            child: Text(actionButtonLabel),
+                          )
+                        : null,
+                  );
+                }).toList(),
+              ),
+          ],
         ),
       ),
     );

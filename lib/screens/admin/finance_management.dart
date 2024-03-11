@@ -18,7 +18,6 @@ class FinanceManagement extends StatelessWidget {
             const SizedBox(
               height: 20.0,
             ),
-            const TotalRevenueSection(),
             const SizedBox(height: 20.0),
             const Row(
               children: [
@@ -126,74 +125,6 @@ class EventItem extends StatelessWidget {
   }
 }
 
-class TotalRevenueSection extends StatelessWidget {
-  const TotalRevenueSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
-      child: Container(
-        height: 130,
-        width: double.infinity,
-        padding: const EdgeInsets.all(15.0),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Total Revenue',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20,
-                      ),
-                    ),
-                    FutureBuilder<int>(
-                        future: Database.getNumberOfEvents(),
-                        initialData: 0,
-                        builder: (context, snapshot) {
-                          final no = snapshot.data!;
-                          return Text(
-                            'No. of events: $no',
-                            style: const TextStyle(color: Colors.white),
-                          );
-                        }),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FutureBuilder<int>(
-                    future: Database.getTotalRevenue(),
-                    initialData: 0,
-                    builder: (context, snapshot) {
-                      final total = snapshot.data!;
-                      return Text(
-                        'Ksh. $total',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 20),
-                      );
-                    }),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class AdminAppBar extends StatelessWidget {
   const AdminAppBar({super.key});

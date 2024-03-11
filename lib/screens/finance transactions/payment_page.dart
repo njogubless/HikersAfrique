@@ -156,8 +156,11 @@ class _PaymentPageState extends State<PaymentPage> {
     double totalCost = ticketCount * eventCostPerTicket;
     String mpesaCode = _mpesaCodeController.text;
 
-    String clientName = _clientNameController.text;
-    String email = _emailController.text;
+    // Retrieve client name and email from the logged-in user
+    final AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    String clientName = authNotifier.user?.clientName?? 'N/A';
+    String email = authNotifier.user?.clientEmail ?? 'N/A';
+
 
     String event = widget.event.eventName;
     double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
