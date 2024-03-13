@@ -78,6 +78,11 @@ class AllocationPage extends StatefulWidget {
 
 class AllocationPageState extends State<AllocationPage> {
   List<Event> events = [];
+  List<String> drivers = ['Driver1', 'Driver2', 'Driver3'];
+  List<String> guides = ['Guide1', 'Guide2', 'Guide3'];
+  Event? selectedEvent;
+  String? selectedDriver;
+  String? selectedGuide;
 
   @override
   void initState() {
@@ -112,26 +117,64 @@ class AllocationPageState extends State<AllocationPage> {
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
-            FutureBuilder<List<Event>>(
-              future: getAvailableEvents(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+            DropdownButton<Event>(
+              value: selectedEvent,
+              onChanged: (Event? value) {
+                setState(() {
+                  selectedEvent = value;
+                });
+              },
+              items: events.map((Event event) {
+                return DropdownMenuItem<Event>(
+                  value: event,
+                  child: Text(event.name),
+                );
+              }).toList(),
+              hint: const Text('Select Event'),
+            ),
+            const SizedBox(height: 20),
+            DropdownButton<String>(
+              value: selectedDriver,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedDriver = value;
+                });
+              },
+              items: drivers.map((String driver) {
+                return DropdownMenuItem<String>(
+                  value: driver,
+                  child: Text(driver),
+                );
+              }).toList(),
+              hint: const Text('Select Driver'),
+            ),
+            const SizedBox(height: 20),
+            DropdownButton<String>(
+              value: selectedGuide,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedGuide = value;
+                });
+              },
+              items: guides.map((String guide) {
+                return DropdownMenuItem<String>(
+                  value: guide,
+                  child: Text(guide),
+                );
+              }).toList(),
+              hint: const Text('Select Guide'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Allocate and store data in Firestore
+                if (selectedEvent != null && selectedDriver != null && selectedGuide != null) {
+                  allocate(selectedEvent!, selectedDriver!, selectedGuide!);
                 } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final event = snapshot.data![index];
-                      return ListTile(
-                        title: Text(event.name),
-                      );
-                    },
-                  );
+                  // Show error message or handle invalid selection
                 }
               },
+              child: const Text('Allocate'),
             ),
           ],
         ),
@@ -139,10 +182,19 @@ class AllocationPageState extends State<AllocationPage> {
     );
   }
 
-  Future<List<Event>> getAvailableEvents() async {
-    // Simulating fetching events from a database or API
-    await Future.delayed(const Duration(seconds: 2)); // Simulate delay
-    return events;
+  Future<void> allocate(Event event, String driver, String guide) async {
+    // Store allocation data in Firestore
+    try {
+      await FirebaseFirestore.instance.collection('allocations').add({
+        'event': event.name,
+        'driver': driver,
+        'guide': guide,
+      });
+      // Show success message or navigate to another page
+    } catch (e) {
+      // Handle error
+      print('Error allocating: $e');
+    }
   }
 }
 
@@ -217,4 +269,3 @@ class LogisticsPageAppBar extends StatelessWidget {
     );
   }
 }
-
