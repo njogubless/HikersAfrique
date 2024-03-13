@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/finance_manager/payment_details.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
