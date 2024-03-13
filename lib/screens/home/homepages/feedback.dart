@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:provider/provider.dart';
 //import 'package:flutter_firebase_feedback_form/firebase_options.dart';
 
 class FeedbackDialog extends StatefulWidget {
@@ -22,6 +24,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -101,8 +104,9 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                             // Write the server's timestamp and the user's feedback
                             await collection.doc().set({
                               'timestamp': FieldValue.serverTimestamp(),
-                              'feedback': _controller.text,
-                              'clientName': _controller.text,
+                              'message': _controller.text,
+                              'name': user.clientName,
+                              'role': user.role,
                             });
 
                             message = 'Feedback sent successfully';
@@ -131,6 +135,5 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
         ),
       ),
     );
-    
   }
 }
