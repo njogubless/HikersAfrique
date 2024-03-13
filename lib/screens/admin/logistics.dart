@@ -39,7 +39,7 @@ class LogisticsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
-      appBar:const PreferredSize(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: LogisticsPageAppBar(),
       ),
@@ -60,7 +60,7 @@ class LogisticsPage extends StatelessWidget {
                     fontSize: 30,
                   ),
                 ),
-                onTap:(){
+                onTap: () {
                   Navigator.pop(context);
                 },
               ),
@@ -150,7 +150,7 @@ class LogisticsPage extends StatelessWidget {
       ),
     );
   }
-  
+
   Future launchlink(String link) async {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
@@ -181,22 +181,22 @@ class AllocationPageState extends State<AllocationPage> {
     super.initState();
     fetchEventData();
   }
-void fetchEventData() async {
-  List<Event> availableEvents = await getAvailableEvents();
-  setState(() {
-    events = availableEvents;
-  });
-}
-static Future<List<Event>> getAvailableEvents() async {
-  final QuerySnapshot querySnapshot =
-      await FirebaseFirestore.instance.collection('events').get();
-  final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
-  return docs
-      .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
-      .toList();
-}
 
+  void fetchEventData() async {
+    List<Event> availableEvents = await getAvailableEvents();
+    setState(() {
+      events = availableEvents;
+    });
+  }
 
+  static Future<List<Event>> getAvailableEvents() async {
+    final QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('events').get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs
+        .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +264,9 @@ static Future<List<Event>> getAvailableEvents() async {
             ElevatedButton(
               onPressed: () {
                 // Allocate and store data in Firestore
-                if (selectedEvent != null && selectedDriver != null && selectedGuide != null) {
+                if (selectedEvent != null &&
+                    selectedDriver != null &&
+                    selectedGuide != null) {
                   allocate(selectedEvent!, selectedDriver!, selectedGuide!);
                 } else {
                   // Show error message or handle invalid selection
@@ -292,9 +294,9 @@ static Future<List<Event>> getAvailableEvents() async {
       print('Error allocating: $e');
     }
   }
-  
 
-  Future<void> recordallocationdata(Event event, String driver, String guide) async {
+  Future<void> recordallocationdata(
+      Event event, String driver, String guide) async {
     // Store allocation data in Firestore
     try {
       await FirebaseFirestore.instance.collection('allocations').add({
@@ -315,7 +317,6 @@ static Future<List<Event>> getAvailableEvents() async {
   }
 }
 
-
 class LogisticsPageAppBar extends StatelessWidget {
   const LogisticsPageAppBar({Key? key}) : super(key: key);
 
@@ -330,7 +331,9 @@ class LogisticsPageAppBar extends StatelessWidget {
           children: [
             // Sort
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
