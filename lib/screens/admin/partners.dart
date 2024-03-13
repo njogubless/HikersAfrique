@@ -299,7 +299,9 @@ class PartnersPageAppBar extends StatelessWidget {
           children: [
             // Sort
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
