@@ -254,6 +254,8 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  print(widget.event.eventID);
+                  print(_selectedPartnerType);
                   // Implement logic to save partner type and name to database
                   try {
                     await FirebaseFirestore.instance
@@ -264,9 +266,12 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                       'partnerType': _selectedPartnerType,
                       'timestamp': FieldValue.serverTimestamp(),
                     });
-                    _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Partnership confirmed successfully'),
                     ));
+                    setState(() {
+                      _partnerNameController.clear();
+                    });
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
