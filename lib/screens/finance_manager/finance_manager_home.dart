@@ -35,7 +35,7 @@ class FinanceManagerHome extends StatelessWidget {
                     fontSize: 30,
                   ),
                 ),
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
               ),
@@ -56,30 +56,31 @@ class FinanceManagerHome extends StatelessWidget {
                 ),
               ),
               ListTile(
-                  title: const Text(
-                    "Contact us",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                title: const Text(
+                  "Contact us",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  onTap: () {
-                    launchlink("https://www.hikersafrique.com/");
-                    // ignore: unused_local_variable
-                  }),
+                ),
+                onTap: () {
+                  launchlink("https://www.hikersafrique.com/");
+                },
+              ),
               ListTile(
-                  title: const Text(
-                    "Feedback",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                title: const Text(
+                  "Feedback",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FeedbackDialog()));
-                  }),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FeedbackDialog()));
+                },
+              ),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
@@ -121,16 +122,14 @@ class FinanceManagerHome extends StatelessWidget {
       ),
     );
   }
-  
+
   Future launchlink(String link) async {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
     } catch (error) {
-      // ignore: avoid_print
       print(error);
     }
   }
-  
 }
 
 class PaymentDetailsScreen extends StatefulWidget {
@@ -158,7 +157,9 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     try {
       List<Payment> payments = await Database.getrecordPayments();
       setState(() {
-        _pendingPayments = payments;
+        _pendingPayments = payments.where((payment) => payment.status == 'Pending').toList();
+        _approvedPayments = payments.where((payment) => payment.status == 'Approved').toList();
+        _rejectedPayments = payments.where((payment) => payment.status == 'Rejected').toList();
       });
     } catch (e) {
       print('Error fetching payments: $e');
@@ -170,6 +171,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       _pendingPayments.remove(payment);
       _approvedPayments.add(payment);
     });
+    Database.updatePaymentStatus(payment.status, 'Approved');
   }
 
   void _rejectPayment(Payment payment) {
@@ -177,6 +179,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       _pendingPayments.remove(payment);
       _rejectedPayments.add(payment);
     });
+    Database.updatePaymentStatus(payment.status, 'Rejected');
   }
 
   @override
@@ -205,14 +208,16 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             isEmpty: _pendingPayments.isEmpty,
             actionButtonLabel: 'Approve',
             onActionButtonPressed: _approvePayment,
+            showRejectButton: true,
+            onRejectButtonPressed: _rejectPayment,
           ),
           const SizedBox(height: 20),
           _buildPaymentCard(
             title: 'Rejected Payments',
             payments: _rejectedPayments,
             isEmpty: _rejectedPayments.isEmpty,
-            actionButtonLabel: 'Reject',
-            onActionButtonPressed: _rejectPayment,
+            actionButtonLabel: 'Approve',
+            onActionButtonPressed: _approvePayment,
           ),
         ],
       ),
@@ -225,6 +230,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     required bool isEmpty,
     String actionButtonLabel = '',
     void Function(Payment)? onActionButtonPressed,
+    bool showRejectButton = false,
+    void Function(Payment)? onRejectButtonPressed,
   }) {
     return Card(
       child: Padding(
@@ -252,14 +259,27 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                   return ListTile(
                     title: Text(payment.clientName),
                     subtitle: Text('Amount: ${payment.totalCost}'),
-                    trailing: actionButtonLabel.isNotEmpty
-                        ? ElevatedButton(
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (actionButtonLabel.isNotEmpty)
+                          ElevatedButton(
                             onPressed: () {
                               onActionButtonPressed?.call(payment);
                             },
                             child: Text(actionButtonLabel),
-                          )
-                        : null,
+                          ),
+                        if (showRejectButton)
+                          const SizedBox(width: 8),
+                        if (showRejectButton)
+                          ElevatedButton(
+                            onPressed: () {
+                              onRejectButtonPressed?.call(payment);
+                            },
+                            child: const Text('Reject'),
+                          ),
+                      ],
+                    ),
                   );
                 }).toList(),
               ),

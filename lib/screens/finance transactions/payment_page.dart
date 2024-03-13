@@ -172,7 +172,7 @@ class _PaymentPageState extends State<PaymentPage> {
       email: email,
       event: event,
       mpesaCode: mpesaCode,
-      totalCost: totalCost,
+      totalCost: totalCost, status: '',
     );
     // Assuming payment is successful
     recordPayments([payment]).then((_) {

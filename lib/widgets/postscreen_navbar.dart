@@ -121,6 +121,8 @@ class PostScreenNavBar extends StatelessWidget {
                           event : event.eventName,
                           mpesaCode : mpesacode,
                           totalCost :0.0,
+                          status:'',
+                          
                           );
                           Navigator.push(
                               context,

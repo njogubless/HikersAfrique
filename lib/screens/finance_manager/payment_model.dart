@@ -5,6 +5,8 @@ class Payment {
   final String event;
   final String mpesaCode;
   final double totalCost;
+  
+  String status;
 
   Payment({
     required this.clientName,
@@ -13,5 +15,6 @@ class Payment {
     required this.email,
     required this.event,
     required this.mpesaCode,
+    required this.status,
   });
 }

@@ -25,12 +25,15 @@ class Database {
         String mpesaCode = doc['mpesaCode'];
 
         Payment payment = Payment(
+          
           clientName: clientName,
           amountPaid: amountPaid,
           email: email,
           event: event,
           mpesaCode: mpesaCode,
           totalCost: totalCost,
+          status: doc['status'] ?? '',
+
         );
 
         payments.add(payment);
@@ -67,6 +70,20 @@ class Database {
       print('Error adding payments to Firestore: $e');
     }
   }
+
+//updating payment status
+static Future<void> updatePaymentStatus(String paymentId, String status) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('payments')
+          .doc(paymentId)
+          .update({'status': status});
+    } catch (e) {
+      print('Error updating payment status: $e');
+      throw e;
+    }
+  }
+
 
   // Save registered client data
   static Future<void> saveClientData(Client client) async {
