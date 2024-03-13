@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/event_manager/add_event.dart';
 import 'package:hikersafrique/screens/event_manager/edit_event.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/services/auth.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventManagerHome extends StatefulWidget {
   const EventManagerHome({super.key});
@@ -15,10 +19,89 @@ class EventManagerHome extends StatefulWidget {
 class _EventManagerHomeState extends State<EventManagerHome> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: EventManagerAppBar(),
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/new.jpeg',
+                fit: BoxFit.fitWidth,
+                height: 150,
+                width: double.infinity,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientName,
+                  style: const TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(
+                  user.clientEmail,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  user.role,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                  title: const Text(
+                    "Contact us",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    launchlink("https://www.hikersafrique.com/");
+                    // ignore: unused_local_variable
+                  }),
+              ListTile(
+                  title: const Text(
+                    "Feedback",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FeedbackDialog()));
+                  }),
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.grey,
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueGrey,
@@ -61,6 +144,15 @@ class _EventManagerHomeState extends State<EventManagerHome> {
         ),
       ),
     );
+  }
+
+  Future launchlink(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      // ignore: avoid_print
+      print(error);
+    }
   }
 }
 

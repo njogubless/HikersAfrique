@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FinanceManagerHome extends StatelessWidget {
   const FinanceManagerHome({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class FinanceManagerHome extends StatelessWidget {
           child: Column(
             children: [
               Image.asset(
-                'assets/images/wheat.jpg',
+                'assets/images/new.jpeg',
                 fit: BoxFit.fitWidth,
                 height: 150,
                 width: double.infinity,
@@ -33,7 +35,62 @@ class FinanceManagerHome extends StatelessWidget {
                     fontSize: 30,
                   ),
                 ),
-                onTap: null,
+                onTap: (){
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(
+                  user.clientEmail,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  user.role,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                  title: const Text(
+                    "Contact us",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    launchlink("https://www.hikersafrique.com/");
+                    // ignore: unused_local_variable
+                  }),
+              ListTile(
+                  title: const Text(
+                    "Feedback",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FeedbackDialog()));
+                  }),
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.grey,
+                    ],
+                  ),
+                ),
               )
             ],
           ),
@@ -64,6 +121,16 @@ class FinanceManagerHome extends StatelessWidget {
       ),
     );
   }
+  
+  Future launchlink(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      // ignore: avoid_print
+      print(error);
+    }
+  }
+  
 }
 
 class PaymentDetailsScreen extends StatefulWidget {

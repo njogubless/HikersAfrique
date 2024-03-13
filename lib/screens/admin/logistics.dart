@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/services/auth.dart';
+import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Event {
   final String name;
@@ -33,10 +37,89 @@ class LogisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
       appBar:const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
         child: LogisticsPageAppBar(),
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/new.jpeg',
+                fit: BoxFit.fitWidth,
+                height: 150,
+                width: double.infinity,
+              ),
+              ListTile(
+                title: Text(
+                  user.clientName,
+                  style: const TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+                onTap:(){
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(
+                  user.clientEmail,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  user.role,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              ListTile(
+                  title: const Text(
+                    "Contact us",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    launchlink("https://www.hikersafrique.com/");
+                    // ignore: unused_local_variable
+                  }),
+              ListTile(
+                  title: const Text(
+                    "Feedback",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FeedbackDialog()));
+                  }),
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.grey,
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -52,12 +135,12 @@ class LogisticsPage extends StatelessWidget {
                 );
               },
               child: const Card(
-                margin: EdgeInsets.all(16),
+                margin: EdgeInsets.all(30),
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(30),
                   child: Text(
                     'Logistics',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 28),
                   ),
                 ),
               ),
@@ -66,6 +149,15 @@ class LogisticsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  Future launchlink(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      // ignore: avoid_print
+      print(error);
+    }
   }
 }
 
@@ -89,18 +181,22 @@ class AllocationPageState extends State<AllocationPage> {
     super.initState();
     fetchEventData();
   }
+void fetchEventData() async {
+  List<Event> availableEvents = await getAvailableEvents();
+  setState(() {
+    events = availableEvents;
+  });
+}
+static Future<List<Event>> getAvailableEvents() async {
+  final QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('events').get();
+  final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+  return docs
+      .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
+      .toList();
+}
 
-  void fetchEventData() async {
-    final QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('events').get();
-    setState(() {
-      events = querySnapshot.docs
-          .map((doc) => Event(
-                name: doc['name'],
-              ))
-          .toList();
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +292,29 @@ class AllocationPageState extends State<AllocationPage> {
       print('Error allocating: $e');
     }
   }
+  
+
+  Future<void> recordallocationdata(Event event, String driver, String guide) async {
+    // Store allocation data in Firestore
+    try {
+      await FirebaseFirestore.instance.collection('allocations').add({
+        'event': event.name,
+        'driver': driver,
+        'guide': guide,
+      });
+      // Show success message or navigate to another page
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Event allocated successfully!')),
+      );
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to allocate event: $e')),
+      );
+    }
+  }
 }
+
 
 class LogisticsPageAppBar extends StatelessWidget {
   const LogisticsPageAppBar({Key? key}) : super(key: key);

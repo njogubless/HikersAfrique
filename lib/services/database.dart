@@ -87,6 +87,8 @@ class Database {
         .first;
   }
 
+
+
   // Retrieve pending clients
   static Future<List<Client>> getClients() async {
     final QuerySnapshot querySnapshot =
@@ -126,6 +128,17 @@ class Database {
         .toList();
   }
 
+  static Future<void> recordAllocationData(Event event, String driver, String guide) async {
+    try {
+      await FirebaseFirestore.instance.collection('allocations').add({
+        'event': event.eventName,
+        'driver': driver,
+        'guide': guide,
+      });
+    } catch (e) {
+      throw Exception('Error recording allocation: $e');
+    }
+  }
   // Save a booked event for a user
   static Future<void> saveBookedEvent(String userEmail, String eventID) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();
