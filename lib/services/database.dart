@@ -23,9 +23,10 @@ class Database {
         String email = doc['email'];
         String event = doc['event'];
         String mpesaCode = doc['mpesaCode'];
+        String docId = doc['id'];
 
         Payment payment = Payment(
-          
+          docId: docId,
           clientName: clientName,
           amountPaid: amountPaid,
           email: email,
@@ -33,7 +34,6 @@ class Database {
           mpesaCode: mpesaCode,
           totalCost: totalCost,
           status: doc['status'] ?? '',
-
         );
 
         payments.add(payment);
@@ -57,12 +57,14 @@ class Database {
         final DocumentReference docRef =
             paymentCollection.doc(); // Get a new document reference
         await docRef.set({
+          'id': docRef.id,
           'clientName': payment.clientName,
           'amountPaid': payment.amountPaid,
           'totalCost': payment.totalCost,
           'email': payment.email,
           'event': payment.event,
           'mpesaCode': payment.mpesaCode,
+          'status': payment.status,
         });
       }
       print('Payments added successfully to Firestore');
@@ -72,7 +74,8 @@ class Database {
   }
 
 //updating payment status
-static Future<void> updatePaymentStatus(String paymentId, String status) async {
+  static Future<void> updatePaymentStatus(
+      String paymentId, String status) async {
     try {
       await FirebaseFirestore.instance
           .collection('payments')
@@ -83,7 +86,6 @@ static Future<void> updatePaymentStatus(String paymentId, String status) async {
       throw e;
     }
   }
-
 
   // Save registered client data
   static Future<void> saveClientData(Client client) async {
@@ -103,8 +105,6 @@ static Future<void> updatePaymentStatus(String paymentId, String status) async {
         .toList()
         .first;
   }
-
-
 
   // Retrieve pending clients
   static Future<List<Client>> getClients() async {
@@ -145,7 +145,8 @@ static Future<void> updatePaymentStatus(String paymentId, String status) async {
         .toList();
   }
 
-  static Future<void> recordAllocationData(Event event, String driver, String guide) async {
+  static Future<void> recordAllocationData(
+      Event event, String driver, String guide) async {
     try {
       await FirebaseFirestore.instance.collection('allocations').add({
         'event': event.eventName,
@@ -156,6 +157,7 @@ static Future<void> updatePaymentStatus(String paymentId, String status) async {
       throw Exception('Error recording allocation: $e');
     }
   }
+
   // Save a booked event for a user
   static Future<void> saveBookedEvent(String userEmail, String eventID) async {
     final DocumentReference docRef = firestore.collection('bookings').doc();

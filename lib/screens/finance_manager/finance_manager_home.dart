@@ -157,9 +157,12 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     try {
       List<Payment> payments = await Database.getrecordPayments();
       setState(() {
-        _pendingPayments = payments.where((payment) => payment.status == 'Pending').toList();
-        _approvedPayments = payments.where((payment) => payment.status == 'Approved').toList();
-        _rejectedPayments = payments.where((payment) => payment.status == 'Rejected').toList();
+        _pendingPayments =
+            payments.where((payment) => payment.status == 'Pending').toList();
+        _approvedPayments =
+            payments.where((payment) => payment.status == 'Approved').toList();
+        _rejectedPayments =
+            payments.where((payment) => payment.status == 'Rejected').toList();
       });
     } catch (e) {
       print('Error fetching payments: $e');
@@ -171,7 +174,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       _pendingPayments.remove(payment);
       _approvedPayments.add(payment);
     });
-    Database.updatePaymentStatus(payment.status, 'Approved');
+    Database.updatePaymentStatus(payment.docId ?? '', 'Approved');
   }
 
   void _rejectPayment(Payment payment) {
@@ -179,7 +182,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       _pendingPayments.remove(payment);
       _rejectedPayments.add(payment);
     });
-    Database.updatePaymentStatus(payment.status, 'Rejected');
+    Database.updatePaymentStatus(payment.docId ?? '', 'Rejected');
   }
 
   @override
@@ -200,6 +203,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             title: 'Approved Payments',
             payments: _approvedPayments,
             isEmpty: _approvedPayments.isEmpty,
+            actionButtonLabel: 'Approved',
           ),
           const SizedBox(height: 20),
           _buildPaymentCard(
@@ -216,7 +220,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             title: 'Rejected Payments',
             payments: _rejectedPayments,
             isEmpty: _rejectedPayments.isEmpty,
-            actionButtonLabel: 'Approve',
+            actionButtonLabel: 'Reject',
             onActionButtonPressed: _approvePayment,
           ),
         ],
@@ -269,8 +273,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                             },
                             child: Text(actionButtonLabel),
                           ),
-                        if (showRejectButton)
-                          const SizedBox(width: 8),
+                        if (showRejectButton) const SizedBox(width: 8),
                         if (showRejectButton)
                           ElevatedButton(
                             onPressed: () {

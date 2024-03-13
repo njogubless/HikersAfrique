@@ -23,12 +23,14 @@ Future<void> recordPayments(List<Payment> payments) async {
       final DocumentReference docRef =
           paymentCollection.doc(); // Get a new document reference
       await docRef.set({
+        'id': docRef.id,
         'clientName': payment.clientName,
         'amountPaid': payment.amountPaid,
         'totalCost': payment.totalCost,
         'email': payment.email,
         'event': payment.event,
         'mpesaCode': payment.mpesaCode,
+        'status': payment.status,
       });
     }
     print('Payments added successfully to Firestore');
@@ -42,7 +44,8 @@ class PaymentPage extends StatefulWidget {
   final Event event;
   final Payment payment;
 
-  const PaymentPage({Key? key, required this.event, required this.payment}) : super(key: key);
+  const PaymentPage({Key? key, required this.event, required this.payment})
+      : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -155,12 +158,13 @@ class _PaymentPageState extends State<PaymentPage> {
     double eventCostPerTicket = widget.event.eventCost.toDouble();
     double totalCost = ticketCount * eventCostPerTicket;
     String mpesaCode = _mpesaCodeController.text;
+    String status = 'Pending';
 
     // Retrieve client name and email from the logged-in user
-    final AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    String clientName = authNotifier.user?.clientName?? 'N/A';
+    final AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    String clientName = authNotifier.user?.clientName ?? 'N/A';
     String email = authNotifier.user?.clientEmail ?? 'N/A';
-
 
     String event = widget.event.eventName;
     double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
@@ -172,15 +176,20 @@ class _PaymentPageState extends State<PaymentPage> {
       email: email,
       event: event,
       mpesaCode: mpesaCode,
-      totalCost: totalCost, status: '',
+      totalCost: totalCost,
+      status: status,
     );
     // Assuming payment is successful
     recordPayments([payment]).then((_) {
       // Payment recorded successfully, navigate to ticket page
+      print('status ${payment.status}');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => TicketPage(event: widget.event, payment: payment,),
+          builder: (context) => TicketPage(
+            event: widget.event,
+            payment: payment,
+          ),
         ),
       );
     });

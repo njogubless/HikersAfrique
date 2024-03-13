@@ -5,10 +5,12 @@ class Payment {
   final String event;
   final String mpesaCode;
   final double totalCost;
-  
+
   String status;
+  String? docId;
 
   Payment({
+    this.docId,
     required this.clientName,
     required this.amountPaid,
     required this.totalCost,
