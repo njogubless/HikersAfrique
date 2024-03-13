@@ -12,8 +12,8 @@ class FinanceManagerHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
     return Scaffold(
-      appBar:const PreferredSize(
-        preferredSize:Size.fromHeight(90.0),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(90.0),
         child: FinanceManagerAppBar(),
       ),
       drawer: Drawer(
@@ -21,7 +21,7 @@ class FinanceManagerHome extends StatelessWidget {
           child: Column(
             children: [
               Image.asset(
-                'Image/wheat.jpg',
+                'assets/images/wheat.jpg',
                 fit: BoxFit.fitWidth,
                 height: 150,
                 width: double.infinity,
@@ -39,13 +39,13 @@ class FinanceManagerHome extends StatelessWidget {
           ),
         ),
       ),
-      body:const Padding(
+      body: const Padding(
         padding: EdgeInsets.only(left: 15, right: 15, top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              children:[
+              children: [
                 Text(
                   'Payments from Clients',
                   style: TextStyle(
@@ -216,7 +216,9 @@ class FinanceManagerAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
