@@ -220,7 +220,7 @@ class AllocationPageState extends State<AllocationPage> {
               value: selectedEvent,
               onChanged: (Event? value) {
                 print(
-                    '###################Available event ${events.toString()}');
+                    '#Available event ${events.toString()}');
                 setState(() {
                   selectedEvent = value;
                 });

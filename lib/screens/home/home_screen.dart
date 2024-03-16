@@ -1,9 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/home/homepages/about.dart';
 import 'package:hikersafrique/screens/home/homepages/events_page.dart';
 import 'package:hikersafrique/screens/home/homepages/favorites.dart';
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/help.dart';
 import 'package:hikersafrique/screens/post_screen.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
@@ -90,7 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: () {
-                    launchlink("https://www.hikersafrique.com/");
+                    launchlink(
+                        "https://www.hikersafrique.com/more/contact-info");
                     // ignore: unused_local_variable
                   }),
               ListTile(
@@ -107,6 +110,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         MaterialPageRoute(
                             builder: (context) => const FeedbackDialog()));
                   }),
+              ListTile(
+                title: const Text(
+                  "Help ",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                  MaterialPageRoute(
+                    builder: (context) => const HelpPage())
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  " About Us !!",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutUsPage())
+                  );
+                },
+              ),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
