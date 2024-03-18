@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/screens/admin/driver.dart';
 import 'package:hikersafrique/screens/admin/event_management.dart';
 import 'package:hikersafrique/screens/admin/finance_management.dart';
+import 'package:hikersafrique/screens/admin/guide.dart';
 import 'package:hikersafrique/screens/admin/logistics.dart';
 import 'package:hikersafrique/screens/admin/partners.dart';
 //import 'package:hikersafrique/screens/partners/partners_page.dart';
@@ -33,6 +35,10 @@ class AdminHome extends StatelessWidget {
                 return const PartnersPage();
               case 3:
                 return const LogisticsPage();
+              case 4:
+                return const DriversPage();
+              case 5:
+                return const GuidesPage();
               default:
                 return const UserManagement();
             }

@@ -1,134 +1,117 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
-class HelpPage extends StatefulWidget {
+class HelpPage extends StatelessWidget {
   const HelpPage({Key? key}) : super(key: key);
 
   @override
-  State<HelpPage> createState() => _HelpPageState();
-}
-
-class _HelpPageState extends State<HelpPage> {
-  final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  bool isLoading = false;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-  @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthNotifier>(context).user!; 
+    final user = Provider.of<AuthNotifier>(context).user!;
+
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.grey ),
-          centerTitle: true,
-          title: const Text(
-            "HELP PAGE",
-            style: TextStyle(
-              color: Colors.black,
-            ),
+        iconTheme: const IconThemeData(color: Colors.grey),
+        centerTitle: true,
+        title: const Text(
+          "HELP PAGE",
+          style: TextStyle(
+            color: Colors.black,
           ),
-          elevation: 0,
-          backgroundColor: Colors.white,
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(height:40),
-              const Text('How can HikersAfrique be of Help ?',
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'How can HikersAfrique help you?',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Welcome to the Help page! Here you can find information on how to use the HikersAfrique application.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '1. Profile Setup:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(
-                height: 20),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal:20 ,vertical: 20),
-                child: TextFormField(
-                  controller: _controller,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    hintText: 'please input your need here !',
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                        )
-                    )
-                  ),
-                  maxLines: 7,
-                  maxLength: 4096,
-                  textInputAction: TextInputAction.done,
-                  validator: (String? text){
-                    if (text == null || text.isEmpty) {
-                      return 'Please enter a value';
-                    }
-                    return null;
-                  }
-                  )
-                  ),
-                  isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ))
-                  : ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        // Only if the input form is valid (the user has entered text)
-                        if (_formKey.currentState!.validate()) {
-                          // We will use this var to show the result
-                          // of this operation to the user
-                          String message;
-
-                          try {
-                            // Get a reference to the `feedback` collection
-                            final collection = FirebaseFirestore.instance
-                                .collection('Help');
-
-                            // Write the server's timestamp and the user's feedback
-                            await collection.doc().set({
-                              'timestamp': FieldValue.serverTimestamp(),
-                              'message': _controller.text,
-                              'name': user.clientName,
-                              'role': user.role,
-                            });
-
-                            message = 'Help message sent successfully';
-                          } catch (e) {
-                            message = 'Error when sending feedback';
-                          }
-
-                          // Show a snackbar with the result
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(message)));
-                          // ignore: use_build_context_synchronously
-                          Navigator.pop(context);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          minimumSize: const Size(150, 40)),
-                      child: const Text('Send'),
-                    ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'To get started, navigate to the Profile tab and complete your profile setup. '
+              'This includes adding your name, email, and a profile picture.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '2. Explore Places:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Discover exciting hiking destinations by tapping on the Explore tab. '
+              'View details of each place, such as location, difficulty level, and user reviews.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '3. Plan Your Trip:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Use the Trip Planner feature to create your custom hiking itinerary. '
+              'Add checkpoints, set reminders, and share your plan with friends.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '4. Get Help:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'If you encounter any issues or have questions, feel free to send us a message '
+              'using the form below. We are here to assist you!',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Add functionality to contact support or send a message
+                // This could navigate to a form similar to the one you had
+                // Or open a chat dialog, etc.
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                minimumSize: const Size(150, 40),
+              ),
+              child: const Text('Contact Support'),
+            ),
+          ],
         ),
       ),
     );

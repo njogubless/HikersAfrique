@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/admin/admin_home.dart';
+import 'package:hikersafrique/screens/admin/driver.dart';
+import 'package:hikersafrique/screens/admin/guide.dart';
 import 'package:hikersafrique/screens/admin/logistics.dart';
 import 'package:hikersafrique/screens/event_manager/event_manager_home.dart';
 import 'package:hikersafrique/screens/finance_manager/finance_manager_home.dart';
@@ -38,6 +40,12 @@ class ClientAdminRedirect extends StatelessWidget {
         }
         if (user?.role =='logistics'){
           return const LogisticsPage();
+        }
+        if (user?.role =='driver'){
+          return const DriversPage();
+        }
+        if (user?.role =='guide'){
+          return const GuidesPage();
         }
         return const HomeScreen();
       }

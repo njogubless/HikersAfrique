@@ -60,7 +60,7 @@ class PostScreenNavBar extends StatelessWidget {
                 }),
                 const SizedBox(height: 50.0),
                 Text(
-                  'Location: ${event.eventLocation}\nDate: ${event.eventDate}\nTime: ${event.eventTime}\n\nCost: Ksh. ${event.eventCost}',
+                  'Location: ${event.eventLocation}\nDate: ${event.eventDate}\nTime: ${event.eventTime}\nDetails:${event.eventDetails}\n\nCost: Ksh. ${event.eventCost}',
                   style: const TextStyle(
                     fontSize: 18.0,
                   ),

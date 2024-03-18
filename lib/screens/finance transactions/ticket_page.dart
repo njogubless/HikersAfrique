@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/finance transactions/payment_page.dart';
-import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
-import 'package:provider/provider.dart';
 import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
+//import 'package:hikersafrique/screens/finance_transactions/payment_page.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:provider/provider.dart';
 
 class TicketPage extends StatelessWidget {
   const TicketPage({Key? key, required this.event, required this.payment}) : super(key: key);
@@ -65,12 +66,81 @@ class TicketPage extends StatelessWidget {
             SecondaryButton(
               title: 'Finish',
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                // Show the confirmation dialog when Finish button is pressed
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Give Feedback?'),
+                      content: const Text('Do you want to give feedback for your trip?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            // Navigate to the FeedbackDialog page when user chooses 'Yes'
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const FeedbackDialog(),
+                              ),
+                            );
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SecondaryButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onPressed;
+  final bool isPrimary;
+
+  const SecondaryButton({
+    Key? key,
+    required this.title,
+    required this.onPressed,
+    this.isPrimary = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(
+        title,
+        style: TextStyle(
+          color: isPrimary ? Colors.white : Colors.black,
+        ),
+      ),
+      style: ButtonStyle(
+        backgroundColor: isPrimary
+            ? MaterialStateProperty.all<Color>(Colors.black)
+            : MaterialStateProperty.all<Color>(Colors.white),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: isPrimary
+                ? BorderSide.none
+                : BorderSide(color: Colors.black, width: 1),
+          ),
         ),
       ),
     );
