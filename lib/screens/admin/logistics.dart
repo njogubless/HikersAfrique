@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -17,22 +19,6 @@ class Event {
 
   @override
   String toString() => 'Event(name: $name)';
-}
-
-class Driver {
-  final String id;
-  final String name;
-  final bool available;
-
-  Driver({required this.id, required this.name, required this.available});
-}
-
-class Guide {
-  final String id;
-  final String name;
-  final bool available;
-
-  Guide({required this.id, required this.name, required this.available});
 }
 
 class LogisticsPage extends StatelessWidget {
@@ -84,30 +70,32 @@ class LogisticsPage extends StatelessWidget {
                 ),
               ),
               ListTile(
-                  title: const Text(
-                    "Contact us",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                title: const Text(
+                  "Contact us",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  onTap: () {
-                    launchlink("https://www.hikersafrique.com/");
-                    // ignore: unused_local_variable
-                  }),
+                ),
+                onTap: () {
+                  launchlink("https://www.hikersafrique.com/");
+                  // ignore: unused_local_variable
+                },
+              ),
               ListTile(
-                  title: const Text(
-                    "Feedback",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                title: const Text(
+                  "Feedback",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FeedbackDialog()));
-                  }),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FeedbackListScreen()));
+                },
+              ),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
@@ -173,8 +161,8 @@ class AllocationPage extends StatefulWidget {
 
 class AllocationPageState extends State<AllocationPage> {
   List<Event> events = [];
-  List<String> drivers = ['Driver1', 'Driver2', 'Driver3'];
-  List<String> guides = ['Guide1', 'Guide2', 'Guide3'];
+  List<String> drivers = [];
+  List<String> guides = [];
   Event? selectedEvent;
   String? selectedDriver;
   String? selectedGuide;
@@ -183,12 +171,28 @@ class AllocationPageState extends State<AllocationPage> {
   void initState() {
     super.initState();
     fetchEventData();
+    fetchDriverData();
+    fetchGuideData();
   }
 
   void fetchEventData() async {
     List<Event> availableEvents = await getAvailableEvents();
     setState(() {
       events = availableEvents;
+    });
+  }
+
+  void fetchDriverData() async {
+    List<String> driverNames = await getDriverNames();
+    setState(() {
+      drivers = driverNames;
+    });
+  }
+
+  void fetchGuideData() async {
+    List<String> guideNames = await getGuideNames();
+    setState(() {
+      guides = guideNames;
     });
   }
 
@@ -199,6 +203,20 @@ class AllocationPageState extends State<AllocationPage> {
     return docs
         .map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>))
         .toList();
+  }
+
+  static Future<List<String>> getDriverNames() async {
+    final QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'drivers').get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs.map((doc) => doc['clientName'] as String).toList();
+  }
+
+  static Future<List<String>> getGuideNames() async {
+    final QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'guides').get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs.map((doc) => doc['clientName'] as String).toList();
   }
 
   @override
@@ -219,8 +237,6 @@ class AllocationPageState extends State<AllocationPage> {
             DropdownButton<Event>(
               value: selectedEvent,
               onChanged: (Event? value) {
-                print(
-                    '#Available event ${events.toString()}');
                 setState(() {
                   selectedEvent = value;
                 });
@@ -305,27 +321,6 @@ class AllocationPageState extends State<AllocationPage> {
       // Handle error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to allocate event: $e')),
-      );
-    }
-  }
-
-  Future<void> recordallocationdata(
-      Event event, String driver, String guide) async {
-    // Store allocation data in Firestore
-    try {
-      await FirebaseFirestore.instance.collection('allocations').add({
-        'event': event.name,
-        'driver': driver,
-        'guide': guide,
-      });
-      // Show success message or navigate to another page
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Event reallocated successfully!')),
-      );
-    } catch (e) {
-      // Handle error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to reallocate event: $e')),
       );
     }
   }

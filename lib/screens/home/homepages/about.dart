@@ -21,20 +21,26 @@ class _AboutUsState extends State<AboutUsPage> {
           children: [
             CustomServiceCard(
               color: Colors.grey,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0)),
+              title: 'Our Vision',
+              content:
+                  'To be a world class adventure travel designer and facilitator'
+                  'setting the global standard for curating extraordinary travel experiences that delve into the rich tapestry of African history,'
+                  ' diverse landscapes, and cultural treasures..',
             ),
             const SizedBox(height: 20.0),
             CustomServiceCard(
               color: Colors.blue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0)),
+              title: 'Our Mission',
+              content:
+                  'To curate transformative travel experiences and create memories that last, moments that inspire, and adventures that push you to endure, think, act, and explore deeply. We seek to push boundaries, encouraging travelers to embrace the spirit of discovery, forging a legacy of not just vacations, but transformative odysseys that leave an indelible mark on the soul.',
             ),
             const SizedBox(height: 20.0),
             const CustomMessageBox(
               color: Colors.blue,
-            ),
-            const SizedBox(height: 20.0),
-            const CustomCircularCard(
-              color: Colors.grey,
             ),
           ],
         ),
@@ -46,11 +52,15 @@ class _AboutUsState extends State<AboutUsPage> {
 class CustomServiceCard extends StatelessWidget {
   final Color color;
   final ShapeBorder shape;
+  final String title;
+  final String content;
 
   const CustomServiceCard({
     Key? key,
     required this.color,
     required this.shape,
+    required this.title,
+    required this.content,
   }) : super(key: key);
 
   @override
@@ -59,24 +69,22 @@ class CustomServiceCard extends StatelessWidget {
       elevation: 3.0,
       shape: shape,
       color: color,
-      child: const Padding(
-        padding: EdgeInsets.all(20.0),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Our Vision',
-              style: TextStyle(
+              title,
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             Text(
-              'To be a world class adventure travel designer and facilitator'
-              'setting the global standard for curating extraordinary travel experiences that delve into the rich tapestry of African history,'
-              ' diverse landscapes, and cultural treasures..',
-              style: TextStyle(fontSize: 16.0),
+              content,
+              style: const TextStyle(fontSize: 16.0),
             ),
           ],
         ),
@@ -114,42 +122,18 @@ class CustomMessageBox extends StatelessWidget {
           ),
           SizedBox(height: 10.0),
           Text(
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+            '"Step into the wilderness, where mountains whisper tales,'
+            'In Hiker'
+            's'
+            'Haven, we craft adventures, each trail unveils.'
+            'Nature'
+            's'
+            'canvas unfolds, as we trek through sun and shade,'
+            'Discovering hidden gems, where memories are made.'
+            'Join us, embrace the wild, let your spirit roam free.',
             style: TextStyle(fontSize: 16.0),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomCircularCard extends StatelessWidget {
-  final Color color;
-
-  const CustomCircularCard({
-    Key? key,
-    required this.color,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(150.0),
-      ),
-      child: const ListTile(
-        title: Text(
-          'Background',
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          style: TextStyle(fontSize: 16.0),
-        ),
       ),
     );
   }

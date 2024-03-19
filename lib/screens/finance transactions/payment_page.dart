@@ -55,7 +55,9 @@ class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _ticketCountController = TextEditingController();
   final TextEditingController _costController = TextEditingController();
   final TextEditingController _mpesaCodeController = TextEditingController();
+  // ignore: unused_field
   final TextEditingController _clientNameController = TextEditingController();
+  // ignore: unused_field
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController amountPaidController = TextEditingController();

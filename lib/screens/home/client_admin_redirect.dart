@@ -41,10 +41,10 @@ class ClientAdminRedirect extends StatelessWidget {
         if (user?.role =='logistics'){
           return const LogisticsPage();
         }
-        if (user?.role =='driver'){
+        if (user?.role =='drivers'){
           return const DriversPage();
         }
-        if (user?.role =='guide'){
+        if (user?.role =='guides'){
           return const GuidesPage();
         }
         return const HomeScreen();

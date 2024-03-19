@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+// ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
@@ -79,7 +81,7 @@ class PartnersPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const FeedbackDialog()));
+                            builder: (context) => const FeedbackListScreen()));
                   }),
               Container(
                 height: 100,
@@ -198,6 +200,7 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
   String _selectedPartnerType = 'Sponsor'; // Default partner type
   final TextEditingController _partnerNameController = TextEditingController();
 
+  // ignore: unused_field
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -261,6 +264,7 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                     await FirebaseFirestore.instance
                         .collection('partnerships')
                         .add({
+                      'eventName':widget.event.eventName,
                       'eventId': widget.event.eventID,
                       'partnerName': _partnerNameController.text,
                       'partnerType': _selectedPartnerType,

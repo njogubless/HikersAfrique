@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpPage extends StatelessWidget {
   const HelpPage({Key? key}) : super(key: key);
+  Future<void> launchlink(String link) async {
+    try {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } catch (error) {
+      // ignore: avoid_print
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final user = Provider.of<AuthNotifier>(context).user!;
 
     return Scaffold(
@@ -14,7 +24,7 @@ class HelpPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.grey),
         centerTitle: true,
         title: const Text(
-          "HELP PAGE",
+          "HELP CENTRE",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -41,7 +51,7 @@ class HelpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              '1. Profile Setup:',
+              '1. How to book for an Event:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -49,13 +59,17 @@ class HelpPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'To get started, navigate to the Profile tab and complete your profile setup. '
-              'This includes adding your name, email, and a profile picture.',
+              'To book for an event, please follow these steps:\n\n'
+              '1. Log in to your account,\n'
+              '2. Select an event,\n'
+              '3. Book the event,\n'
+              '4. Pay for the event by inputting your M-Pesa code,\n'
+              '5. Download your ticket',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
             const Text(
-              '2. Explore Places:',
+              '2. How to send Feedback:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -63,13 +77,16 @@ class HelpPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Discover exciting hiking destinations by tapping on the Explore tab. '
-              'View details of each place, such as location, difficulty level, and user reviews.',
+            'Getting to have your feedack is important for us and this is how you can  do it:\n\n'
+  '1.Log in to your account,\n'
+  '2.You can navigate to the sidemenu on the topleft of the app-screen,\n'
+  '3.Select feedback and write or after paying for an event,\n'
+  '4.click the finish button and you can chose to provide feedback, \n',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
             const Text(
-              '3. Plan Your Trip:',
+              '3. How to know more about us',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -77,8 +94,10 @@ class HelpPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Use the Trip Planner feature to create your custom hiking itinerary. '
-              'Add checkpoints, set reminders, and share your plan with friends.',
+              'To know moe about us,please follow these steps:\n\n'
+  '1.Log in to your account,\n'
+  '2.You can navigate to the sidemenu on the topleft of the app-screen,\n'
+  '3. Select the "About Us !!" and read all about this company,\n',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
@@ -91,16 +110,13 @@ class HelpPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'If you encounter any issues or have questions, feel free to send us a message '
-              'using the form below. We are here to assist you!',
+              'If you encounter any issues or have questions, feel free to send us an email',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Add functionality to contact support or send a message
-                // This could navigate to a form similar to the one you had
-                // Or open a chat dialog, etc.
+              onPressed: (){
+                launchlink('https://www.hikersafrique.com/more/contact-info');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
+// ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
@@ -78,7 +80,7 @@ class FinanceManagerHome extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FeedbackDialog()));
+                          builder: (context) => const FeedbackListScreen()));
                 },
               ),
               Container(
@@ -220,7 +222,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             title: 'Rejected Payments',
             payments: _rejectedPayments,
             isEmpty: _rejectedPayments.isEmpty,
-            actionButtonLabel: 'Reject',
+            actionButtonLabel: 'Approve',
             onActionButtonPressed: _approvePayment,
           ),
         ],

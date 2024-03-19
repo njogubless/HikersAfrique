@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
+import 'package:firebase_auth/firebase_auth.dart';
+// ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
+import 'package:hikersafrique/models/client.dart'; // Updated import
 import 'package:provider/provider.dart';
 
 class GuidesPage extends StatelessWidget {
-  const GuidesPage({super.key});
+  const GuidesPage({Key? key}) : super(key: key);
+
+  static Future<Client> getClientData(String email) async {
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('clientEmail', isEqualTo: email)
+        .get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs
+        .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
+        .toList()
+        .first;
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
@@ -53,19 +73,22 @@ class GuidesPage extends StatelessWidget {
                 ),
               ),
               ListTile(
-                  title: const Text(
-                    "Feedback",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                title: const Text(
+                  "Feedback",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FeedbackDialog()));
-                  }),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackListScreen(),
+                    ),
+                  );
+                },
+              ),
               Container(
                 height: 100,
                 decoration: const BoxDecoration(
@@ -82,11 +105,61 @@ class GuidesPage extends StatelessWidget {
           ),
         ),
       ),
+      body: StreamBuilder(
+        stream: firestore
+            .collection('allocations')
+            .where('guide', isEqualTo: user.clientName)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return FutureBuilder<Client>(
+            future: getClientData(user.clientEmail),
+            builder: (context, clientSnapshot) {
+              if (clientSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final client = clientSnapshot.data!;
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Email')),
+                    DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('Event')),
+                  ],
+                  rows: snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(client.clientName)),
+                        DataCell(Text(client.clientEmail)),
+                        DataCell(Text(client.role)),
+                        DataCell(Text(data['event'] ?? '')),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
 
-  class GuidesPageAppBar extends StatelessWidget {
+class GuidesPageAppBar extends StatelessWidget {
   const GuidesPageAppBar({Key? key}) : super(key: key);
 
   @override
@@ -106,14 +179,15 @@ class GuidesPage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 6.0,
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(15.0)),
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6.0,
+                    )
+                  ],
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 child: const Icon(Icons.sort_rounded, size: 28.0),
               ),
             ),

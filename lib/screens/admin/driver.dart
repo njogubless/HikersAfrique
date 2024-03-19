@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hikersafrique/models/client.dart';
+// ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +13,22 @@ import 'package:provider/provider.dart';
 class DriversPage extends StatelessWidget {
   const DriversPage({Key? key}) : super(key: key);
 
+  static Future<Client> getClientData(String email) async {
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('clientEmail', isEqualTo: email)
+        .get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    return docs
+        .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
+        .toList()
+        .first;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Scaffold(
       appBar: const PreferredSize(
@@ -68,7 +84,7 @@ class DriversPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const FeedbackDialog(),
+                      builder: (context) => const FeedbackListScreen(),
                     ),
                   );
                 },
@@ -90,7 +106,7 @@ class DriversPage extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: _firestore
+        stream: firestore
             .collection('allocations')
             .where('driver', isEqualTo: user.clientName)
             .snapshots(),
@@ -101,24 +117,41 @@ class DriversPage extends StatelessWidget {
             );
           }
 
-          List<Widget> eventsList = [];
-          final events = snapshot.data!.docs;
-          for (var event in events) {
-            final eventName = event['event'];
-            final clientName = event['client'];
-            final dateTime = event['dateTime'];
+          return FutureBuilder<Client>(
+            future: getClientData(user.clientEmail),
+            builder: (context, clientSnapshot) {
+              if (clientSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-            eventsList.add(ListTile(
-              title: Text(eventName),
-              subtitle: Text('Client: $clientName\nDate: $dateTime'),
-              onTap: () {
-                // Navigate to event details page if needed
-              },
-            ));
-          }
+              final client = clientSnapshot.data!;
 
-          return ListView(
-            children: eventsList,
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Email')),
+                    DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('Event')),
+                  ],
+                  rows: snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(client.clientName)),
+                        DataCell(Text(client.clientEmail)),
+                        DataCell(Text(client.role)),
+                        DataCell(Text(data['event'] ?? '')),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              );
+            },
           );
         },
       ),
