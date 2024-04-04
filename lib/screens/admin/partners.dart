@@ -259,6 +259,7 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                 onPressed: () async {
                   print(widget.event.eventID);
                   print(_selectedPartnerType);
+                  print(widget.event.eventName);
                   // Implement logic to save partner type and name to database
                   try {
                     await FirebaseFirestore.instance
