@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/home/homepages/about.dart';
+import 'package:hikersafrique/screens/home/homepages/cart.dart';
 import 'package:hikersafrique/screens/home/homepages/events_page.dart';
 import 'package:hikersafrique/screens/home/homepages/favorites.dart';
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List pages = [
     const EventsPage(),
     const Favorites(),
+    const Purchased(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -175,6 +177,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.bookmark,
             size: 30.0,
           ),
+          Icon(
+            Icons.shopping_cart_outlined,
+            size: 30.0,
+          )
         ],
       ),
       body: pages[_selectedIndex],
