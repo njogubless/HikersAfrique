@@ -10,4 +10,16 @@ class PaymentProvider extends ChangeNotifier {
     payments = newPayments;
     notifyListeners();
   }
+
+  void approvePayment(Payment payment) {
+    // Logic to approve payment
+    payment.status = 'approved';
+    notifyListeners();
+  }
+
+  void rejectPayment(Payment payment) {
+    // Logic to reject payment
+    payment.status = 'rejected';
+    notifyListeners();
+  }
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
-// ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../services/auth_notifier.dart';
+import '../home/homepages/feedback_list.dart';
 
 class PartnersPage extends StatelessWidget {
   const PartnersPage({Key? key}) : super(key: key);
@@ -199,14 +198,13 @@ class PartnerConfirmationPage extends StatefulWidget {
 class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
   String _selectedPartnerType = 'Sponsor'; // Default partner type
   final TextEditingController _partnerNameController = TextEditingController();
-
-  // ignore: unused_field
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
-      GlobalKey<ScaffoldMessengerState>();
+  final TextEditingController _amountOfferedController = TextEditingController();
+  bool _showAmountField = false;
 
   @override
   void dispose() {
     _partnerNameController.dispose();
+    _amountOfferedController.dispose();
     super.dispose();
   }
 
@@ -237,6 +235,7 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedPartnerType = newValue!;
+                    _showAmountField = newValue == 'Sponsor';
                   });
                 },
                 items: <String>['Sponsor', 'Event Company', 'Hotel']
@@ -254,28 +253,33 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
                   labelText: 'Partner Name',
                 ),
               ),
+              if (_showAmountField) const SizedBox(height: 20),
+              if (_showAmountField) TextFormField(
+                controller: _amountOfferedController,
+                decoration: const InputDecoration(
+                  labelText: 'Amount Offered',
+                ),
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  print(widget.event.eventID);
-                  print(_selectedPartnerType);
-                  print(widget.event.eventName);
-                  // Implement logic to save partner type and name to database
                   try {
                     await FirebaseFirestore.instance
                         .collection('partnerships')
                         .add({
-                      'eventName':widget.event.eventName,
+                      'eventName': widget.event.eventName,
                       'eventId': widget.event.eventID,
                       'partnerName': _partnerNameController.text,
                       'partnerType': _selectedPartnerType,
                       'timestamp': FieldValue.serverTimestamp(),
+                      if (_showAmountField) 'amountOffered': _amountOfferedController.text,
                     });
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Partnership confirmed successfully'),
                     ));
                     setState(() {
                       _partnerNameController.clear();
+                      if (_showAmountField) _amountOfferedController.clear();
                     });
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(

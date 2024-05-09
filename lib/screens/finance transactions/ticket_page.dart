@@ -124,12 +124,6 @@ class SecondaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(
-        title,
-        style: TextStyle(
-          color: isPrimary ? Colors.white : Colors.black,
-        ),
-      ),
       style: ButtonStyle(
         backgroundColor: isPrimary
             ? MaterialStateProperty.all<Color>(Colors.black)
@@ -139,8 +133,14 @@ class SecondaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             side: isPrimary
                 ? BorderSide.none
-                : BorderSide(color: Colors.black, width: 1),
+                : const BorderSide(color: Colors.black, width: 1),
           ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: isPrimary ? Colors.white : Colors.black,
         ),
       ),
     );

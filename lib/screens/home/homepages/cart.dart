@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance%20transactions/ticket_page.dart';
 //import 'package:hikersafrique/models/payment.dart';
@@ -5,6 +7,7 @@ import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 ///import 'package:hikersafrique/screens/ticket_page.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:hikersafrique/services/paymentprovider.dart';
 import 'package:provider/provider.dart';
 
 class Purchased extends StatelessWidget {
@@ -13,6 +16,7 @@ class Purchased extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user;
+    final paymentProvider = Provider.of<PaymentProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
