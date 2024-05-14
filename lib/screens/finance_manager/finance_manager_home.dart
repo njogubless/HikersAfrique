@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
@@ -133,7 +133,7 @@ class FinanceManagerHome extends StatelessWidget {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
     } catch (error) {
-      print(error);
+      debugPrint(error as String?);
     }
   }
 }
@@ -171,7 +171,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             payments.where((payment) => payment.status == 'Rejected').toList();
       });
     } catch (e) {
-      print('Error fetching payments: $e');
+      debugPrint('Error fetching payments: $e');
     }
   }
 

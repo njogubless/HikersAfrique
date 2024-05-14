@@ -67,9 +67,9 @@ class Database {
           'status': payment.status,
         });
       }
-      print('Payments added successfully to Firestore');
+      debugPrint('Payments added successfully to Firestore');
     } catch (e) {
-      print('Error adding payments to Firestore: $e');
+      debugPrint('Error adding payments to Firestore: $e');
     }
   }
 
@@ -82,8 +82,8 @@ class Database {
           .doc(paymentId)
           .update({'status': status});
     } catch (e) {
-      print('Error updating payment status: $e');
-      throw e;
+      debugPrint('Error updating payment status: $e');
+      rethrow;
     }
   }
 

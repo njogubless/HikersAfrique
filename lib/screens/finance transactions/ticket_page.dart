@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/constant.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
-//import 'package:hikersafrique/screens/finance_transactions/payment_page.dart';
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
 class TicketPage extends StatelessWidget {
-  const TicketPage({Key? key, required this.event, required this.payment}) : super(key: key);
+  const TicketPage({
+    Key? key,
+    required this.event,
+    required this.payment,
+    required this.user,
+  }) : super(key: key);
 
   final Event event;
   final Payment payment;
+  final AuthNotifier user; // Adjust the type based on your user model
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthNotifier>(context).user;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -55,7 +60,7 @@ class TicketPage extends StatelessWidget {
               isPrimary: true,
               title: 'Download ticket',
               onPressed: () {
-                Misc.getReceipt(event, payment, user!, context).then((_) =>
+                Misc.getReceipt(event, payment, user as Client, context).then((_) =>
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.greenAccent,
                       content: Text('Find your receipt in your Downloads!'),
