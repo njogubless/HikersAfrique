@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 // ignore: unused_import
@@ -6,6 +8,7 @@ import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
+import 'package:hikersafrique/services/paymentprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,6 +18,7 @@ class FinanceManagerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
+    final paymentProvider = Provider.of<PaymentProvider>(context);
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
@@ -129,7 +133,7 @@ class FinanceManagerHome extends StatelessWidget {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
     } catch (error) {
-      print(error);
+      debugPrint(error as String?);
     }
   }
 }
@@ -167,7 +171,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             payments.where((payment) => payment.status == 'Rejected').toList();
       });
     } catch (e) {
-      print('Error fetching payments: $e');
+      debugPrint('Error fetching payments: $e');
     }
   }
 
@@ -189,6 +193,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final paymentProvider = Provider.of<PaymentProvider>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

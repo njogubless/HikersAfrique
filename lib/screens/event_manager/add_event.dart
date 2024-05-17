@@ -311,7 +311,7 @@ class _AddEventsState extends State<AddEvents> {
     }
   } catch (e) {
     // Print the error for debugging purposes
-    print('Error creating event: $e');
+    debugPrint('Error creating event: $e');
     // Show an error message to the user
     scaff.showSnackBar(
       const SnackBar(

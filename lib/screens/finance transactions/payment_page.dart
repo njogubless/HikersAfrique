@@ -33,9 +33,9 @@ Future<void> recordPayments(List<Payment> payments) async {
         'status': payment.status,
       });
     }
-    print('Payments added successfully to Firestore');
+    debugPrint('Payments added successfully to Firestore');
   } catch (e) {
-    print('Error adding payments to Firestore: $e');
+    debugPrint('Error adding payments to Firestore: $e');
     throw e; // Rethrow the error for the caller to handle
   }
 }
@@ -43,8 +43,9 @@ Future<void> recordPayments(List<Payment> payments) async {
 class PaymentPage extends StatefulWidget {
   final Event event;
   final Payment payment;
+  final AuthNotifier user;
 
-  const PaymentPage({Key? key, required this.event, required this.payment})
+  const PaymentPage({Key? key, required this.event, required this.payment, required this.user})
       : super(key: key);
 
   @override
@@ -184,13 +185,14 @@ class _PaymentPageState extends State<PaymentPage> {
     // Assuming payment is successful
     recordPayments([payment]).then((_) {
       // Payment recorded successfully, navigate to ticket page
-      print('status ${payment.status}');
+      debugPrint('status ${payment.status}');
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => TicketPage(
             event: widget.event,
             payment: payment,
+            user:widget.user,
           ),
         ),
       );

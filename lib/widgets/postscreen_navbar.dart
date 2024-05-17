@@ -124,12 +124,14 @@ class PostScreenNavBar extends StatelessWidget {
                           status:'',
                           
                           );
+                          var widget;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentPage(
                                   event: event,
                                   payment: payment,
+                                  user: widget.user,
                                 ),
                               ));
                         },

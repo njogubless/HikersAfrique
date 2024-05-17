@@ -317,7 +317,7 @@ class AllocationPageState extends State<AllocationPage> {
       );
     } catch (e) {
       // Handle error
-      print('Error allocating: $e');
+      debugPrint('Error allocating: $e');
       // Handle error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to allocate event: $e')),
