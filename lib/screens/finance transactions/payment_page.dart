@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_confirmation_page.dart';
 import 'package:hikersafrique/screens/finance%20transactions/ticket_page.dart';
@@ -43,7 +44,7 @@ Future<void> recordPayments(List<Payment> payments) async {
 class PaymentPage extends StatefulWidget {
   final Event event;
   final Payment payment;
-  final AuthNotifier user;
+  final Client user;
 
   const PaymentPage({Key? key, required this.event, required this.payment, required this.user})
       : super(key: key);
@@ -163,20 +164,14 @@ class _PaymentPageState extends State<PaymentPage> {
     String mpesaCode = _mpesaCodeController.text;
     String status = 'Pending';
 
-    // Retrieve client name and email from the logged-in user
-    final AuthNotifier authNotifier =
-        Provider.of<AuthNotifier>(context, listen: false);
-    String clientName = authNotifier.user?.clientName ?? 'N/A';
-    String email = authNotifier.user?.clientEmail ?? 'N/A';
-
     String event = widget.event.eventName;
     double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
 
     // Perform payment logic here...
     Payment payment = Payment(
-      clientName: clientName,
+      clientName: widget.user.clientName,
       amountPaid: amountPaid,
-      email: email,
+      email: widget.user.clientEmail,
       event: event,
       mpesaCode: mpesaCode,
       totalCost: totalCost,

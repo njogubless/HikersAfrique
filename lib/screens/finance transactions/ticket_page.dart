@@ -4,8 +4,6 @@ import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:provider/provider.dart';
 
 class TicketPage extends StatelessWidget {
   const TicketPage({
@@ -13,11 +11,13 @@ class TicketPage extends StatelessWidget {
     required this.event,
     required this.payment,
     required this.user,
+    this.ispaymentApproved = false,
   }) : super(key: key);
 
   final Event event;
   final Payment payment;
-  final AuthNotifier user; // Adjust the type based on your user model
+  final Client user; // Adjust the type based on your user model
+  final bool ispaymentApproved;
 
   @override
   Widget build(BuildContext context) {

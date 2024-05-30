@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_cast, unused_local_variable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/finance%20transactions/ticket_page.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
@@ -12,6 +12,24 @@ import '../../../models/client.dart';
 
 class Purchased extends StatelessWidget {
   const Purchased({Key? key}) : super(key: key);
+
+  Future<void> getMypaymentstatus() async {
+    FirebaseFirestore firestore = await FirebaseFirestore.instance;
+
+    firestore.collection('payments').doc();
+    /*
+   Check the payments collection, and return the lists of documents in the paymentCollection
+
+   For each document, look through the snapshots and compare the data()['email'] with the user email,
+   if they are thesame, return that document snapshot.
+   At the end of it, you should have a list of documentsnaphot.
+
+   From those list of the document snapshot, you can access the snaphot data and get the payment status.
+
+   When the payment status is approved, pass boolean true to the ticket page, to enable the download button;
+
+ */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +97,20 @@ class Purchased extends StatelessWidget {
     );
   }
 
-  Widget _buildDownloadButton(BuildContext context, Payment payment, Client? user) {
+  Widget _buildDownloadButton(
+      BuildContext context, Payment payment, Client? user) {
     if (payment.status == 'approved' && user != null) {
       return ElevatedButton(
         onPressed: () {
           // Navigate to the TicketPage when the button is pressed
           var widget;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TicketPage(event: payment.event, payment: payment, user: widget.user),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          // MaterialPageRoute(
+          //   builder: (context) => TicketPage(
+          //       event: payment.event, payment: payment, user: widget.user),
+          // ),
+          // );
         },
         child: const Text('Download Ticket'),
       );

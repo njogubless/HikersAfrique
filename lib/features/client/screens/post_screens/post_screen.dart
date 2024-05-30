@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/features/client/screens/post_screens/postscreen_appbar.dart';
+import 'package:hikersafrique/features/client/screens/post_screens/postscreen_navbar.dart';
 import 'package:hikersafrique/models/event.dart';
-import 'package:hikersafrique/widgets/postscreen_appbar.dart';
-import 'package:hikersafrique/widgets/postscreen_navbar.dart';
+
 
 class PostScreen extends StatelessWidget {
   const PostScreen({super.key, required this.event});

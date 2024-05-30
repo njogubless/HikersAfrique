@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/home/home_screen.dart';
+import 'package:hikersafrique/features/client/screens/widgets/saved_events.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/event.dart';
-import '../../../services/auth_notifier.dart';
-import '../../../services/database.dart';
+import '../../../../models/event.dart';
+import '../../../../services/auth_notifier.dart';
+import '../../../../services/database.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});

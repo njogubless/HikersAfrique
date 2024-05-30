@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:hikersafrique/screens/finance%20transactions/payment_page.dart';
 import 'package:provider/provider.dart';
-
-import '../screens/finance_manager/payment_model.dart';
 
 class PostScreenNavBar extends StatelessWidget {
   const PostScreenNavBar({super.key, required this.event});
@@ -114,24 +113,22 @@ class PostScreenNavBar extends StatelessWidget {
                           String mpesacode = "";
 
                           Payment payment = Payment(
-
-                          clientName :clientName,
-                          amountPaid : amountPaid,
-                          email : email,
-                          event : event.eventName,
-                          mpesaCode : mpesacode,
-                          totalCost :0.0,
-                          status:'',
-                          
+                            clientName: clientName,
+                            amountPaid: amountPaid,
+                            email: email,
+                            event: event.eventName,
+                            mpesaCode: mpesacode,
+                            totalCost: 0.0,
+                            status: '',
                           );
-                          var widget;
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentPage(
                                   event: event,
                                   payment: payment,
-                                  user: widget.user,
+                                  user: user!,
                                 ),
                               ));
                         },

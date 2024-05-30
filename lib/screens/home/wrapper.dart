@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
-import 'package:hikersafrique/screens/authenticate/authenticate.dart';
-import 'package:hikersafrique/screens/home/client_admin_redirect.dart';
+import 'package:hikersafrique/features/authenticate/authenticate.dart';
+import 'package:hikersafrique/features/authenticate/client_admin_redirect.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';

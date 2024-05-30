@@ -6,7 +6,7 @@ import 'package:hikersafrique/screens/admin/guide.dart';
 import 'package:hikersafrique/screens/admin/logistics.dart';
 import 'package:hikersafrique/screens/event_manager/event_manager_home.dart';
 import 'package:hikersafrique/screens/finance_manager/finance_manager_home.dart';
-import 'package:hikersafrique/screens/home/home_screen.dart';
+import 'package:hikersafrique/features/client/screens/home_screen.dart';
 // import 'package:hikersafrique/screens/partners/partners_page.dart';
 import 'package:hikersafrique/screens/admin/partners.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
