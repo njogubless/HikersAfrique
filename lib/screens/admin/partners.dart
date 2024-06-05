@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../services/auth_notifier.dart';
-import '../home/homepages/feedback_list.dart';
+import '../home/homepages/sidebar/feedback_list.dart';
 
 class PartnersPage extends StatelessWidget {
   const PartnersPage({Key? key}) : super(key: key);

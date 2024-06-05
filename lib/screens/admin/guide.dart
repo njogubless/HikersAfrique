@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/models/client.dart'; // Updated import

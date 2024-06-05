@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';

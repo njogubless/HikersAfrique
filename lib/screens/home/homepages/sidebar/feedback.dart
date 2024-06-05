@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 //import 'package:flutter_firebase_feedback_form/firebase_options.dart';
 
 class FeedbackDialog extends StatefulWidget {
-  const FeedbackDialog({Key? key}) : super(key: key);
+  final String recipient;
+  const FeedbackDialog({Key? key, required this.recipient}) : super(key: key);
 
   @override
   State<FeedbackDialog> createState() => _FeedbackDialogState();

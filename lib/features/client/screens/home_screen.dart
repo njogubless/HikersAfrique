@@ -1,11 +1,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/screens/home/homepages/about.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/about.dart';
 import 'package:hikersafrique/screens/home/homepages/cart.dart';
 import 'package:hikersafrique/features/client/screens/tab%20screens/events_page.dart';
 import 'package:hikersafrique/features/client/screens/tab%20screens/favorites.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/help.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/help.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/widgets/home_appbar.dart';
 import 'package:provider/provider.dart';
@@ -108,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const FeedbackDialog()));
+                            builder: (context) => const FeedbackRecipientSelection()));
                   }),
               ListTile(
                 title: const Text(

@@ -1,6 +1,7 @@
-// ignore_for_file: unnecessary_cast, unused_local_variable
+// ignore_for_file: unnecessary_cast, unused_local_variable, unused_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
@@ -14,22 +15,35 @@ class Purchased extends StatelessWidget {
   const Purchased({Key? key}) : super(key: key);
 
   Future<void> getMypaymentstatus() async {
-    FirebaseFirestore firestore = await FirebaseFirestore.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String userEmail = Provider.of<AuthNotifier>(context, listen: false).email;
+    QuerySnapshot paymentSnapshot =
+        await firestore.collection('payments').get();
 
-    firestore.collection('payments').doc();
-    /*
-   Check the payments collection, and return the lists of documents in the paymentCollection
+    List<QueryDocumentSnapshot> userPayments =
+        paymentSnapshot.docs.where((doc) {
+      return doc['email'] == userEmail;
+    }).toList();
 
-   For each document, look through the snapshots and compare the data()['email'] with the user email,
-   if they are thesame, return that document snapshot.
-   At the end of it, you should have a list of documentsnaphot.
+    bool isApproved = false;
+    for (var payment in userPayments) {
+      if (payment['status'] == 'approved') {
+        isApproved = true;
+        break;
+      }
+    }
+  } /*
+  Check the payments collection, and return the lists of documents in the paymentCollection
 
-   From those list of the document snapshot, you can access the snaphot data and get the payment status.
+  For each document, look through the snapshots and compare the data()['email'] with the user email,
+  if they are thesame, return that document snapshot.
+  At the end of it, you should have a list of documentsnaphot.
 
-   When the payment status is approved, pass boolean true to the ticket page, to enable the download button;
+  From those list of the document snapshot, you can access the snaphot data and get the payment status.
+
+  When the payment status is approved, pass boolean true to the ticket page, to enable the download button;
 
  */
-  }
 
   @override
   Widget build(BuildContext context) {

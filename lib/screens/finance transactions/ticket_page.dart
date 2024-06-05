@@ -3,7 +3,7 @@ import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
 
 class TicketPage extends StatelessWidget {
   const TicketPage({
@@ -94,7 +94,7 @@ class TicketPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const FeedbackDialog(),
+                                builder: (context) => const FeedbackRecipientSelection(),
                               ),
                             );
                           },
