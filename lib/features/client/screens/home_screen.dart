@@ -4,7 +4,6 @@ import 'package:hikersafrique/screens/home/homepages/sidebar/about.dart';
 import 'package:hikersafrique/screens/home/homepages/cart.dart';
 import 'package:hikersafrique/features/client/screens/tab%20screens/events_page.dart';
 import 'package:hikersafrique/features/client/screens/tab%20screens/favorites.dart';
-import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/help.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';

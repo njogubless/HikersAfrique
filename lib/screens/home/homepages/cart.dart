@@ -1,80 +1,46 @@
-// ignore_for_file: unnecessary_cast, unused_local_variable, unused_import
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/services/paymentprovider.dart';
+//import 'package:hikersafrique/services/paymentprovider.dart';
 import 'package:provider/provider.dart';
-
-import '../../../models/client.dart';
 
 class Purchased extends StatelessWidget {
   const Purchased({Key? key}) : super(key: key);
 
-  Future<void> getMypaymentstatus() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String userEmail = Provider.of<AuthNotifier>(context, listen: false).email;
-    QuerySnapshot paymentSnapshot =
-        await firestore.collection('payments').get();
-
-    List<QueryDocumentSnapshot> userPayments =
-        paymentSnapshot.docs.where((doc) {
-      return doc['email'] == userEmail;
-    }).toList();
-
-    bool isApproved = false;
-    for (var payment in userPayments) {
-      if (payment['status'] == 'approved') {
-        isApproved = true;
-        break;
-      }
-    }
-  } /*
-  Check the payments collection, and return the lists of documents in the paymentCollection
-
-  For each document, look through the snapshots and compare the data()['email'] with the user email,
-  if they are thesame, return that document snapshot.
-  At the end of it, you should have a list of documentsnaphot.
-
-  From those list of the document snapshot, you can access the snaphot data and get the payment status.
-
-  When the payment status is approved, pass boolean true to the ticket page, to enable the download button;
-
- */
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthNotifier>(context).user as Client?;
-    final paymentProvider = Provider.of<PaymentProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Purchased Events'),
       ),
-      body: FutureBuilder<List<Payment>>(
-        future: Database.getrecordPayments(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Consumer<AuthNotifier>(
+        builder: (context, authNotifier, _) {
+          final user = authNotifier.user;
+          return FutureBuilder<List<Payment>>(
+            future: Database.getrecordPayments(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          final List<Payment> payments = snapshot.data ?? [];
+              final List<Payment> payments = snapshot.data ?? [];
 
-          if (payments.isEmpty) {
-            return const Center(child: Text('No events purchased.'));
-          }
+              if (payments.isEmpty) {
+                return const Center(child: Text('No events purchased.'));
+              }
 
-          return ListView.builder(
-            itemCount: payments.length,
-            itemBuilder: (context, index) {
-              final payment = payments[index];
-              return ListTile(
-                title: Text(payment.event),
-                subtitle: _buildEventStatus(payment.status),
-                trailing: _buildDownloadButton(context, payment, user),
+              return ListView.builder(
+                itemCount: payments.length,
+                itemBuilder: (context, index) {
+                  final payment = payments[index];
+                  return ListTile(
+                    title: Text(payment.event),
+                    subtitle: _buildEventStatus(payment.status),
+                    trailing: _buildDownloadButton(context, payment, user),
+                  );
+                },
               );
             },
           );

@@ -206,15 +206,19 @@ class AllocationPageState extends State<AllocationPage> {
   }
 
   static Future<List<String>> getDriverNames() async {
-    final QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'drivers').get();
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('role', isEqualTo: 'drivers')
+        .get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     return docs.map((doc) => doc['clientName'] as String).toList();
   }
 
   static Future<List<String>> getGuideNames() async {
-    final QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'guides').get();
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('role', isEqualTo: 'guides')
+        .get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     return docs.map((doc) => doc['clientName'] as String).toList();
   }
