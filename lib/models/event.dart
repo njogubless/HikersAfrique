@@ -55,4 +55,6 @@ class Event {
       'eventPackage': eventPackage,
     };
   }
+
+  static fromFirestore(data) {}
 }

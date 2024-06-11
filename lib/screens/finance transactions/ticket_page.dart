@@ -14,10 +14,11 @@ class TicketPage extends StatelessWidget {
     this.ispaymentApproved = false,
   }) : super(key: key);
 
-  final Event event;
+  final  event;
   final Payment payment;
   final Client user; // Adjust the type based on your user model
   final bool ispaymentApproved;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +61,12 @@ class TicketPage extends StatelessWidget {
               isPrimary: true,
               title: 'Download ticket',
               onPressed: () {
-                Misc.getReceipt(event, payment, user as Client, context).then((_) =>
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.greenAccent,
-                      content: Text('Find your receipt in your Downloads!'),
-                    )));
+                Misc.getReceipt(event, payment, user , context).then(
+                    (_) => ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          backgroundColor: Colors.greenAccent,
+                          content: Text('Find your receipt in your Downloads!'),
+                        )));
               },
             ),
             const SizedBox(height: 20),
@@ -77,7 +79,8 @@ class TicketPage extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text('Give Feedback?'),
-                      content: const Text('Do you want to give feedback for your trip?'),
+                      content: const Text(
+                          'Do you want to give feedback for your trip?'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
@@ -94,7 +97,8 @@ class TicketPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const FeedbackRecipientSelection(),
+                                builder: (context) =>
+                                    const FeedbackRecipientSelection(),
                               ),
                             );
                           },

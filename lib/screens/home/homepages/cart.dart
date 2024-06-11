@@ -3,8 +3,9 @@ import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
-//import 'package:hikersafrique/services/paymentprovider.dart';
 import 'package:provider/provider.dart';
+
+import '../../finance transactions/ticket_page.dart';
 
 class Purchased extends StatelessWidget {
   const Purchased({Key? key}) : super(key: key);
@@ -35,10 +36,24 @@ class Purchased extends StatelessWidget {
                 itemCount: payments.length,
                 itemBuilder: (context, index) {
                   final payment = payments[index];
-                  return ListTile(
-                    title: Text(payment.event),
-                    subtitle: _buildEventStatus(payment.status),
-                    trailing: _buildDownloadButton(context, payment, user),
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: ListTile(
+                      title: Text(
+                        payment.event,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Client: ${payment.clientName}'),
+                          Text('Email: ${payment.email}'),
+                          Text('Total Cost: \$${payment.totalCost}'),
+                          _buildEventStatus(payment.status),
+                        ],
+                      ),
+                      trailing: _buildDownloadButton(context, payment, user),
+                    ),
                   );
                 },
               );
@@ -49,11 +64,12 @@ class Purchased extends StatelessWidget {
     );
   }
 
+  // Function to build event status with color-coded text
   Widget _buildEventStatus(String status) {
     Color statusColor;
     String displayStatus;
 
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'pending':
         statusColor = Colors.orange;
         displayStatus = 'Pending';
@@ -77,20 +93,22 @@ class Purchased extends StatelessWidget {
     );
   }
 
-  Widget _buildDownloadButton(
-      BuildContext context, Payment payment, Client? user) {
-    if (payment.status == 'approved' && user != null) {
+  // Function to build the download button, only visible for approved events
+  Widget _buildDownloadButton(BuildContext context, Payment payment, Client? user) {
+    if (payment.status.toLowerCase() == 'approved' && user != null) {
       return ElevatedButton(
         onPressed: () {
           // Navigate to the TicketPage when the button is pressed
-          var widget;
-          // Navigator.push(
-          //   context,
-          // MaterialPageRoute(
-          //   builder: (context) => TicketPage(
-          //       event: payment.event, payment: payment, user: widget.user),
-          // ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TicketPage(
+                event: payment.event,
+                payment: payment,
+                user: user,
+              ),
+            ),
+          );
         },
         child: const Text('Download Ticket'),
       );
