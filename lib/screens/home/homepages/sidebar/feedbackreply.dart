@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
+
 class FeedbackReplyScreen extends StatefulWidget {
   final DocumentSnapshot feedback;
   const FeedbackReplyScreen({Key? key, required this.feedback}) : super(key: key);
@@ -34,6 +35,43 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
           children: [
             Text(widget.feedback['message']),
             const SizedBox(height: 20),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('feedback')
+                    .doc(widget.feedback.id)
+                    .collection('replies')
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Error loading replies'));
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final List<DocumentSnapshot> replies = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    itemCount: replies.length,
+                    itemBuilder: (context, index) {
+                      final Map<String, dynamic> replyData =
+                          replies[index].data() as Map<String, dynamic>;
+
+                      final String senderName = replyData['senderName'] ?? 'Unknown';
+                      final String message = replyData['message'] ?? '';
+
+                      return ListTile(
+                        title: Text(senderName),
+                        subtitle: Text(message),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
             TextFormField(
               controller: _replyController,
               keyboardType: TextInputType.multiline,
@@ -41,9 +79,7 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                 hintText: 'Enter your reply here',
                 filled: true,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
               maxLines: 5,
@@ -68,13 +104,12 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                           'message': _replyController.text,
                           'senderName': user.clientName,
                           'senderRole': user.role,
-                          //'senderId': uid.clientuid,
                         });
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Reply sent successfully')),
                         );
-                        Navigator.pop(context);
+                        _replyController.clear();
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Error sending reply')),
@@ -92,3 +127,4 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
     );
   }
 }
+

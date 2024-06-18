@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/client.dart';
@@ -14,11 +16,10 @@ class TicketPage extends StatelessWidget {
     this.ispaymentApproved = false,
   }) : super(key: key);
 
-  final  event;
+  final event;
   final Payment payment;
   final Client user; // Adjust the type based on your user model
   final bool ispaymentApproved;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,11 @@ class TicketPage extends StatelessWidget {
               isPrimary: true,
               title: 'Download ticket',
               onPressed: () {
-                Misc.getReceipt(event, payment, user , context).then(
-                    (_) => ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          backgroundColor: Colors.greenAccent,
-                          content: Text('Find your receipt in your Downloads!'),
-                        )));
+                Misc.getReceipt(event, payment, user, context).then((_) =>
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.greenAccent,
+                      content: Text('Find your receipt in your Downloads!'),
+                    )));
               },
             ),
             const SizedBox(height: 20),

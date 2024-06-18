@@ -1,14 +1,21 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
+import 'package:hikersafrique/screens/admin/logistics.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constant.dart';
 import '../../finance transactions/ticket_page.dart';
 
 class Purchased extends StatelessWidget {
-  const Purchased({Key? key}) : super(key: key);
+  const Purchased({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +34,68 @@ class Purchased extends StatelessWidget {
               }
 
               final List<Payment> payments = snapshot.data ?? [];
+              final clientPayments = payments
+                  .where((payment) => payment.email == user?.clientEmail)
+                  .toList();
 
-              if (payments.isEmpty) {
+              if (clientPayments.isEmpty) {
                 return const Center(child: Text('No events purchased.'));
               }
 
               return ListView.builder(
-                itemCount: payments.length,
+                itemCount: clientPayments.length + 1, // +1 for the footer item
                 itemBuilder: (context, index) {
-                  final payment = payments[index];
+                  if (index == clientPayments.length) {
+                    // Footer item (Finish button)
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SecondaryButton(
+                        title: 'Finish',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Give Feedback?'),
+                                content: const Text(
+                                    'Do you want to give feedback for your trip?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      //Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('No'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const FeedbackRecipientSelection(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  }
+
+                  final payment = clientPayments[index];
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: ListTile(
                       title: Text(
                         payment.event,
@@ -52,7 +110,8 @@ class Purchased extends StatelessWidget {
                           _buildEventStatus(payment.status),
                         ],
                       ),
-                      trailing: _buildDownloadButton(context, payment, user),
+                      trailing:
+                          _buildDownloadButton(context, payment, user, Event),
                     ),
                   );
                 },
@@ -64,7 +123,6 @@ class Purchased extends StatelessWidget {
     );
   }
 
-  // Function to build event status with color-coded text
   Widget _buildEventStatus(String status) {
     Color statusColor;
     String displayStatus;
@@ -93,12 +151,11 @@ class Purchased extends StatelessWidget {
     );
   }
 
-  // Function to build the download button, only visible for approved events
-  Widget _buildDownloadButton(BuildContext context, Payment payment, Client? user) {
+  Widget _buildDownloadButton(
+      BuildContext context, Payment payment, Client? user, event) {
     if (payment.status.toLowerCase() == 'approved' && user != null) {
       return ElevatedButton(
         onPressed: () {
-          // Navigate to the TicketPage when the button is pressed
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -115,5 +172,28 @@ class Purchased extends StatelessWidget {
     } else {
       return const SizedBox.shrink();
     }
+  }
+}
+
+// Ensure you have this SecondaryButton widget implemented
+class SecondaryButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onPressed;
+
+  const SecondaryButton({
+    required this.title,
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey, // Customize the button color
+      ),
+      child: Text(title),
+    );
   }
 }

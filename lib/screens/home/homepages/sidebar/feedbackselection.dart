@@ -6,7 +6,7 @@ class FeedbackRecipientSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recipients = ['guide', 'drivers', 'financeManager', 'eventManager', 'partner','logistics',];
+    final recipients = ['guide', 'drivers', 'financeManager', 'eventManager', 'partner', 'logistics'];
 
     return Scaffold(
       appBar: AppBar(
@@ -15,16 +15,19 @@ class FeedbackRecipientSelection extends StatelessWidget {
       body: ListView.builder(
         itemCount: recipients.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(recipients[index]),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FeedbackDialog(recipient: recipients[index]),
-                ),
-              );
-            },
+          return Card(
+            margin: const EdgeInsets.all(8.0),
+            child: ListTile(
+              title: Text(recipients[index]),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FeedbackDialog(recipient: recipients[index]),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

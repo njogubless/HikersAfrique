@@ -108,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const FeedbackRecipientSelection()));
+                            builder: (context) =>
+                                const FeedbackRecipientSelection()));
                   }),
               ListTile(
                 title: const Text(
@@ -120,10 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
-                    context,
-                  MaterialPageRoute(
-                    builder: (context) => const HelpPage())
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HelpPage()));
                 },
               ),
               ListTile(
@@ -136,10 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
-                    context,
-                  MaterialPageRoute(
-                    builder: (context) => const AboutUsPage())
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AboutUsPage()));
                 },
               ),
               Container(
@@ -185,4 +184,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

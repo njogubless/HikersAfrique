@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, unused_local_variable
 
 import 'dart:ffi';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
@@ -46,7 +47,11 @@ class PaymentPage extends StatefulWidget {
   final Payment payment;
   final Client user;
 
-  const PaymentPage({Key? key, required this.event, required this.payment, required this.user})
+  const PaymentPage(
+      {Key? key,
+      required this.event,
+      required this.payment,
+      required this.user})
       : super(key: key);
 
   @override
@@ -167,6 +172,7 @@ class _PaymentPageState extends State<PaymentPage> {
     String event = widget.event.eventName;
     double amountPaid = double.tryParse(amountPaidController.text) ?? 0.0;
 
+    String UserId = FirebaseAuth.instance.currentUser!.uid;
     // Perform payment logic here...
     Payment payment = Payment(
       clientName: widget.user.clientName,
@@ -176,6 +182,7 @@ class _PaymentPageState extends State<PaymentPage> {
       mpesaCode: mpesaCode,
       totalCost: totalCost,
       status: status,
+      userId: UserId,
     );
     // Assuming payment is successful
     recordPayments([payment]).then((_) {
@@ -187,7 +194,7 @@ class _PaymentPageState extends State<PaymentPage> {
           builder: (context) => TicketPage(
             event: widget.event,
             payment: payment,
-            user:widget.user,
+            user: widget.user,
           ),
         ),
       );

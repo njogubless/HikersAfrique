@@ -120,6 +120,7 @@ class PostScreenNavBar extends StatelessWidget {
                             mpesaCode: mpesacode,
                             totalCost: 0.0,
                             status: '',
+                            userId: 'UserId',
                           );
 
                           Navigator.push(
