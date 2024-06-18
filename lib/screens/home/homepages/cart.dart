@@ -111,7 +111,7 @@ class Purchased extends StatelessWidget {
                         ],
                       ),
                       trailing:
-                          _buildDownloadButton(context, payment, user, Event),
+                          _buildDownloadButton(context, payment, user),
                     ),
                   );
                 },
@@ -152,20 +152,16 @@ class Purchased extends StatelessWidget {
   }
 
   Widget _buildDownloadButton(
-      BuildContext context, Payment payment, Client? user, event) {
+      BuildContext context, Payment payment, Client? user) {
     if (payment.status.toLowerCase() == 'approved' && user != null) {
       return ElevatedButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TicketPage(
-                event: payment.event,
-                payment: payment,
-                user: user,
-              ),
-            ),
-          );
+          Misc.getReceipt(payment.event, payment, user, context).then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.greenAccent,
+              content: Text('Find your receipt in your Downloads!'),
+            ));
+          });
         },
         child: const Text('Download Ticket'),
       );

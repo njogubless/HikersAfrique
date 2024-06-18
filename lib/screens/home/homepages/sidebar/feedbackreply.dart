@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/replies.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -110,6 +111,13 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                           const SnackBar(content: Text('Reply sent successfully')),
                         );
                         _replyController.clear();
+                        Navigator.pop(context); // Close reply screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RepliesPage(),
+                          ),
+                        );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Error sending reply')),
@@ -127,4 +135,3 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
     );
   }
 }
-

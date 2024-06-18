@@ -11,6 +11,8 @@ import 'package:hikersafrique/widgets/home_appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../screens/home/homepages/sidebar/replies.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -111,6 +113,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) =>
                                 const FeedbackRecipientSelection()));
                   }),
+              ListTile(
+                title: const Text(
+                  "Replies",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RepliesPage(),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 title: const Text(
                   "Help ",

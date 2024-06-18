@@ -135,6 +135,7 @@ class GuidesPage extends StatelessWidget {
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('UID')), // Add the UID column
                     DataColumn(label: Text('Event')),
                     DataColumn(label: Text('Actions')),
                   ],
@@ -143,34 +144,39 @@ class GuidesPage extends StatelessWidget {
                         document.data() as Map<String, dynamic>;
                     bool isApproved = data['approved'] ?? false;
                     bool isRejected = data['rejected'] ?? false;
+
                     return DataRow(
                       cells: [
                         DataCell(Text(client.clientName)),
                         DataCell(Text(client.clientEmail)),
                         DataCell(Text(client.role)),
+                        DataCell(Text(client.uid)), // Add the UID cell
                         DataCell(Text(data['event'] ?? '')),
                         DataCell(
                           Row(
-                            children:[
-                              ElevatedButton(onPressed: isApproved || isRejected
-                              ? null
-                              : () {
-                                updateAllocationStatus(
-                                  document.id, true,false
-                                );
-                              },
-                              child:Text(isApproved ? 'Approved' : 'Approve'), ),
-                              const SizedBox(width:8),
-                              ElevatedButton(onPressed: isApproved || isRejected
-                              ? null
-                              :(){
-                                updateAllocationStatus(
-                                  document.id,false, true);
-                              },
-                            child: Text(isRejected ? 'Rejected' : 'Reject'),)
-                            ]
-                          )
-                        )
+                            children: [
+                              ElevatedButton(
+                                onPressed: isApproved || isRejected
+                                    ? null
+                                    : () {
+                                        updateAllocationStatus(
+                                            document.id, true, false);
+                                      },
+                                child: Text(isApproved ? 'Approved' : 'Approve'),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: isApproved || isRejected
+                                    ? null
+                                    : () {
+                                        updateAllocationStatus(
+                                            document.id, false, true);
+                                      },
+                                child: Text(isRejected ? 'Rejected' : 'Reject'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     );
                   }).toList(),
@@ -183,17 +189,17 @@ class GuidesPage extends StatelessWidget {
     );
   }
 
-  Future<void>updateAllocationStatus(
-      String docId, bool approve,bool reject)async{
-        try{
-          await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
-'approved': approve,
-'rejected': reject,
-          });
-        }catch(e){
-          debugPrint('Eroor updating allocation status: $e');
-        }
-      }
+  Future<void> updateAllocationStatus(
+      String docId, bool approve, bool reject) async {
+    try {
+      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
+        'approved': approve,
+        'rejected': reject,
+      });
+    } catch (e) {
+      debugPrint('Error updating allocation status: $e');
+    }
+  }
 }
 
 class GuidesPageAppBar extends StatelessWidget {
@@ -270,3 +276,4 @@ class GuidesPageAppBar extends StatelessWidget {
     );
   }
 }
+

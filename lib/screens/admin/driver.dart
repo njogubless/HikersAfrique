@@ -135,6 +135,7 @@ class DriversPage extends StatelessWidget {
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('UID')), // Add the UID column
                     DataColumn(label: Text('Event')),
                     DataColumn(label: Text('Actions')),
                   ],
@@ -149,6 +150,7 @@ class DriversPage extends StatelessWidget {
                         DataCell(Text(client.clientName)),
                         DataCell(Text(client.clientEmail)),
                         DataCell(Text(client.role)),
+                        DataCell(Text(client.uid)), // Add the UID cell
                         DataCell(Text(data['event'] ?? '')),
                         DataCell(
                           Row(
@@ -274,3 +276,4 @@ class DriversPageAppBar extends StatelessWidget {
     );
   }
 }
+
