@@ -14,7 +14,7 @@ class Purchased extends StatelessWidget {
   const Purchased({Key? key}) : super(key: key);
 
   Future<void> getMypaymentstatus() async {
-    FirebaseFirestore firestore = await FirebaseFirestore.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     firestore.collection('payments').doc();
     /*
