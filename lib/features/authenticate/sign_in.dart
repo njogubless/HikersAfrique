@@ -21,19 +21,22 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  // Instance of AuthService which accesses methods to
-  // register and sign in with email and pass: used in an on pressed event
   final AuthService _auth = AuthService();
-  // Form key for input validation
   final _formkey = GlobalKey<FormState>();
   bool loading = false;
 
-  // Form fields, taking note of their states
   String email = '';
   String password = '';
-
-  // Upon an attempt to register
   String error = '';
+
+  late AuthNotifier authNotifier;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Save a reference to AuthNotifier
+    authNotifier = Provider.of<AuthNotifier>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,22 +134,21 @@ class _SignInState extends State<SignIn> {
                                   setState(() {
                                     loading = true;
                                   });
-                                  // AuthService method to sign in user when validation is successful
-                                  Client? result =
-                                      await _auth.signInWithEmailAndPassword(
-                                          email, password,);
+                                  Client? result = await _auth
+                                      .signInWithEmailAndPassword(
+                                          email, password);
+
+                                  if (!mounted) return; // Ensure the widget is still mounted
 
                                   if (result == null) {
-                                    loading = false;
-                                    setState(() => error =
-                                        'Invalid login, please try again');
+                                    setState(() {
+                                      loading = false;
+                                      error =
+                                          'Invalid login, please try again';
+                                    });
                                   } else {
-                                    Provider.of<AuthNotifier>(context,
-                                            listen: false)
-                                        .setUser(result);
+                                    authNotifier.setUser(result);
                                   }
-
-                                  // Else, the Wrapper gets a new user and shows the Home Page
                                 }
                               },
                               child: Material(

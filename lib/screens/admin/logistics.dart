@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -206,15 +206,19 @@ class AllocationPageState extends State<AllocationPage> {
   }
 
   static Future<List<String>> getDriverNames() async {
-    final QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'drivers').get();
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('role', isEqualTo: 'drivers')
+        .get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     return docs.map((doc) => doc['clientName'] as String).toList();
   }
 
   static Future<List<String>> getGuideNames() async {
-    final QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('clients').where('role', isEqualTo: 'guides').get();
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('role', isEqualTo: 'guides')
+        .get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     return docs.map((doc) => doc['clientName'] as String).toList();
   }

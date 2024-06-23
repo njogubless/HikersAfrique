@@ -34,6 +34,7 @@ class Database {
           mpesaCode: mpesaCode,
           totalCost: totalCost,
           status: doc['status'] ?? '',
+          userId: 'UserId',
         );
 
         payments.add(payment);

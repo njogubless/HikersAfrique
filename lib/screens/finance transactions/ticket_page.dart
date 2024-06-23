@@ -1,9 +1,14 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/constant.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
+
+import '../home/homepages/cart.dart';
+
 
 class TicketPage extends StatelessWidget {
   const TicketPage({
@@ -14,7 +19,7 @@ class TicketPage extends StatelessWidget {
     this.ispaymentApproved = false,
   }) : super(key: key);
 
-  final Event event;
+  final event;
   final Payment payment;
   final Client user; // Adjust the type based on your user model
   final bool ispaymentApproved;
@@ -57,52 +62,13 @@ class TicketPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             SecondaryButton(
-              isPrimary: true,
-              title: 'Download ticket',
+              title: 'Proceed to Purchase Page',
               onPressed: () {
-                Misc.getReceipt(event, payment, user as Client, context).then((_) =>
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.greenAccent,
-                      content: Text('Find your receipt in your Downloads!'),
-                    )));
-              },
-            ),
-            const SizedBox(height: 20),
-            SecondaryButton(
-              title: 'Finish',
-              onPressed: () {
-                // Show the confirmation dialog when Finish button is pressed
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Give Feedback?'),
-                      content: const Text('Do you want to give feedback for your trip?'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('No'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            // Navigate to the FeedbackDialog page when user chooses 'Yes'
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const FeedbackDialog(),
-                              ),
-                            );
-                          },
-                          child: const Text('Yes'),
-                        ),
-                      ],
-                    );
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Purchased(), // Navigate to the purchase page
+                  ),
                 );
               },
             ),

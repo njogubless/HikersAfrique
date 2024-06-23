@@ -3,8 +3,8 @@ import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/event_manager/add_event.dart';
 import 'package:hikersafrique/screens/event_manager/edit_event.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';

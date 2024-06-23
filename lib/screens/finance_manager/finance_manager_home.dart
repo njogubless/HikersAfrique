@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:hikersafrique/services/database.dart';
-import 'package:hikersafrique/services/paymentprovider.dart';
+//import 'package:hikersafrique/services/paymentprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +18,7 @@ class FinanceManagerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
-    final paymentProvider = Provider.of<PaymentProvider>(context);
+    //final paymentProvider = Provider.of<PaymentProvider>(context);
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(90.0),
@@ -193,7 +193,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final paymentProvider = Provider.of<PaymentProvider>(context);
+    //final paymentProvider = Provider.of<PaymentProvider>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

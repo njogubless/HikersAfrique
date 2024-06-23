@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hikersafrique/models/client.dart';
 // ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/feedback.dart';
-import 'package:hikersafrique/screens/home/homepages/feedback_list.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
+import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
@@ -135,17 +135,48 @@ class DriversPage extends StatelessWidget {
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('UID')), // Add the UID column
                     DataColumn(label: Text('Event')),
+                    DataColumn(label: Text('Actions')),
                   ],
                   rows: snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
+                    bool isApproved = data['approved'] ?? false;
+                    bool isRejected = data['rejected'] ?? false;
+
                     return DataRow(
                       cells: [
                         DataCell(Text(client.clientName)),
                         DataCell(Text(client.clientEmail)),
                         DataCell(Text(client.role)),
+                        DataCell(Text(client.uid)), // Add the UID cell
                         DataCell(Text(data['event'] ?? '')),
+                        DataCell(
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: isApproved || isRejected
+                                    ? null
+                                    : () {
+                                        updateAllocationStatus(
+                                            document.id, true, false);
+                                      },
+                                child: Text(isApproved ? 'Approved' : 'Approve'),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: isApproved || isRejected
+                                    ? null
+                                    : () {
+                                        updateAllocationStatus(
+                                            document.id, false, true);
+                                      },
+                                child: Text(isRejected ? 'Rejected' : 'Reject'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     );
                   }).toList(),
@@ -156,6 +187,18 @@ class DriversPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> updateAllocationStatus(
+      String docId, bool approve, bool reject) async {
+    try {
+      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
+        'approved': approve,
+        'rejected': reject,
+      });
+    } catch (e) {
+      debugPrint('Error updating allocation status: $e');
+    }
   }
 }
 
@@ -233,3 +276,4 @@ class DriversPageAppBar extends StatelessWidget {
     );
   }
 }
+
