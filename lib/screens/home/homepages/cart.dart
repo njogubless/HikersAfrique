@@ -158,7 +158,7 @@ class Purchased extends StatelessWidget {
         onPressed: () async {
 
    final eventList  = await FirebaseFirestore.instance.collection('events').get();
-   final theEvent = eventList.docs.firstWhere((event) => event['eventName'] == payment.event);
+   final theEvent = eventList.docs.firstWhere((event) => event.data()['eventName'] == payment.event);
    
     Event event = Event(
     eventID: theEvent.data()['eventID'], 
