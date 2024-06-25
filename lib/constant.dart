@@ -40,10 +40,10 @@ class Loading extends StatelessWidget {
 
 class Misc {
   //TODO: add Event
-  static Future<void> getReceipt(Payment payment,Client client, BuildContext context) async {
+  static Future<void> getReceipt(Event event ,Payment payment,Client client, BuildContext context) async {
     final pdf = pw.Document();
 
-   //final eventImage = await networkImage(event.eventImageUrl);
+   final eventImage = await networkImage(event.eventImageUrl);
 
     final fontStyle = pw.TextStyle(
         color: PdfColors.blueAccent,
@@ -63,14 +63,14 @@ class Misc {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-          //   pw.Image(eventImage),
+             pw.Image(eventImage),
               pw.SizedBox(height: 50),
               pw.Text("Name: ${client.clientName}", style: fontStyle),
-            //  pw.Text("Event: ${event.eventName}", style: fontStyle),
+              pw.Text("Event: ${event.eventName}", style: fontStyle),
               pw.Text("Amount paid: Ksh.${payment.totalCost}", style: fontStyle),
               //pw.Text("Total Amount Paid: Ksh.${event totalAmount}",style:fontStyle),
-            //  pw.Text("Date: ${event.eventDate}", style: fontStyle),
-              //pw.Text("Time:${event.eventTime}",style: fontStyle),    
+              pw.Text("Date: ${event.eventDate}", style: fontStyle),
+              pw.Text("Time:${event.eventTime}",style: fontStyle),    
               
                      ],
           ); // Center
