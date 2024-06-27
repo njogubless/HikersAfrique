@@ -1,9 +1,8 @@
 // ignore_for_file: unused_import
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/client.dart';
-import 'package:hikersafrique/models/event.dart';
+import 'package:hikersafrique/screens/admin/logistics.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedbackselection.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
@@ -35,15 +34,16 @@ class Purchased extends StatelessWidget {
               }
 
               final List<Payment> payments = snapshot.data ?? [];
-              final clientPayments = payments.where((payment) => payment.email == user?.clientEmail)
+              final clientPayments = payments
+                  .where((payment) => payment.email == user?.clientEmail)
                   .toList();
-              
+
               if (clientPayments.isEmpty) {
                 return const Center(child: Text('No events purchased.'));
               }
 
               return ListView.builder(
-                itemCount: clientPayments!.length + 1, // +1 for the footer item
+                itemCount: clientPayments.length + 1, // +1 for the footer item
                 itemBuilder: (context, index) {
                   if (index == clientPayments.length) {
                     // Footer item (Finish button)
@@ -106,7 +106,7 @@ class Purchased extends StatelessWidget {
                         children: [
                           Text('Client: ${payment.clientName}'),
                           Text('Email: ${payment.email}'),
-                          Text('Total Cost:\Ksh${payment.totalCost}'),
+                          Text('Total Cost: \$${payment.totalCost}'),
                           _buildEventStatus(payment.status),
                         ],
                       ),
@@ -155,26 +155,8 @@ class Purchased extends StatelessWidget {
       BuildContext context, Payment payment, Client? user) {
     if (payment.status.toLowerCase() == 'approved' && user != null) {
       return ElevatedButton(
-        onPressed: () async {
-
-   final eventList  = await FirebaseFirestore.instance.collection('events').get();
-   final theEvent = eventList.docs.firstWhere((event) => event.data()['eventName'] == payment.event);
-   
-    Event event = Event(
-    eventID: theEvent.data()['eventID'], 
-    eventName: theEvent.data()['eventName'], 
-    eventDate: theEvent.data()['eventDate'], 
-    eventTime: theEvent.data()['eventTime'],
-     eventCost: theEvent.data()['eventCost'], 
-     totalCost: theEvent.data()['totalCost'], 
-     eventLocation: theEvent.data()['eventLocation'], 
-     eventImageUrl: theEvent.data()['eventImageUrl'], 
-     eventDetails: theEvent.data()['eventDetails'], 
-     eventPackage: theEvent.data()['eventPackage']);
-
-
-          // ignore: use_build_context_synchronously
-          Misc.getReceipt(event, payment, user, context).then((_) {
+        onPressed: () {
+          Misc.getReceipt(payment.event, payment, user, context).then((_) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.greenAccent,
               content: Text('Find your receipt in your Downloads!'),

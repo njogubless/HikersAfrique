@@ -2,7 +2,7 @@ class Payment {
   final String clientName;
   final double amountPaid;
   final String email;
-  final String event;
+  final event;
   final String mpesaCode;
   final double totalCost;
   final String userId;
