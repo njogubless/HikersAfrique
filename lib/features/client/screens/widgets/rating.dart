@@ -6,10 +6,10 @@ class Rating extends StatefulWidget {
   const Rating({Key? key}) : super(key: key);
 
   @override
-  _RatingState createState() => _RatingState();
+  RatingState createState() => RatingState();
 }
 
-class _RatingState extends State<Rating> {
+class RatingState extends State<Rating> {
   final TextEditingController _commentController = TextEditingController();
   double _rating = 0.0;
 

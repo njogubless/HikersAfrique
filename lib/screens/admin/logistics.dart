@@ -308,26 +308,31 @@ class AllocationPageState extends State<AllocationPage> {
   }
 
   Future<void> allocate(Event event, String driver, String guide) async {
-    // Store allocation data in Firestore
-    try {
-      await FirebaseFirestore.instance.collection('allocations').add({
-        'event': event.name,
-        'driver': driver,
-        'guide': guide,
-      });
-      // Show success message or navigate to another page
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Event allocated successfully!')),
-      );
-    } catch (e) {
-      // Handle error
-      debugPrint('Error allocating: $e');
-      // Handle error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to allocate event: $e')),
-      );
-    }
+  // Store allocation data in Firestore
+  try {
+    await FirebaseFirestore.instance.collection('allocations').add({
+      'event': event.name,
+      'driver': driver,
+      'guide': guide,
+      'driverApproved': false,
+      'driverRejected': false,
+      'guideApproved': false,
+      'guideRejected': false,
+    });
+    // Show success message or navigate to another page
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Event allocated successfully!')),
+    );
+  } catch (e) {
+    // Handle error
+    debugPrint('Error allocating: $e');
+    // Handle error
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to allocate event: $e')),
+    );
   }
+}
+
 }
 
 class LogisticsPageAppBar extends StatelessWidget {

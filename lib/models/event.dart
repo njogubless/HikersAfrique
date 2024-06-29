@@ -1,5 +1,8 @@
 // ignore_for_file: recursive_getters
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/widgets/framework.dart';
+
 class Event {
   final String eventID;
   final String eventName;
