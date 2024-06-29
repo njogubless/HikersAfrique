@@ -43,7 +43,7 @@ class Purchased extends StatelessWidget {
               }
 
               return ListView.builder(
-                itemCount: clientPayments!.length + 1, // +1 for the footer item
+                itemCount: clientPayments.length + 1, // +1 for the footer item
                 itemBuilder: (context, index) {
                   if (index == clientPayments.length) {
                     // Footer item (Finish button)

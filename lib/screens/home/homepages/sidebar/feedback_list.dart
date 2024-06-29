@@ -41,7 +41,7 @@ class FeedbackListScreen extends StatelessWidget {
                   feedbacks[index].data() as Map<String, dynamic>;
 
               final Timestamp timestamp = feedbackData['timestamp'] as Timestamp;
-              final String role = feedbackData['role'] ?? 'N/A';
+              final String role = feedbackData['role'] ?? '';
               final String name = feedbackData['name'] ?? '';
               final String message = feedbackData['message'] ?? '';
 
