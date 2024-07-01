@@ -62,7 +62,7 @@ class RepliesPage extends StatelessWidget {
                               replyDocs[replyIndex].data() as Map<String, dynamic>;
 
                           return ListTile(
-                            title: Text(replyData['senderName']),
+                            title: Text(replyData['senderName']), // Show sender's name
                             subtitle: Text(replyData['message']),
                           );
                         },

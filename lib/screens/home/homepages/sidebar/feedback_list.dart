@@ -5,14 +5,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../services/auth_notifier.dart';
 
-
 class FeedbackListScreen extends StatelessWidget {
   const FeedbackListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthNotifier>(context).user!;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Feedback List'),
@@ -41,8 +40,8 @@ class FeedbackListScreen extends StatelessWidget {
                   feedbacks[index].data() as Map<String, dynamic>;
 
               final Timestamp timestamp = feedbackData['timestamp'] as Timestamp;
-              final String role = feedbackData['role'] ?? '';
-              final String name = feedbackData['name'] ?? '';
+              final String senderName = feedbackData['senderName'] ?? '';  // Correct field for sender's name
+              final String senderRole = feedbackData['senderRole'] ?? '';  // Correct field for sender's role
               final String message = feedbackData['message'] ?? '';
 
               return Card(
@@ -61,7 +60,7 @@ class FeedbackListScreen extends StatelessWidget {
                     );
                   },
                   title: Text(
-                    name,
+                    senderName,  // Display the sender's name
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -81,7 +80,7 @@ class FeedbackListScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Role: $role',
+                            'Name: $senderName',  // Display the sender's role
                             style: const TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           Text(
@@ -111,4 +110,3 @@ class FeedbackListScreen extends StatelessWidget {
     return time < 10 ? '0$time' : '$time';
   }
 }
-
