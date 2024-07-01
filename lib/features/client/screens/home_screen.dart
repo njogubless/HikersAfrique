@@ -1,6 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:hikersafrique/features/client/screens/widgets/rating.dart';
+import 'package:hikersafrique/screens/home/homepages/rating.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/about.dart';
 import 'package:hikersafrique/screens/home/homepages/cart.dart';
 import 'package:hikersafrique/features/client/screens/tab%20screens/events_page.dart';
