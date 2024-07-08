@@ -7,11 +7,11 @@ class PaymentConfirmationPage extends StatelessWidget {
   final int ticketCount;
 
   const PaymentConfirmationPage({
-    Key? key,
+    super.key,
     required this.event,
     required this.totalCost,
     required this.ticketCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

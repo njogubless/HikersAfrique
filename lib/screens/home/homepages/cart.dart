@@ -15,8 +15,8 @@ import '../../finance transactions/ticket_page.dart';
 
 class Purchased extends StatelessWidget {
   const Purchased({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -198,8 +198,8 @@ class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
     required this.title,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

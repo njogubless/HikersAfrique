@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AboutUsPage extends StatefulWidget {
-  const AboutUsPage({Key? key}) : super(key: key);
+  const AboutUsPage({super.key});
 
   @override
   State<AboutUsPage> createState() => _AboutUsState();
@@ -56,12 +56,12 @@ class CustomServiceCard extends StatelessWidget {
   final String content;
 
   const CustomServiceCard({
-    Key? key,
+    super.key,
     required this.color,
     required this.shape,
     required this.title,
     required this.content,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +97,9 @@ class CustomMessageBox extends StatelessWidget {
   final Color color;
 
   const CustomMessageBox({
-    Key? key,
+    super.key,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

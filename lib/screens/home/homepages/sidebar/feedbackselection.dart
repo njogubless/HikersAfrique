@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
 
 class FeedbackRecipientSelection extends StatelessWidget {
-  const FeedbackRecipientSelection({Key? key}) : super(key: key);
+  const FeedbackRecipientSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

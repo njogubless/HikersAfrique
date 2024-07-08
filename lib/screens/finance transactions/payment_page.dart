@@ -38,7 +38,7 @@ Future<void> recordPayments(List<Payment> payments) async {
     debugPrint('Payments added successfully to Firestore');
   } catch (e) {
     debugPrint('Error adding payments to Firestore: $e');
-    throw e; // Rethrow the error for the caller to handle
+    rethrow; // Rethrow the error for the caller to handle
   }
 }
 
@@ -48,11 +48,10 @@ class PaymentPage extends StatefulWidget {
   final Client user;
 
   const PaymentPage(
-      {Key? key,
+      {super.key,
       required this.event,
       required this.payment,
-      required this.user})
-      : super(key: key);
+      required this.user});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -204,11 +203,11 @@ class _PaymentPageState extends State<PaymentPage> {
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.title,
     this.isPrimary = false,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onPressed;
   final String title;

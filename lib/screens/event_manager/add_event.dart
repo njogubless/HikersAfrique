@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class AddEvents extends StatefulWidget {
-  const AddEvents({Key? key}) : super(key: key);
+  const AddEvents({super.key});
 
   @override
   State<AddEvents> createState() => _AddEventsState();

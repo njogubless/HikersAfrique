@@ -10,7 +10,7 @@ import '../../services/auth_notifier.dart';
 import '../home/homepages/sidebar/feedback_list.dart';
 
 class PartnersPage extends StatelessWidget {
-  const PartnersPage({Key? key}) : super(key: key);
+  const PartnersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class PartnersPage extends StatelessWidget {
 class PartnerEventItem extends StatelessWidget {
   final Event event;
 
-  const PartnerEventItem({Key? key, required this.event}) : super(key: key);
+  const PartnerEventItem({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +186,7 @@ class PartnerEventItem extends StatelessWidget {
 class PartnerConfirmationPage extends StatefulWidget {
   final Event event;
 
-  const PartnerConfirmationPage({Key? key, required this.event})
-      : super(key: key);
+  const PartnerConfirmationPage({super.key, required this.event});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -300,7 +299,7 @@ class _PartnerConfirmationPageState extends State<PartnerConfirmationPage> {
 }
 
 class PartnersPageAppBar extends StatelessWidget {
-  const PartnersPageAppBar({Key? key}) : super(key: key);
+  const PartnersPageAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

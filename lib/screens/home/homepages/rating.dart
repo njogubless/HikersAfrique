@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikersafrique/models/event.dart';
 
 class Rating extends StatefulWidget {
-  const Rating({Key? key}) : super(key: key);
+  const Rating({super.key});
 
   @override
   RatingState createState() => RatingState();
@@ -20,7 +21,14 @@ class RatingState extends State<Rating> {
   }
 
   Future<void> _submitRatingAndComment(Event event) async {
-    if (_rating > 0 && _commentController.text.isNotEmpty && _nameController.text.isNotEmpty) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      //handle user not logged in
+      return;
+    }
+    if (_rating > 0 &&
+        _commentController.text.isNotEmpty &&
+        _nameController.text.isNotEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Submitting rating and comment...')),
@@ -30,7 +38,7 @@ class RatingState extends State<Rating> {
       try {
         await FirebaseFirestore.instance.collection('rates').add({
           'eventId': event.eventID,
-          'clientName': _nameController.text,
+          'clientName': user.displayName,
           'rating': _rating,
           'comment': _commentController.text,
           'timestamp': FieldValue.serverTimestamp(),
@@ -38,7 +46,7 @@ class RatingState extends State<Rating> {
 
         if (mounted) {
           setState(() {
-            _rating = 1.0; // Reset to a valid value
+            _rating = 1.0; 
             _nameController.clear();
             _commentController.clear();
           });
@@ -50,14 +58,16 @@ class RatingState extends State<Rating> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to submit rating and comment.')),
+            const SnackBar(
+                content: Text('Failed to submit rating and comment.')),
           );
         }
       }
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please provide a name, rating, and comment.')),
+          const SnackBar(
+              content: Text('Please provide a name, rating, and comment.')),
         );
       }
     }
@@ -92,7 +102,8 @@ class RatingState extends State<Rating> {
                     children: [
                       Text(
                         event.eventName,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Image.network(event.eventImageUrl),

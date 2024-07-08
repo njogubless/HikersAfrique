@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FinanceManagerHome extends StatelessWidget {
-  const FinanceManagerHome({Key? key}) : super(key: key);
+  const FinanceManagerHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class FinanceManagerHome extends StatelessWidget {
 }
 
 class PaymentDetailsScreen extends StatefulWidget {
-  const PaymentDetailsScreen({Key? key}) : super(key: key);
+  const PaymentDetailsScreen({super.key});
 
   @override
   _PaymentDetailsScreenState createState() => _PaymentDetailsScreenState();
@@ -301,7 +301,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 }
 
 class FinanceManagerAppBar extends StatelessWidget {
-  const FinanceManagerAppBar({Key? key}) : super(key: key);
+  const FinanceManagerAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

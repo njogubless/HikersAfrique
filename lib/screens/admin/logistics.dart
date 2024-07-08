@@ -22,7 +22,7 @@ class Event {
 }
 
 class LogisticsPage extends StatelessWidget {
-  const LogisticsPage({Key? key}) : super(key: key);
+  const LogisticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class LogisticsPage extends StatelessWidget {
 }
 
 class AllocationPage extends StatefulWidget {
-  const AllocationPage({Key? key}) : super(key: key);
+  const AllocationPage({super.key});
 
   @override
   AllocationPageState createState() => AllocationPageState();
@@ -336,7 +336,7 @@ class AllocationPageState extends State<AllocationPage> {
 }
 
 class LogisticsPageAppBar extends StatelessWidget {
-  const LogisticsPageAppBar({Key? key}) : super(key: key);
+  const LogisticsPageAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

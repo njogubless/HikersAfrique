@@ -4,7 +4,7 @@ import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
 class RepliesPage extends StatelessWidget {
-  const RepliesPage({Key? key}) : super(key: key);
+  const RepliesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

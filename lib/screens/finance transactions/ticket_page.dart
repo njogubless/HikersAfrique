@@ -12,12 +12,12 @@ import '../home/homepages/cart.dart';
 
 class TicketPage extends StatelessWidget {
   const TicketPage({
-    Key? key,
+    super.key,
     required this.event,
     required this.payment,
     required this.user,
     this.ispaymentApproved = false,
-  }) : super(key: key);
+  });
 
   final event;
   final Payment payment;
@@ -85,11 +85,11 @@ class SecondaryButton extends StatelessWidget {
   final bool isPrimary;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.onPressed,
     this.isPrimary = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

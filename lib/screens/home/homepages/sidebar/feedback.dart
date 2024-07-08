@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class FeedbackDialog extends StatefulWidget {
   final String recipient;
-  const FeedbackDialog({Key? key, required this.recipient}) : super(key: key);
+  const FeedbackDialog({super.key, required this.recipient});
 
   @override
   State<FeedbackDialog> createState() => _FeedbackDialogState();

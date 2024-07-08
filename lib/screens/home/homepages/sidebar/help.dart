@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpPage extends StatelessWidget {
-  const HelpPage({Key? key}) : super(key: key);
+  const HelpPage({super.key});
   Future<void> launchlink(String link) async {
     try {
       await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);

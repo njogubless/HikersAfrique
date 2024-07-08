@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class FeedbackReplyScreen extends StatefulWidget {
   final DocumentSnapshot feedback;
-  const FeedbackReplyScreen({Key? key, required this.feedback}) : super(key: key);
+  const FeedbackReplyScreen({super.key, required this.feedback});
 
   @override
   State<FeedbackReplyScreen> createState() => _FeedbackReplyScreenState();
