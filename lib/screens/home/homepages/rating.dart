@@ -21,9 +21,11 @@ class RatingState extends State<Rating> {
 
   Future<void> _submitRatingAndComment(Event event) async {
     if (_rating > 0 && _commentController.text.isNotEmpty && _nameController.text.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting rating and comment...')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Submitting rating and comment...')),
+        );
+      }
 
       try {
         await FirebaseFirestore.instance.collection('rates').add({
@@ -34,24 +36,30 @@ class RatingState extends State<Rating> {
           'timestamp': FieldValue.serverTimestamp(),
         });
 
-        setState(() {
-          _rating = 1.0; // Reset to a valid value
-          _nameController.clear();
-          _commentController.clear();
-        });
+        if (mounted) {
+          setState(() {
+            _rating = 1.0; // Reset to a valid value
+            _nameController.clear();
+            _commentController.clear();
+          });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Rating and comment submitted!')),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Rating and comment submitted!')),
+          );
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to submit rating and comment.')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to submit rating and comment.')),
+          );
+        }
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide a name, rating, and comment.')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please provide a name, rating, and comment.')),
+        );
+      }
     }
   }
 

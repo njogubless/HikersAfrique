@@ -106,7 +106,8 @@ class Purchased extends StatelessWidget {
                         children: [
                           Text('Client: ${payment.clientName}'),
                           Text('Email: ${payment.email}'),
-                          Text('Total Cost: \$${payment.totalCost}'),
+                          // ignore: unnecessary_string_escapes
+                          Text('Total Cost: \Ksh${payment.totalCost}'),
                           _buildEventStatus(payment.status),
                         ],
                       ),

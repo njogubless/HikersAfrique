@@ -230,12 +230,12 @@ class Database {
         .where('eventID', isEqualTo: eventID)
         .count()
         .get();
-    return result.count;
+    return result.count ?? 0;
   }
 
   static Future<int> getNumberOfEvents() async {
     final result = await firestore.collection('events').count().get();
-    return result.count;
+    return result.count ?? 0;
   }
 
   //deleting an event
