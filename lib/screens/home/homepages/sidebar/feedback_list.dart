@@ -41,7 +41,7 @@ class FeedbackListScreen extends StatelessWidget {
                   feedbacks[index].data() as Map<String, dynamic>;
 
               final Timestamp timestamp = feedbackData['timestamp'] as Timestamp;
-              final String role = feedbackData['role'] ?? '';
+              final String senderName  = feedbackData['senderName'] ?? '';
               final String name = feedbackData['name'] ?? '';
               final String message = feedbackData['message'] ?? '';
 
@@ -81,7 +81,7 @@ class FeedbackListScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Role: $role',
+                            'Name: $senderName',
                             style: const TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           Text(

@@ -10,47 +10,47 @@ class Rating extends StatefulWidget {
 }
 
 class RatingState extends State<Rating> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
-  double _rating = 0.0;
-
-  late ScaffoldMessengerState _scaffoldMessenger;
+  double _rating = 1.0; // Initialize to a valid value within the range
 
   @override
   void initState() {
     super.initState();
-    _scaffoldMessenger = ScaffoldMessenger.of(context);
   }
 
   Future<void> _submitRatingAndComment(Event event) async {
-    if (_rating > 0 && _commentController.text.isNotEmpty) {
-      _scaffoldMessenger.showSnackBar(
+    if (_rating > 0 && _commentController.text.isNotEmpty && _nameController.text.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Submitting rating and comment...')),
       );
 
       try {
         await FirebaseFirestore.instance.collection('rates').add({
           'eventId': event.eventID,
+          'clientName': _nameController.text,
           'rating': _rating,
           'comment': _commentController.text,
           'timestamp': FieldValue.serverTimestamp(),
         });
 
         setState(() {
-          _rating = 0.0;
+          _rating = 1.0; // Reset to a valid value
+          _nameController.clear();
           _commentController.clear();
         });
 
-        _scaffoldMessenger.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Rating and comment submitted!')),
         );
       } catch (e) {
-        _scaffoldMessenger.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to submit rating and comment.')),
         );
       }
     } else {
-      _scaffoldMessenger.showSnackBar(
-        const SnackBar(content: Text('Please provide a rating and comment.')),
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please provide a name, rating, and comment.')),
       );
     }
   }
@@ -69,7 +69,7 @@ class RatingState extends State<Rating> {
           }
 
           final events = snapshot.data!.docs.map((doc) {
-            return Event.fromSnapshot(doc); // Updated to fromSnapshot
+            return Event.fromSnapshot(doc);
           }).toList();
 
           return ListView.builder(
@@ -88,6 +88,14 @@ class RatingState extends State<Rating> {
                       ),
                       const SizedBox(height: 10),
                       Image.network(event.eventImageUrl),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter your name here',
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Slider(
                         value: _rating,

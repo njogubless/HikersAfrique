@@ -1,7 +1,4 @@
-// ignore_for_file: recursive_getters
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Event {
   final String eventID;
@@ -14,6 +11,7 @@ class Event {
   final String eventImageUrl;
   final String eventDetails;
   final String eventPackage;
+
   const Event({
     required this.eventID,
     required this.eventName,
@@ -37,12 +35,26 @@ class Event {
       totalCost: event['totalCost'],
       eventLocation: event['eventLocation'],
       eventImageUrl: event['eventImageUrl'],
-      eventDetails: event['eventDetails'] ?? "", 
-      eventPackage:event ['eventPackage'] ?? "",
+      eventDetails: event['eventDetails'] ?? "",
+      eventPackage: event['eventPackage'] ?? "",
     );
   }
 
-  int get ticketPrice => ticketPrice;
+  factory Event.fromSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Event(
+      eventID: doc.id,
+      eventName: data['eventName'],
+      eventDate: data['eventDate'],
+      eventTime: data['eventTime'],
+      eventCost: data['eventCost'],
+      totalCost: data['totalCost'],
+      eventLocation: data['eventLocation'],
+      eventImageUrl: data['eventImageUrl'],
+      eventDetails: data['eventDetails'] ?? "",
+      eventPackage: data['eventPackage'] ?? "",
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -59,5 +71,5 @@ class Event {
     };
   }
 
-  static fromFirestore(data) {}
+  int get ticketPrice => eventCost; // Fixing the recursive getter issue
 }

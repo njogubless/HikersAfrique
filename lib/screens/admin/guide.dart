@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
-// ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
-import 'package:hikersafrique/models/client.dart'; // Updated import
+import 'package:hikersafrique/models/client.dart';
 import 'package:provider/provider.dart';
 
-class GuidesPage extends StatelessWidget {
+class GuidesPage extends StatefulWidget {
   const GuidesPage({Key? key}) : super(key: key);
 
-  static Future<Client> getClientData(String email) async {
+  @override
+  _GuidesPageState createState() => _GuidesPageState();
+}
+
+class _GuidesPageState extends State<GuidesPage> {
+  Future<Client> getClientData(String email) async {
     final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('clients')
         .where('clientEmail', isEqualTo: email)
@@ -23,6 +25,31 @@ class GuidesPage extends StatelessWidget {
         .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
         .toList()
         .first;
+  }
+
+  Future<void> updateAllocationStatus(
+      String docId, bool approve, bool reject) async {
+    try {
+      // Update the allocation document with the new status
+      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
+        'guideApproved': approve,
+        'guideRejected': reject,
+      });
+
+      // Show a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(approve ? 'Event approved successfully' : 'Event rejected successfully'),
+        ),
+      );
+      setState(() {});
+    } catch (e) {
+      debugPrint('Error updating allocation status: $e');
+      // Show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating status: $e')),
+      );
+    }
   }
 
   @override
@@ -137,13 +164,14 @@ class GuidesPage extends StatelessWidget {
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
                     DataColumn(label: Text('Event')),
+                    DataColumn(label: Text('Guide Approved')),
                     DataColumn(label: Text('Actions')),
                   ],
                   rows: snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
-                    bool isApproved = data['approved'] ?? false;
-                    bool isRejected = data['rejected'] ?? false;
+                    bool isApproved = data['guideApproved'] ?? false;
+                    bool isRejected = data['guideRejected'] ?? false;
 
                     return DataRow(
                       cells: [
@@ -152,6 +180,7 @@ class GuidesPage extends StatelessWidget {
                         DataCell(Text(client.clientEmail)),
                         DataCell(Text(client.role)),
                         DataCell(Text(data['event'] ?? '')),
+                        DataCell(Text(isApproved ? 'Approved' : 'Not Approved')),
                         DataCell(
                           Row(
                             children: [
@@ -159,8 +188,13 @@ class GuidesPage extends StatelessWidget {
                                 onPressed: isApproved || isRejected
                                     ? null
                                     : () {
-                                        updateAllocationStatus(
-                                            document.id, true, false);
+                                        setState(() {
+                                          // Update the state locally
+                                          data['guideApproved'] = true;
+                                          data['guideRejected'] = false;
+                                        });
+                                        // Update the allocation status in Firestore
+                                        updateAllocationStatus(document.id, true, false);
                                       },
                                 child: Text(isApproved ? 'Approved' : 'Approve'),
                               ),
@@ -169,8 +203,13 @@ class GuidesPage extends StatelessWidget {
                                 onPressed: isApproved || isRejected
                                     ? null
                                     : () {
-                                        updateAllocationStatus(
-                                            document.id, false, true);
+                                        setState(() {
+                                          // Update the state locally
+                                          data['guideApproved'] = false;
+                                          data['guideRejected'] = true;
+                                        });
+                                        // Update the allocation status in Firestore
+                                        updateAllocationStatus(document.id, false, true);
                                       },
                                 child: Text(isRejected ? 'Rejected' : 'Reject'),
                               ),
@@ -187,18 +226,6 @@ class GuidesPage extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Future<void> updateAllocationStatus(
-      String docId, bool approve, bool reject) async {
-    try {
-      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
-        'guideApproved': approve,
-        'guideRejected': reject,
-      });
-    } catch (e) {
-      debugPrint('Error updating allocation status: $e');
-    }
   }
 }
 
@@ -276,4 +303,3 @@ class GuidesPageAppBar extends StatelessWidget {
     );
   }
 }
-

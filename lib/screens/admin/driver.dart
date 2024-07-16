@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// ignore: unused_import
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hikersafrique/models/client.dart';
-// ignore: unused_import
-import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
 import 'package:hikersafrique/services/auth.dart';
 import 'package:hikersafrique/services/auth_notifier.dart';
 import 'package:provider/provider.dart';
 
-class DriversPage extends StatelessWidget {
+class DriversPage extends StatefulWidget {
   const DriversPage({Key? key}) : super(key: key);
 
-  static Future<Client> getClientData(String email) async {
+  @override
+  _DriversPageState createState() => _DriversPageState();
+}
+
+class _DriversPageState extends State<DriversPage> {
+  Future<Client> getClientData(String email) async {
     final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('clients')
         .where('clientEmail', isEqualTo: email)
@@ -23,6 +24,28 @@ class DriversPage extends StatelessWidget {
         .map((doc) => Client.fromJson(doc.data() as Map<String, dynamic>))
         .toList()
         .first;
+  }
+
+  Future<void> updateAllocationStatus(
+      String docId, bool approve, bool reject) async {
+    try {
+      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
+        'driverApproved': approve,
+        'driverRejected': reject,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(approve ? 'Event approved successfully' : 'Event rejected successfully'),
+        ),
+      );
+      setState(() {});
+    } catch (e) {
+      debugPrint('Error updating allocation status: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating status: $e')),
+      );
+    }
   }
 
   @override
@@ -137,21 +160,23 @@ class DriversPage extends StatelessWidget {
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
                     DataColumn(label: Text('Event')),
+                    DataColumn(label: Text('Driver Approved')),
                     DataColumn(label: Text('Actions')),
                   ],
                   rows: snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
-                    bool isApproved = data['approved'] ?? false;
-                    bool isRejected = data['rejected'] ?? false;
+                    bool isApproved = data['driverApproved'] ?? false;
+                    bool isRejected = data['driverRejected'] ?? false;
 
                     return DataRow(
                       cells: [
-                        DataCell(Text(client.uid)), 
+                        DataCell(Text(client.uid)),
                         DataCell(Text(client.clientName)),
                         DataCell(Text(client.clientEmail)),
                         DataCell(Text(client.role)),
                         DataCell(Text(data['event'] ?? '')),
+                        DataCell(Text(isApproved ? 'Approved' : 'Not Approved')),
                         DataCell(
                           Row(
                             children: [
@@ -159,8 +184,11 @@ class DriversPage extends StatelessWidget {
                                 onPressed: isApproved || isRejected
                                     ? null
                                     : () {
-                                        updateAllocationStatus(
-                                            document.id, true, false);
+                                        setState(() {
+                                          data['driverApproved'] = true;
+                                          data['driverRejected'] = false;
+                                        });
+                                        updateAllocationStatus(document.id, true, false);
                                       },
                                 child: Text(isApproved ? 'Approved' : 'Approve'),
                               ),
@@ -169,8 +197,11 @@ class DriversPage extends StatelessWidget {
                                 onPressed: isApproved || isRejected
                                     ? null
                                     : () {
-                                        updateAllocationStatus(
-                                            document.id, false, true);
+                                        setState(() {
+                                          data['driverApproved'] = false;
+                                          data['driverRejected'] = true;
+                                        });
+                                        updateAllocationStatus(document.id, false, true);
                                       },
                                 child: Text(isRejected ? 'Rejected' : 'Reject'),
                               ),
@@ -187,18 +218,6 @@ class DriversPage extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Future<void> updateAllocationStatus(
-      String docId, bool approve, bool reject) async {
-    try {
-      await FirebaseFirestore.instance.collection('allocations').doc(docId).update({
-        'driverApproved': approve,
-        'driverRejected': reject,
-      });
-    } catch (e) {
-      debugPrint('Error updating allocation status: $e');
-    }
   }
 }
 
@@ -276,4 +295,3 @@ class DriversPageAppBar extends StatelessWidget {
     );
   }
 }
-

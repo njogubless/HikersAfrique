@@ -6,7 +6,7 @@ class FeedbackRecipientSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recipients = ['guide', 'drivers', 'financeManager', 'eventManager', 'partner', 'logistics'];
+    final recipients = ['guides', 'drivers', 'financeManager', 'eventManager', 'partners', 'logistics'];
 
     return Scaffold(
       appBar: AppBar(

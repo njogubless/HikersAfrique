@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/event_manager/add_event.dart';
 import 'package:hikersafrique/screens/event_manager/edit_event.dart';
+import 'package:hikersafrique/screens/event_manager/event_rating.dart';
 // ignore: unused_import
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedback.dart';
 import 'package:hikersafrique/screens/home/homepages/sidebar/feedback_list.dart';
@@ -88,6 +89,20 @@ class _EventManagerHomeState extends State<EventManagerHome> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const FeedbackListScreen()));
+                  }),
+                   ListTile(
+                  title: const Text(
+                    "Event Rating",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EventRatingPage()));
                   }),
               Container(
                 height: 100,
