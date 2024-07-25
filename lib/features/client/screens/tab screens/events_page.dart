@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import "package:flutter/material.dart";
 import "package:hikersafrique/features/client/screens/widgets/event_items.dart";
 import "package:hikersafrique/items/favourites.dart";
@@ -29,28 +31,28 @@ class _EventsPageState extends State<EventsPage> {
                 height: 20.0,
               ),
               // Category of best places,most visited etc
-              const SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      // BestPlaces Container
-                      BestPlacesContainer(),
-                      // Most Visited Container
-                      MostVisitedContainer(),
-                      //Favourites Container
-                      FavouriteContainer(),
-                      // New Added Container
-                      NewAddedContainer(),
-                      // Hotels Container
-                      HotelsContainer(),
-                      // Restaurants Container
-                      RestaurantContainer(),
-                    ],
-                  ),
-                ),
-              ),
+              // const SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Padding(
+              //     padding: EdgeInsets.all(10.0),
+              //     child: Row(
+              //       children: [
+              //         // BestPlaces Container
+              //         BestPlacesContainer(),
+              //         // Most Visited Container
+              //         MostVisitedContainer(),
+              //         //Favourites Container
+              //         FavouriteContainer(),
+              //         // New Added Container
+              //         NewAddedContainer(),
+              //         // Hotels Container
+              //         HotelsContainer(),
+              //         // Restaurants Container
+              //         RestaurantContainer(),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10.0,
               ),

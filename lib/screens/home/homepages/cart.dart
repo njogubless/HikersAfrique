@@ -1,7 +1,7 @@
-// ignore_for_file: unused_import
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hikersafrique/features/client/screens/home_screen.dart';
+import 'package:hikersafrique/features/client/screens/tab%20screens/events_page.dart';
 import 'package:hikersafrique/models/client.dart';
 import 'package:hikersafrique/models/event.dart';
 import 'package:hikersafrique/screens/finance_manager/payment_model.dart';
@@ -35,9 +35,10 @@ class Purchased extends StatelessWidget {
               }
 
               final List<Payment> payments = snapshot.data ?? [];
-              final clientPayments = payments.where((payment) => payment.email == user?.clientEmail)
+              final clientPayments = payments
+                  .where((payment) => payment.email == user?.clientEmail)
                   .toList();
-              
+
               if (clientPayments.isEmpty) {
                 return const Center(child: Text('No events purchased.'));
               }
@@ -46,48 +47,60 @@ class Purchased extends StatelessWidget {
                 itemCount: clientPayments.length + 1, // +1 for the footer item
                 itemBuilder: (context, index) {
                   if (index == clientPayments.length) {
-                    // Footer item (Finish button)
+                    // Footer items (Finish button and Home button)
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: SecondaryButton(
-                        title: 'Finish',
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Give Feedback?'),
-                                content: const Text(
-                                    'Do you want to give feedback for your trip?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      //Navigator.of(context).pop();
-                                      //Navigator.of(context).pop();
-                                      //Navigator.of(context).pop();
-                                      //Navigator.of(context).pop();
-                                    },
-                                    child: const Text('No'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FeedbackRecipientSelection(),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                ],
+                      child: Column(
+                        children: [
+                          SecondaryButton(
+                            title: 'Finish',
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Give Feedback?'),
+                                    content: const Text(
+                                        'Do you want to give feedback for your trip?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('No'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const FeedbackRecipientSelection(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('Yes'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
+                          ),
+                          const SizedBox(
+                              height: 10), // Add spacing between buttons
+                          SecondaryButton(
+                            title: 'Home',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen()));
+                            },
+                          ),
+                        ],
                       ),
                     );
                   }
@@ -106,12 +119,11 @@ class Purchased extends StatelessWidget {
                         children: [
                           Text('Client: ${payment.clientName}'),
                           Text('Email: ${payment.email}'),
-                          Text('Total Cost: \Ksh${payment.totalCost}'),
+                          Text('Total Cost: Ksh${payment.totalCost}'),
                           _buildEventStatus(payment.status),
                         ],
                       ),
-                      trailing:
-                          _buildDownloadButton(context, payment, user),
+                      trailing: _buildDownloadButton(context, payment, user),
                     ),
                   );
                 },
@@ -156,22 +168,22 @@ class Purchased extends StatelessWidget {
     if (payment.status.toLowerCase() == 'approved' && user != null) {
       return ElevatedButton(
         onPressed: () async {
+          final eventList =
+              await FirebaseFirestore.instance.collection('events').get();
+          final theEvent = eventList.docs.firstWhere(
+              (event) => event.data()['eventName'] == payment.event);
 
-   final eventList  = await FirebaseFirestore.instance.collection('events').get();
-   final theEvent = eventList.docs.firstWhere((event) => event.data()['eventName'] == payment.event);
-   
-    Event event = Event(
-    eventID: theEvent.data()['eventID'], 
-    eventName: theEvent.data()['eventName'], 
-    eventDate: theEvent.data()['eventDate'], 
-    eventTime: theEvent.data()['eventTime'],
-     eventCost: theEvent.data()['eventCost'], 
-     totalCost: theEvent.data()['totalCost'], 
-     eventLocation: theEvent.data()['eventLocation'], 
-     eventImageUrl: theEvent.data()['eventImageUrl'], 
-     eventDetails: theEvent.data()['eventDetails'], 
-     eventPackage: theEvent.data()['eventPackage']);
-
+          Event event = Event(
+              eventID: theEvent.data()['eventID'],
+              eventName: theEvent.data()['eventName'],
+              eventDate: theEvent.data()['eventDate'],
+              eventTime: theEvent.data()['eventTime'],
+              eventCost: theEvent.data()['eventCost'],
+              totalCost: theEvent.data()['totalCost'],
+              eventLocation: theEvent.data()['eventLocation'],
+              eventImageUrl: theEvent.data()['eventImageUrl'],
+              eventDetails: theEvent.data()['eventDetails'],
+              eventPackage: theEvent.data()['eventPackage']);
 
           // ignore: use_build_context_synchronously
           Misc.getReceipt(event, payment, user, context).then((_) {
